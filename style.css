@@ -518,3 +518,6 @@ a { color: inherit; }
 .knock.no-video::before, .marquee--knock .marquee__track.no-video::before { display: none; }
 .knock__video { z-index: 0; mix-blend-mode: lighten; }
 .knock .big-serif { z-index: 1; }
+
+/* Schrift-Video ist schon fertig invertiert und aufgehellt (video/schrift-loop.mp4) */
+.knock__video { filter: none; }

@@ -568,7 +568,7 @@
   addEventListener("scroll", check, { passive: true }); addEventListener("resize", check); check();
 })();
 
-/* Showreel in den grossen Sätzen: läuft nur, wenn sichtbar, synchron zum grossen Showreel */
+/* Video in den grossen Sätzen (eigener kurzer Loop): läuft nur, wenn sichtbar */
 (() => {
   const vids = [...document.querySelectorAll(".knock__video")], main = document.getElementById("reelVideo");
   if (!vids.length) return;
@@ -580,7 +580,6 @@
   const io = new IntersectionObserver((entries) => entries.forEach((e) => {
     const v = e.target;
     if (e.isIntersecting) {
-      if (main && main.readyState > 0 && v.readyState > 0 && Math.abs(v.currentTime - main.currentTime) > 0.5) v.currentTime = main.currentTime;
       const p = v.play(); if (p && p.catch) p.catch(() => {});
     } else v.pause();
   }), { rootMargin: "100px" });
