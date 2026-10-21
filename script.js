@@ -260,8 +260,10 @@
 
   /* ---------- Text, der beim Scrollen "aufleuchtet" ---------- */
   const reveals = $$(".reveal").map((el) => {
-    const words = el.textContent.trim().split(/\s+/);
-    el.innerHTML = words.map((w) => `<span class="w">${w}</span>`).join(" ");
+    // Zeilenumbrüche (<br>) aus dem HTML bleiben erhalten
+    el.innerHTML = el.innerHTML.split(/<br\s*\/?>/i)
+      .map((part) => part.trim().split(/\s+/).filter(Boolean).map((w) => `<span class="w">${w}</span>`).join(" "))
+      .join("<br>");
     return { el, words: $$(".w", el) };
   });
 
