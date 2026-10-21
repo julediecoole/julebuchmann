@@ -213,20 +213,6 @@
     if (e.key === "ArrowLeft") openProject(current - 1);
   });
 
-  /* ---------- Kontakt: Adresse kopieren ---------- */
-  $("#copyMail").addEventListener("click", () => {
-    const txt = $("#mailText").textContent.trim();
-    const status = $("#copyStatus");
-    const fallback = () => {
-      const r = document.createRange(); r.selectNodeContents($("#mailText"));
-      const s = getSelection(); s.removeAllRanges(); s.addRange(r);
-      status.textContent = "Adresse markiert. Mit Cmd/Ctrl+C kopieren.";
-    };
-    try {
-      navigator.clipboard.writeText(txt).then(() => { status.textContent = "Adresse kopiert."; }, fallback);
-    } catch (e) { fallback(); }
-  });
-
   /* ---------- Text, der beim Scrollen "aufleuchtet" ---------- */
   const reveals = $$(".reveal").map((el) => {
     const words = el.textContent.trim().split(/\s+/);
@@ -406,6 +392,16 @@
 
     /* Laufschriften: Zeit + Scroll */
     marquees.forEach((q) => {
+      if (q.m.dataset.start === "scroll") {
+        // startet beim Reinscrollen immer mit dem Satzanfang links im Bild
+        const mr = q.m.getBoundingClientRect();
+        const quarter = q.track.scrollWidth / 4;
+        const at = parseFloat(q.m.dataset.at || "0.5");   // bei dieser Bildhöhe steht der Satzanfang links
+        const moved = (vh * at - (mr.top + mr.height / 2)) * Math.abs(q.speed) * 0.5;
+        const m = moved > 0 ? moved % quarter : moved;
+        q.track.style.transform = `translate3d(${vw * 0.16 - m}px,0,0)`;
+        return;
+      }
       const half = q.track.scrollWidth / 2;
       q.x -= q.speed * dt * 0.06;
       const sx = (q.x - scrollY * q.speed * 0.5) % half;
