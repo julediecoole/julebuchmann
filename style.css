@@ -267,10 +267,10 @@ a { color: inherit; }
 .tile:hover .tile__cap, .tile:focus-visible .tile__cap { opacity: 1; }
 
 /* ---------- ÜBER MICH: heller Teil, fixe Kante zum dunklen Teil ---------- */
-.shards { position: relative; z-index: 3; margin-top: -80vh; color: var(--ink); background: var(--paper); padding: 16vh 0; }   /* schiebt sich über das Ende der Bildwolke, kein leerer Raum */
-.shards .aboutme__text, .shards .aboutme__name { color: var(--ink); }
-.shards .aboutme__text .label { color: #3d4436; }
-.shards .aboutme__text p:not(.label) { color: #1b2030; }
+.shards { position: relative; z-index: 3; margin-top: -80vh; color: var(--blood); background: var(--bone); padding: 16vh 0; }   /* schiebt sich über das Ende der Bildwolke, kein leerer Raum */
+.shards .aboutme__text, .shards .aboutme__name { color: var(--blood); }
+.shards .aboutme__text .label { color: var(--blood); opacity: .75; }
+.shards .aboutme__text p:not(.label) { color: var(--blood); }
 .shards .aboutme__photo img { box-shadow: 0 24px 50px rgba(0,0,8,.22); }
 .anchor { position: absolute; top: -16vh; }
 .shards__stage { position: relative; }

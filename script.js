@@ -393,13 +393,15 @@
     /* Laufschriften: Zeit + Scroll */
     marquees.forEach((q) => {
       if (q.m.dataset.start === "scroll") {
-        // startet beim Reinscrollen immer mit dem Satzanfang links im Bild
+        // Satzanfang links, sobald die Laufschrift reinkommt; bis sie wieder
+        // rausgeht (oder die Seite endet) ist der ganze Satz einmal durchgelaufen
         const mr = q.m.getBoundingClientRect();
-        const quarter = q.track.scrollWidth / 4;
-        const at = parseFloat(q.m.dataset.at || "0.5");   // bei dieser Bildhöhe steht der Satzanfang links
-        const moved = (vh * at - (mr.top + mr.height / 2)) * Math.abs(q.speed) * 0.5;
-        const m = moved > 0 ? moved % quarter : moved;
-        q.track.style.transform = `translate3d(${vw * 0.16 - m}px,0,0)`;
+        const span = q.track.firstElementChild.getBoundingClientRect().width * parseFloat(q.m.dataset.len || "1");
+        const maxScroll = document.documentElement.scrollHeight - vh;
+        const topAtEnd = Math.max(-mr.height, mr.top - (maxScroll - scrollY));
+        const t = clamp(((vh - mr.top) / Math.max(1, vh - topAtEnd) - 0.15) / 0.8, 0, 1);   // kurz stehen lassen, damit der Anfang lesbar ist
+        const travel = Math.max(0, span - vw * 0.8);
+        q.track.style.transform = `translate3d(${vw * 0.14 - t * travel}px,0,0)`;
         return;
       }
       const half = q.track.scrollWidth / 2;
