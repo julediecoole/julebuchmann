@@ -272,7 +272,7 @@ a { color: inherit; }
 .aboutme {
   position: relative; margin: 0 auto;
   width: min(1040px, calc(100% - 2 * (var(--gutter-l) + 26px)));
-    display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(20px, 4vw, 56px); align-items: center;
+    display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(20px, 4vw, 56px); align-items: center;
   will-change: transform, opacity;
 }
 .aboutme__photo { margin: 0; display: grid; gap: 8px; position: relative; }
@@ -292,7 +292,7 @@ a { color: inherit; }
 .vf__af::before { left: 50%; top: 50%; width: 10px; height: 1.5px; margin: -.75px 0 0 -5px; }
 .vf__af::after { left: 50%; top: 50%; width: 1.5px; height: 10px; margin: -5px 0 0 -.75px; }
 .vf.is-sharp .vf__c, .vf.is-sharp .vf__af { border-color: var(--ember); }
-.aboutme__photo img { object-position: 50% 35%; width: 100%; aspect-ratio: 4 / 5; max-height: 66vh; object-fit: cover; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
+.aboutme__photo img { object-position: 50% 40%; width: 100%; aspect-ratio: 5 / 4; max-height: 66vh; object-fit: cover; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
 .aboutme__photo figcaption { font: 700 10px/1 var(--font-sans); font-stretch: 125%; letter-spacing: .08em; text-transform: uppercase; color: var(--ash); }
 .aboutme__text { display: grid; gap: 16px; min-width: 0; }
 .aboutme__text p:not(.label) { margin: 0; max-width: 52ch; font-size: clamp(15px, 1.25vw, 18px); line-height: 1.55; }
@@ -363,7 +363,7 @@ a { color: inherit; }
   .about__row { padding-left: 22vw; }
   .top-nav { gap: 12px; }
   .aboutme { grid-template-columns: minmax(0, 1fr); gap: 18px; }
-  .aboutme__photo img { aspect-ratio: 4 / 5; max-height: 52vh; }
+  .aboutme__photo img { aspect-ratio: 5 / 4; max-height: 52vh; }
   .shards { padding-block: 12vh; }
   .aboutme__photo figcaption { display: none; }
   .aboutme__text { gap: 10px; }
