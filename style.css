@@ -99,6 +99,9 @@ a { color: inherit; }
 /* Auf hellem Grund (Kontakt) werden Logo und Links dunkel */
 .on-light .side-logo, .on-light .top-nav a { color: var(--ink); text-shadow: none; }
 
+/* Kamerablende (Übergang zu "Über mich"), liegt über dem Inhalt, unter Logo/Menü */
+.iris { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 45; pointer-events: none; display: none; }
+
 /* Filmkorn über allem */
 .grain {
   position: fixed; inset: -50%; z-index: 60; pointer-events: none; opacity: .09;

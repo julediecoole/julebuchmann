@@ -34,6 +34,8 @@
       desc: "" },
     { title: "Leben mit dem Wind", type: "Dokumentarfilm", role: "Alles selbst", img: "img/leben-mit-dem-wind-still.webp", thumb: "img/leben-mit-dem-wind-thumb.webp", video: "video/leben-mit-dem-wind.mp4", real: true,
       desc: "" },
+    { title: "Necessaire", type: "Museumsfilm", role: "Schnitt, Color Grading", img: "img/necessaire-still.webp", thumb: "img/necessaire-thumb.webp", video: "video/necessaire.mp4", real: true,
+      desc: "Ein Video zu einem Necessaire für das Rätische Museum in Chur." },
     { title: "Projekt 12", type: "Platzhalter", role: "", img: "img/platzhalter-portrait-still.webp", thumb: "img/platzhalter-portrait-thumb.webp", video: "video/platzhalter-portrait.mp4", real: false,
       desc: "Platzhalter. Hier kommt ein eigenes Projekt hin." },
   ];
@@ -227,7 +229,10 @@
   const reelSec = $(".reel"), cards = $$(".reel__card").map((el) => ({ el, par: parseFloat(el.dataset.par), base: getComputedStyle(el).transform }));
   const marquees = $$(".marquee").map((m) => ({ m, track: $(".marquee__track", m), speed: parseFloat(m.dataset.speed), x: 0 }));
   const work = $(".work");
+  /* Übergang zu "Über mich": "iris" (Kamerablende) oder "focus" (Schärfe ziehen) */
+  const TRANSITION = "iris";
   const shardsSec = $("#shards");
+  const aboutme = $("#aboutme");
   const focusImg = $("#focusImg"), vf = $("#viewfinder"), vfAf = $("#vfAf"), aboutText = $("#aboutText");
   const contact = $(".contact");
 
@@ -239,6 +244,67 @@
   const t0 = performance.now();
   const easeOut = (t) => 1 - Math.pow(1 - t, 3);
   const easeInOut = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+  /* ---------- Kamerablende ----------
+     r = 0 geschlossen, 1 ganz offen. Gezeichnet werden 9 Lamellen um eine
+     polygonale Öffnung, die sich beim Schliessen leicht dreht. */
+  const iris = $("#iris"), ictx = iris.getContext("2d");
+  const BLADES = 9;
+  let irisW = 0, irisH = 0, irisDpr = 1;
+  function sizeIris() {
+    irisDpr = Math.min(2, devicePixelRatio || 1);
+    irisW = innerWidth; irisH = innerHeight;
+    iris.width = irisW * irisDpr; iris.height = irisH * irisDpr;
+  }
+  sizeIris(); addEventListener("resize", sizeIris);
+  const css = getComputedStyle(document.documentElement);
+  function drawIris(r) {
+    if (r >= 0.999) { iris.style.display = "none"; return; }
+    iris.style.display = "block";
+    const ctx = ictx, W = irisW, H = irisH, cx = W / 2, cy = H / 2;
+    // Radius, bei dem die Öffnung (Vieleck) den ganzen Bildschirm freigibt
+    const R = (Math.hypot(W, H) / 2) / Math.cos(Math.PI / BLADES) * 1.04;
+    const ap = R * r;
+    const rot = (1 - r) * 1.1;                        // Lamellen drehen beim Schliessen
+    const far = Math.hypot(W, H) * 2;
+    const tone = ["#04060d", "#0a0f1d"];
+    ctx.setTransform(irisDpr, 0, 0, irisDpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    if (ap < 1) { ctx.fillStyle = tone[0]; ctx.fillRect(0, 0, W, H); return; }
+    const p = [];
+    for (let i = 0; i < BLADES; i++) {
+      const ang = rot + (i / BLADES) * Math.PI * 2;
+      p.push([cx + Math.cos(ang) * ap, cy + Math.sin(ang) * ap]);
+    }
+    // Richtung jeder Kante (p[i] → p[i+1]); die Lamellenkante läuft darüber hinaus nach aussen
+    const u = p.map((pi, i) => {
+      const q = p[(i + 1) % BLADES]; const dx = q[0] - pi[0], dy = q[1] - pi[1], l = Math.hypot(dx, dy) || 1;
+      return [dx / l, dy / l];
+    });
+    for (let i = 0; i < BLADES; i++) {
+      const a1 = p[(i + 1) % BLADES], a2 = p[(i + 2) % BLADES];
+      const d1 = u[i], d2 = u[(i + 1) % BLADES];
+      ctx.beginPath();
+      ctx.moveTo(a1[0], a1[1]);
+      ctx.lineTo(a1[0] + d1[0] * far, a1[1] + d1[1] * far);
+      ctx.lineTo(a2[0] + d2[0] * far, a2[1] + d2[1] * far);
+      ctx.lineTo(a2[0], a2[1]);
+      ctx.closePath();
+      // leichter Verlauf pro Lamelle, damit sie wie Metall wirken
+      const g = ctx.createLinearGradient(a1[0], a1[1], a1[0] + d1[0] * 400, a1[1] + d1[1] * 400);
+      g.addColorStop(0, i % 2 ? "#141b2c" : "#0d1322");
+      g.addColorStop(1, tone[i % 2]);
+      ctx.fillStyle = g;
+      ctx.fill();
+    }
+    // feine Kanten in Big Fish
+    ctx.strokeStyle = "rgba(153,163,142,.28)";
+    ctx.lineWidth = 1;
+    for (let i = 0; i < BLADES; i++) {
+      const a1 = p[(i + 1) % BLADES], d1 = u[i];
+      ctx.beginPath(); ctx.moveTo(a1[0], a1[1]); ctx.lineTo(a1[0] + d1[0] * far, a1[1] + d1[1] * far); ctx.stroke();
+    }
+  }
 
   let last = performance.now();
   function frame(now) {
@@ -296,9 +362,24 @@
     if (wr.top < vh && wr.bottom > 0) placeTiles(stickyProgress(work));
 
     /* Bergstücke brechen auseinander */
-    /* Über mich: Schärfe ziehen */
+    /* Über mich: Übergang */
     const sr = shardsSec.getBoundingClientRect();
-    if (sr.top < vh && sr.bottom > 0) {
+    if (TRANSITION === "iris") {
+      // schliesst, während die Sektion von unten reinkommt; öffnet, sobald sie oben steht
+      const sp = stickyProgress(shardsSec);
+      const closing = clamp(1 - sr.top / vh, 0, 1);                 // 0 → 1 bis Sektion oben
+      const opening = sr.top <= 0 ? clamp((sp - 0.02) / 0.3, 0, 1) : 0;
+      let r = 1;
+      if (sr.top < vh && sr.top > 0) r = 1 - easeInOut(clamp((closing - 0.25) / 0.75, 0, 1));
+      else if (sr.top <= 0 && sr.bottom > 0) r = easeInOut(opening);
+      drawIris(r);
+      aboutme.style.visibility = sr.top > 2 ? "hidden" : "";
+      const t = clamp((sp - 0.18) / 0.2, 0, 1);
+      aboutText.style.opacity = String(t);
+      aboutText.style.transform = `translate3d(0, ${(1 - t) * 30}px, 0)`;
+      aboutText.style.pointerEvents = t > 0.5 ? "auto" : "none";
+      vf.style.display = "none";
+    } else if (sr.top < vh && sr.bottom > 0) {
       const sp = stickyProgress(shardsSec);
       const enter = clamp(1 - sr.top / vh, 0, 1);              // Sektion kommt von unten rein
       const f = easeInOut(clamp((sp - 0.04) / 0.42, 0, 1));    // 0 = unscharf, 1 = scharf

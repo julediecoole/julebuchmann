@@ -20,6 +20,7 @@
   <a href="#ueber-mich">Über mich</a>
   <a href="#kontakt">Kontakt</a>
 </nav>
+<canvas class="iris" id="iris" aria-hidden="true"></canvas>
 <div class="grain" aria-hidden="true"></div>
 
 <main id="top">
@@ -81,9 +82,10 @@
     </div>
   </section>
 
-  <!-- ============ ÜBER MICH: Schärfe ziehen ============
-       Ein Kamerasucher liegt über dem unscharfen Porträt. Beim Scrollen
-       wird scharf gezogen, danach erscheint der Text. -->
+  <!-- ============ ÜBER MICH ============
+       Übergang wählbar in script.js (TRANSITION): "iris" = Kamerablende schliesst
+       sich über den Projekten und öffnet sich auf das Porträt,
+       "focus" = Kamerasucher, Porträt wird scharf gezogen. -->
   <section class="shards band" id="shards" data-scene="Über mich" aria-labelledby="aboutTitle">
     <span class="anchor" id="ueber-mich"></span>
     <div class="shards__stage">
