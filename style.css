@@ -1,3 +1,8 @@
+/* Schriften lokal (keine Verbindung zu Google) */
+@font-face { font-family: "Archivo"; font-style: normal; font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; src: url("fonts/archivo-latin-wdth-normal.woff2") format("woff2-variations"), url("fonts/archivo-latin-wdth-normal.woff2") format("woff2"); }
+@font-face { font-family: "Instrument Serif"; font-style: normal; font-weight: 400; font-display: swap; src: url("fonts/instrument-serif-latin-400-normal.woff2") format("woff2"); }
+@font-face { font-family: "Instrument Serif"; font-style: italic; font-weight: 400; font-display: swap; src: url("fonts/instrument-serif-latin-400-italic.woff2") format("woff2"); }
+
 /* Layout: one long cinematic scroll. Sticky "stages" hold 3D scenes,
    colored bands with torn edges move over them. Benthic Black as the main band. */
 :root {
@@ -330,6 +335,14 @@ a { color: inherit; }
   color: var(--ash); background: var(--ink);
 }
 .footer__bar nav { display: flex; gap: 18px; }
+.footer__legal {
+  padding: 0 calc(var(--gutter-l) + 26px) calc(26px + env(safe-area-inset-bottom, 0px));
+  display: grid; gap: 8px; max-width: 980px;
+  font: 400 11px/1.55 var(--font-sans); color: var(--ash);
+}
+.footer__legal p { margin: 0; }
+.footer__legal strong { font-weight: 800; font-stretch: 125%; letter-spacing: .08em; text-transform: uppercase; font-size: 9.5px; color: var(--bone); margin-right: 8px; }
+.footer__legal a { color: inherit; }
 .footer__bar a { text-decoration: none; color: var(--bone); }
 .footer__bar a:hover { color: var(--ember); }
 
