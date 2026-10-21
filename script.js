@@ -551,3 +551,15 @@
   }
   requestAnimationFrame(frame);
 })();
+
+/* Kleines Logo unten rechts: erscheint, sobald "Über mich"-Band das Showreel-Logo verdeckt */
+(() => {
+  const corner = document.getElementById("cornerLogo"), about = document.querySelector(".about");
+  if (!corner || !about) return;
+  let on = null;
+  const check = () => {
+    const show = about.getBoundingClientRect().top < innerHeight * 0.5;
+    if (show !== on) { on = show; corner.classList.toggle("is-on", show); corner.tabIndex = show ? 0 : -1; }
+  };
+  addEventListener("scroll", check, { passive: true }); addEventListener("resize", check); check();
+})();
