@@ -248,7 +248,7 @@ a { color: inherit; }
 .tile:hover::after, .tile:focus-visible::after { opacity: 1; transform: scale(1); }
 .tile:hover .tile__cap, .tile:focus-visible .tile__cap { opacity: 1; }
 
-/* ---------- ÜBER MICH (Fels bricht auf) ----------
+/* ---------- ÜBER MICH (Schärfe ziehen) ----------
    Die Sektion schiebt sich 100vh über das Ende der Bildwolke, die Felsen
    steigen also schon auf, während die letzten Bilder rauslaufen.        */
 .shards {
@@ -257,14 +257,6 @@ a { color: inherit; }
 }
 .anchor { position: absolute; top: 55%; }
 .shards__stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
-.shard {
-  position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto;
-  width: min(78vw, 112vh); aspect-ratio: 1400 / 1022; max-width: 100%;
-  background: url(img/stone.webp) center / contain no-repeat;
-  clip-path: var(--clip);
-  filter: var(--img-filter) drop-shadow(0 30px 40px rgba(0,0,0,.5));
-  will-change: transform, opacity;
-}
 .aboutme {
   position: absolute; inset: 0; margin: auto; pointer-events: auto;
   width: min(1040px, calc(100% - 2 * (var(--gutter-l) + 26px)));
@@ -272,8 +264,24 @@ a { color: inherit; }
   display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(20px, 4vw, 56px); align-items: center;
   will-change: transform, opacity;
 }
-.aboutme__photo { margin: 0; display: grid; gap: 8px; }
-.aboutme__photo img { object-position: 50% 35%; width: 100%; aspect-ratio: 4 / 5; max-height: 62vh; object-fit: cover; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
+.aboutme__photo { margin: 0; display: grid; gap: 8px; position: relative; }
+.aboutme__photo img { will-change: filter, transform; }
+/* Kamerasucher: vier Ecken + Fokusfeld in der Mitte */
+.vf { position: absolute; inset: -14px; pointer-events: none; will-change: opacity; }
+.vf__c { position: absolute; width: 26px; height: 26px; border: 0 solid var(--bone); transition: border-color .3s; }
+.vf__c--tl { left: 0; top: 0; border-left-width: 2px; border-top-width: 2px; }
+.vf__c--tr { right: 0; top: 0; border-right-width: 2px; border-top-width: 2px; }
+.vf__c--bl { left: 0; bottom: 0; border-left-width: 2px; border-bottom-width: 2px; }
+.vf__c--br { right: 0; bottom: 0; border-right-width: 2px; border-bottom-width: 2px; }
+.vf__af {
+  position: absolute; left: 50%; top: 42%; width: 64px; height: 44px; margin: -22px 0 0 -32px;
+  border: 1.5px solid var(--bone);
+}
+.vf__af::before, .vf__af::after { content: ""; position: absolute; background: var(--bone); }
+.vf__af::before { left: 50%; top: 50%; width: 10px; height: 1.5px; margin: -.75px 0 0 -5px; }
+.vf__af::after { left: 50%; top: 50%; width: 1.5px; height: 10px; margin: -5px 0 0 -.75px; }
+.vf.is-sharp .vf__c, .vf.is-sharp .vf__af { border-color: var(--ember); }
+.aboutme__photo img { object-position: 50% 35%; width: 100%; aspect-ratio: 4 / 5; max-height: 66vh; object-fit: cover; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
 .aboutme__photo figcaption { font: 700 10px/1 var(--font-sans); font-stretch: 125%; letter-spacing: .08em; text-transform: uppercase; color: var(--ash); }
 .aboutme__text { display: grid; gap: 16px; min-width: 0; }
 .aboutme__text p:not(.label) { margin: 0; max-width: 52ch; font-size: clamp(15px, 1.25vw, 18px); line-height: 1.55; }
@@ -366,6 +374,5 @@ a { color: inherit; }
   .intro, .shards { height: auto; }
   .intro__stage, .work__stage, .shards__stage { position: relative; }
   .about { margin-top: 0; }
-  .shard { opacity: .2; }
   .letterbox { display: none; }
 }

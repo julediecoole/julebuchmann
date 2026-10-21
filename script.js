@@ -227,8 +227,8 @@
   const reelSec = $(".reel"), cards = $$(".reel__card").map((el) => ({ el, par: parseFloat(el.dataset.par), base: getComputedStyle(el).transform }));
   const marquees = $$(".marquee").map((m) => ({ m, track: $(".marquee__track", m), speed: parseFloat(m.dataset.speed), x: 0 }));
   const work = $(".work");
-  const aboutme = $("#aboutme");
-  const shardsSec = $("#shards"), shards = $$(".shard").map((el) => ({ el, dx: +el.dataset.dx, dy: +el.dataset.dy, r: +el.dataset.r }));
+  const shardsSec = $("#shards");
+  const focusImg = $("#focusImg"), vf = $("#viewfinder"), vfAf = $("#vfAf"), aboutText = $("#aboutText");
   const contact = $(".contact");
 
   /* Maus = leichte Kamerabewegung im Intro */
@@ -238,6 +238,7 @@
   /* Lade-Animation: Kamera zoomt beim Start aus den Ebenen heraus */
   const t0 = performance.now();
   const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+  const easeInOut = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
   let last = performance.now();
   function frame(now) {
@@ -295,17 +296,23 @@
     if (wr.top < vh && wr.bottom > 0) placeTiles(stickyProgress(work));
 
     /* Bergstücke brechen auseinander */
-    /* Über mich: Fels bricht auf, Text erscheint in der Lücke */
-    const sp = stickyProgress(shardsSec);
-    const k = easeOut(clamp(sp / 0.4, 0, 1));
-    shards.forEach((s) => {
-      s.el.style.transform = `translate3d(${s.dx * k}vw, ${s.dy * k - sp * 10}vh, 0) rotate(${s.r * k}deg) scale(${1 - k * 0.2})`;
-      s.el.style.opacity = String(1 - k * 0.7);
-    });
-    const a = clamp((sp - 0.12) / 0.28, 0, 1);
-    aboutme.style.opacity = String(a);
-    aboutme.style.transform = `translate3d(0, ${(1 - a) * 40}px, 0) scale(${0.96 + a * 0.04})`;
-    aboutme.style.pointerEvents = a > 0.5 ? "auto" : "none";
+    /* Über mich: Schärfe ziehen */
+    const sr = shardsSec.getBoundingClientRect();
+    if (sr.top < vh && sr.bottom > 0) {
+      const sp = stickyProgress(shardsSec);
+      const enter = clamp(1 - sr.top / vh, 0, 1);              // Sektion kommt von unten rein
+      const f = easeInOut(clamp((sp - 0.04) / 0.42, 0, 1));    // 0 = unscharf, 1 = scharf
+      focusImg.style.filter = f < 0.999 ? `blur(${(1 - f) * 26}px) brightness(${0.7 + f * 0.3})` : "";
+      focusImg.style.transform = `scale(${1.06 - f * 0.06})`;
+      vf.style.opacity = String(clamp(enter * 1.4, 0, 1) * (1 - clamp((sp - 0.62) / 0.18, 0, 1)));
+      vf.style.inset = `${-14 - (1 - f) * 22}px`;
+      vf.classList.toggle("is-sharp", f > 0.98);
+      vfAf.style.opacity = String(1 - clamp((f - 0.85) / 0.15, 0, 1));
+      const t = clamp((sp - 0.4) / 0.2, 0, 1);
+      aboutText.style.opacity = String(t);
+      aboutText.style.transform = `translate3d(0, ${(1 - t) * 30}px, 0)`;
+      aboutText.style.pointerEvents = t > 0.5 ? "auto" : "none";
+    }
 
     updateHeader();
 
