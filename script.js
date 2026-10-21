@@ -142,13 +142,17 @@
     columns.forEach((col) => {
       const shift = wp * TRAVEL * col.H * col.speed;
       col.items.forEach((t) => {
-        const y = t.y0 - shift;
-        t.el.style.transform = `translate3d(0, ${y}px, 0)`;
+        const y = Math.round((t.y0 - shift) * 2) / 2;
+        // nur schreiben, wenn sich etwas ändert: ständiges Neusetzen lässt Safari den Hover verlieren (Flackern)
+        if (t.y !== y) { t.y = y; t.el.style.transform = `translate3d(0, ${y}px, 0)`; }
         // oben: ganzes Bild blendet aus, bevor es den Rand erreicht (kein angeschnittener Streifen)
         const op = Math.min(1, Math.max(0, y / FADE));
-        t.el.style.opacity = op.toFixed(3);
-        t.el.style.visibility = (y > col.H + 10 || op <= 0) ? "hidden" : "";
-        t.el.style.pointerEvents = op > 0.15 ? "" : "none";
+        const o = op.toFixed(2);
+        if (t.o !== o) { t.o = o; t.el.style.opacity = o; }
+        const vis = (y > col.H + 10 || op <= 0) ? "hidden" : "";
+        if (t.vis !== vis) { t.vis = vis; t.el.style.visibility = vis; }
+        const pe = op > 0.15 ? "" : "none";
+        if (t.pe !== pe) { t.pe = pe; t.el.style.pointerEvents = pe; }
       });
     });
   };
@@ -370,7 +374,7 @@
     }
   }
 
-  let last = performance.now();
+  let last = performance.now(), lastWp = -1;
   function frame(now) {
     const dt = Math.min(64, now - last); last = now;
     smx += (mx - smx) * 0.06; smy += (my - smy) * 0.06;
@@ -424,7 +428,7 @@
 
     /* Arbeiten: Bilderfeld treibt nach oben */
     const wr = work.getBoundingClientRect();
-    if (wr.top < vh && wr.bottom > 0) placeTiles(stickyProgress(work));
+    if (wr.top < vh && wr.bottom > 0) { const wp = stickyProgress(work); if (wp !== lastWp) { lastWp = wp; placeTiles(wp); } }
 
     /* Bergstücke brechen auseinander */
     /* Über mich: Übergang */
