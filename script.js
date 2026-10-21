@@ -189,6 +189,8 @@
   // Safari spielt nur ab, wenn das Video sicher stumm ist; sonst beim ersten Scrollen/Tippen nochmal versuchen
   reelVideo.muted = true; reelVideo.defaultMuted = true; reelVideo.playsInline = true;
   reelVideo.setAttribute("muted", ""); reelVideo.setAttribute("playsinline", "");
+  reelVideo.addEventListener("volumechange", () => { if (!reelVideo.muted || reelVideo.volume) { reelVideo.muted = true; reelVideo.volume = 0; } });   // nie Ton
+  reelVideo.volume = 0;
   const tryPlay = () => { const pr = reelVideo.play(); if (pr && pr.catch) pr.catch(() => {}); };
   reelVideo.addEventListener("loadeddata", () => { reel.classList.add("is-ready"); tryPlay(); });
   reelVideo.addEventListener("canplay", tryPlay, { once: true });
