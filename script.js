@@ -229,8 +229,8 @@
   const reelSec = $(".reel"), cards = $$(".reel__card").map((el) => ({ el, par: parseFloat(el.dataset.par), base: getComputedStyle(el).transform }));
   const marquees = $$(".marquee").map((m) => ({ m, track: $(".marquee__track", m), speed: parseFloat(m.dataset.speed), x: 0 }));
   const work = $(".work");
-  /* Übergang zu "Über mich": "iris" (Kamerablende) oder "focus" (Schärfe ziehen) */
-  const TRANSITION = "iris";
+  /* Übergang zu "Über mich": "leak" (Light Leak), "iris" (Kamerablende) oder "focus" (Schärfe ziehen) */
+  const TRANSITION = "leak";
   const shardsSec = $("#shards");
   const aboutme = $("#aboutme");
   const focusImg = $("#focusImg"), vf = $("#viewfinder"), vfAf = $("#vfAf"), aboutText = $("#aboutText");
@@ -306,6 +306,44 @@
     }
   }
 
+  /* ---------- Light Leak ----------
+     I = 0 nichts, 1 ganz ausgebrannt. Mehrere warme Lichtflecken, die langsam
+     wandern und flackern (Canvas mit mix-blend-mode: screen). */
+  const LEAKS = [
+    { x: 0.08, y: 0.25, r: 0.75, c: [255, 120, 40], sp: 0.00031, ph: 0.0 },
+    { x: 0.95, y: 0.15, r: 0.6,  c: [255, 60, 30],  sp: 0.00023, ph: 1.7 },
+    { x: 0.7,  y: 0.9,  r: 0.7,  c: [255, 180, 80], sp: 0.00027, ph: 3.1 },
+    { x: 0.3,  y: 0.75, r: 0.5,  c: [255, 90, 60],  sp: 0.00035, ph: 4.4 },
+    { x: 0.55, y: 0.45, r: 0.55, c: [255, 210, 150], sp: 0.0002, ph: 2.2 },
+  ];
+  function drawLeak(I, now) {
+    if (I <= 0.001) { iris.style.display = "none"; return; }
+    iris.style.display = "block";
+    iris.style.mixBlendMode = "screen";
+    const ctx = ictx, W = irisW, H = irisH, D = Math.hypot(W, H);
+    ctx.setTransform(irisDpr, 0, 0, irisDpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    const flicker = 0.9 + 0.1 * Math.sin(now * 0.013) * Math.sin(now * 0.0071);
+    LEAKS.forEach((l, i) => {
+      const t = now * l.sp + l.ph;
+      const x = (l.x + Math.sin(t) * 0.12) * W, y = (l.y + Math.cos(t * 1.3) * 0.1) * H;
+      const rad = D * l.r * (0.4 + I * 0.9);
+      const a = Math.min(1, I * 1.4) * flicker;
+      const g = ctx.createRadialGradient(x, y, 0, x, y, rad);
+      g.addColorStop(0, `rgba(${l.c[0]},${l.c[1]},${l.c[2]},${0.85 * a})`);
+      g.addColorStop(0.45, `rgba(${l.c[0]},${Math.round(l.c[1] * 0.6)},${Math.round(l.c[2] * 0.5)},${0.35 * a})`);
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+    });
+    // Ausbrennen: warmes Weiss über alles, wenn I gegen 1 geht
+    const burn = Math.max(0, (I - 0.6) / 0.4);
+    if (burn > 0) {
+      ctx.fillStyle = `rgba(255,236,214,${Math.pow(burn, 1.6) * 0.97})`;
+      ctx.fillRect(0, 0, W, H);
+    }
+  }
+
   let last = performance.now();
   function frame(now) {
     const dt = Math.min(64, now - last); last = now;
@@ -364,7 +402,23 @@
     /* Bergstücke brechen auseinander */
     /* Über mich: Übergang */
     const sr = shardsSec.getBoundingClientRect();
-    if (TRANSITION === "iris") {
+    if (TRANSITION === "leak") {
+      // brennt rein, während die Sektion von unten kommt; blendet aus, sobald sie oben steht
+      const sp = stickyProgress(shardsSec);
+      let I = 0;
+      if (sr.top < vh && sr.top > 0) I = easeInOut(clamp((1 - sr.top / vh - 0.2) / 0.8, 0, 1));
+      else if (sr.top <= 0 && sr.bottom > 0) I = 1 - easeInOut(clamp((sp - 0.02) / 0.3, 0, 1));
+      drawLeak(I, now);
+      aboutme.style.visibility = sr.top > 2 ? "hidden" : "";
+      const o = sr.top <= 0 ? clamp((sp - 0.02) / 0.35, 0, 1) : 0;   // Porträt: überbelichtet → normal
+      focusImg.style.filter = o < 0.999 ? `brightness(${1.7 - o * 0.7}) contrast(${0.8 + o * 0.2}) saturate(${0.6 + o * 0.4})` : "";
+      focusImg.style.transform = "";
+      const t = clamp((sp - 0.2) / 0.2, 0, 1);
+      aboutText.style.opacity = String(t);
+      aboutText.style.transform = `translate3d(0, ${(1 - t) * 30}px, 0)`;
+      aboutText.style.pointerEvents = t > 0.5 ? "auto" : "none";
+      vf.style.display = "none";
+    } else if (TRANSITION === "iris") {
       // schliesst, während die Sektion von unten reinkommt; öffnet, sobald sie oben steht
       const sp = stickyProgress(shardsSec);
       const closing = clamp(1 - sr.top / vh, 0, 1);                 // 0 → 1 bis Sektion oben
@@ -372,6 +426,7 @@
       let r = 1;
       if (sr.top < vh && sr.top > 0) r = 1 - easeInOut(clamp((closing - 0.25) / 0.75, 0, 1));
       else if (sr.top <= 0 && sr.bottom > 0) r = easeInOut(opening);
+      iris.style.mixBlendMode = "normal";
       drawIris(r);
       aboutme.style.visibility = sr.top > 2 ? "hidden" : "";
       const t = clamp((sp - 0.18) / 0.2, 0, 1);
