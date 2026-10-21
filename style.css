@@ -239,6 +239,7 @@ a { color: inherit; }
 .tile {
   position: absolute; top: 0; margin: 0; padding: 0; border: 0; background: none; cursor: pointer;
   color: var(--bone); text-align: left; will-change: transform; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  transition: scale .35s cubic-bezier(.2,.7,.2,1);
   box-shadow: 0 14px 30px rgba(0,0,0,.35);
 }
 .tile img {
@@ -265,8 +266,8 @@ a { color: inherit; }
   font: 800 10px/1.25 var(--font-sans); font-stretch: 125%; letter-spacing: .06em; text-transform: uppercase;
   opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 2;
 }
-/* Hover ohne Skalieren: nur Abdunkeln + Play-Knopf (Safari flackert bei skalierten Ebenen) */
-.tile.is-hover::before, .tile:focus-visible::before { opacity: 1; }
+.tile.is-hover, .tile:focus-visible { scale: 1.03; }
+/* kein Abdunkeln beim Hover mehr (hat in Safari geflackert) */
 .tile.is-hover::after, .tile:focus-visible::after { opacity: 1; }
 .tile.is-hover .tile__cap, .tile:focus-visible .tile__cap { opacity: 1; }
 
