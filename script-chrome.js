@@ -564,3 +564,29 @@
   const loop = () => { sx += (x - sx) * 0.18; sy += (y - sy) * 0.18; drop.style.transform = `translate3d(${sx}px, ${sy}px, 0)`; requestAnimationFrame(loop); };
   requestAnimationFrame(loop);
 })();
+
+/* Sky-Vibe: Himmel bildschirmfest halten + Neon-Linien beim Scrollen zeichnen */
+(() => {
+  const skies = [...document.querySelectorAll(".skybg")].map((el) => ({ el, i: el.firstElementChild, y: null }));
+  const neons = [...document.querySelectorAll(".neon path")].map((p) => ({ p, sec: p.closest("section"), v: -1 }));
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const loop = () => {
+    const vh = innerHeight;
+    for (const s of skies) {
+      const r = s.el.getBoundingClientRect();
+      if (r.bottom < -50 || r.top > vh + 50) continue;
+      const y = Math.round(-r.top);
+      if (y !== s.y) { s.y = y; s.i.style.transform = `translate3d(0, ${y}px, 0)`; }
+    }
+    for (const n of neons) {
+      const r = n.sec.getBoundingClientRect();
+      // 0 wenn Sektion unten reinkommt, 1 wenn ihr Ende den Bildschirm verlässt
+      let t = still ? 1 : (vh - r.top) / (r.height + vh * 0.35);
+      t = Math.max(0, Math.min(1, t));
+      const v = Math.round((1 - t) * 1000) / 1000;
+      if (v !== n.v) { n.v = v; n.p.style.strokeDashoffset = v; }
+    }
+    requestAnimationFrame(loop);
+  };
+  requestAnimationFrame(loop);
+})();

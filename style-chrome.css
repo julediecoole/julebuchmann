@@ -544,3 +544,135 @@ a { color: inherit; }
 }
 /* Name auf dunklem Grund: hellere Chrome-Variante, damit er nicht absäuft */
 .shards .aboutme__name { background-image: linear-gradient(180deg, #ffffff 0%, #eef2f5 35%, #b9c3cc 50%, #e4ead9 65%, #ffffff 100%); background-size: 100% 100%; animation: none; color: transparent; font-weight: 300; }
+
+/* =====================================================================
+   SKY-VIBE · Himmel mit Wolken, Chrom-Schrift, Neon-Lime-Linien
+   (wie das Liquid-Font-Poster). Überschreibt alles darüber.
+   ===================================================================== */
+:root {
+  --lime: #c6ff2e;
+  --lime-glow: rgba(198, 255, 46, .55);
+  --sky-ink: #16224a;                 /* Tiefblau für Schatten und Kontrast */
+  --bone: #f3f6ff;                    /* Text: fast weiss */
+  --ash: rgba(238, 243, 255, .78);
+  --ember: var(--lime);
+  --chrome: linear-gradient(180deg, #ffffff 0%, #e6edfb 20%, #9fb3dc 38%, #2b3d72 47%, #16224a 52%, #4d66a3 58%, #c9d6f1 74%, #ffffff 88%, #dbe4f7 100%);
+  --chrome-x: linear-gradient(100deg, #c6ff2e 0%, #c6ff2e 100%);
+}
+html, body { background: #3a5796; }
+
+/* Himmel: liegt in jedem Band, wird per JS am Bildschirm ausgerichtet -> nahtlos */
+.band--blood, .shards { background: transparent; color: var(--bone); }
+.skybg { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.skybg i {
+  position: absolute; left: 0; top: 0; width: 100%; height: 100vh; height: 100lvh; display: block;
+  background: #4f6fb0 url("img/sky.webp") center / cover no-repeat; will-change: transform;
+}
+@media (max-aspect-ratio: 4/5) { .skybg i { background-image: url("img/sky-m.webp"); } }
+/* Über mich-Band: Himmel reicht in die Welle hinein */
+.about .skybg {
+  top: calc(-14vh + 1px);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 100' preserveAspectRatio='none'%3E%3Cpath d='M0,100 L0,58 C70,40 150,38 230,56 C300,72 360,86 450,70 C540,54 590,30 680,36 C770,42 800,74 880,72 C935,70 970,52 1000,44 L1000,100 Z'/%3E%3C/svg%3E") 0 0 / 100% 14vh no-repeat, linear-gradient(#000, #000) 0 calc(14vh - 1px) / 100% 100% no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 100' preserveAspectRatio='none'%3E%3Cpath d='M0,100 L0,58 C70,40 150,38 230,56 C300,72 360,86 450,70 C540,54 590,30 680,36 C770,42 800,74 880,72 C935,70 970,52 1000,44 L1000,100 Z'/%3E%3C/svg%3E") 0 0 / 100% 14vh no-repeat, linear-gradient(#000, #000) 0 calc(14vh - 1px) / 100% 100% no-repeat;
+}
+.tear { fill: none; }
+.edge__line, .tear .edge__line { stroke: var(--lime); stroke-width: 2; filter: drop-shadow(0 0 5px var(--lime-glow)); }
+
+/* Fliesstext: weiss mit weichem Schatten, damit er auch auf hellen Wolken lesbar bleibt */
+.aboutme__text p:not(.label), .shards .aboutme__text p:not(.label), .footer__legal, .contact__mail {
+  color: var(--bone); text-shadow: 0 1px 2px rgba(22, 34, 74, .35), 0 2px 18px rgba(22, 34, 74, .55);
+}
+.contact__mail { background: none; -webkit-background-clip: border-box; background-clip: border-box; animation: none; font-family: var(--font-sans); font-weight: 400; letter-spacing: .02em; }
+
+/* Kleine Texte: Neon-Lime wie auf dem Poster */
+.label, .top-nav a, .side-logo, .work__hint, .footer__bar, .footer__bar a, .player__meta, .aboutme__photo figcaption, .poster-meta {
+  background: none; -webkit-background-clip: border-box; background-clip: border-box; animation: none;
+  color: var(--lime); text-shadow: 0 0 10px rgba(22, 34, 74, .45);
+}
+.on-light .side-logo, .on-light .top-nav a { color: var(--lime); }
+.top-nav a:hover { text-decoration-color: var(--lime); }
+.poster-meta {
+  position: absolute; z-index: 2; pointer-events: none;
+  font: 500 11px/1.3 var(--font-sans); font-stretch: 112%; letter-spacing: .04em; text-transform: uppercase;
+}
+.poster-meta--tr { top: 4vh; right: calc(var(--gutter-r) + 8px); text-align: right; }
+.poster-meta--bl { bottom: 4vh; left: calc(var(--gutter-l) + 34px); }
+.poster-meta--br { bottom: 4vh; right: calc(var(--gutter-r) + 8px); text-align: right; }
+.spark { position: absolute; z-index: 2; width: 34px; height: 34px; color: var(--lime); filter: drop-shadow(0 0 6px var(--lime-glow)); pointer-events: none; animation: spin 14s linear infinite; }
+.spark--about { left: calc(var(--gutter-l) + 34px); top: 4vh; }
+.spark--contact { right: 9vw; top: 10vh; width: 44px; height: 44px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Neon-Linien: zeichnen sich beim Scrollen */
+.neon { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: visible; }
+.neon path {
+  fill: none; stroke: var(--lime); stroke-width: 2.5; vector-effect: non-scaling-stroke; stroke-linecap: round;
+  stroke-dasharray: 1 1; stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 3px var(--lime)) drop-shadow(0 0 12px var(--lime-glow));
+}
+.about__inner, .reel__collage, .marquee, .shards__stage, .contact__inner { position: relative; z-index: 1; }
+
+/* Grosse Schrift: Chrom, das den Himmel spiegelt */
+.big-serif .w, .aboutme__name, .shards .aboutme__name, .marquee--warp span, .player__text h3 {
+  background: var(--chrome); background-size: 100% 150%; background-position: 50% 40%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: sheen 8s ease-in-out infinite alternate;
+  filter: drop-shadow(0 1.5px 0 rgba(22, 34, 74, .75)) drop-shadow(0 10px 22px rgba(22, 34, 74, .45));
+}
+.shards .aboutme__name { font-weight: 200; }
+
+/* Laufschrift: Lime-Outline, breit und schräg wie "GRAPHIC" */
+.marquee--tilt, .marquee--tilt span { color: transparent; }
+.marquee--tilt span {
+  background: none; -webkit-background-clip: border-box; background-clip: border-box; animation: none; opacity: 1;
+  font-family: var(--font-sans); font-weight: 300; font-stretch: 125%; font-style: oblique 12deg; text-transform: uppercase; letter-spacing: .02em;
+  -webkit-text-stroke: 1.5px var(--lime); filter: drop-shadow(0 0 6px var(--lime-glow));
+}
+
+/* Knöpfe: Lime-Pillen */
+.pill, .band--blood .pill, .contact__actions .pill {
+  border-radius: 999px; padding: 11px 20px; color: var(--lime); background: rgba(22, 34, 74, .18);
+  box-shadow: inset 0 0 0 1.5px var(--lime), 0 0 14px var(--lime-glow); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.pill:hover, .band--blood .pill:hover, .contact__actions .pill:hover { background: var(--lime); color: var(--sky-ink); transform: translateY(-1px); }
+
+/* Bilder: dünne Lime-Linie statt Chromrahmen */
+.tile { padding: 0; background: none; animation: none; border-radius: 14px; box-shadow: 0 0 0 1.5px var(--lime), 0 20px 44px rgba(22, 34, 74, .45); }
+.tile img { border-radius: 14px; }
+.tile__cap { left: 0; right: 0; bottom: 0; border-radius: 0 0 14px 14px; }
+.tile.is-hover { box-shadow: 0 0 0 2px var(--lime), 0 0 26px var(--lime-glow), 0 20px 44px rgba(22, 34, 74, .45); }
+.tile::after { background: var(--lime); box-shadow: 0 0 16px var(--lime-glow); }
+.reel__card, .aboutme__photo img { border: 0; border-radius: 16px; background: none; box-shadow: 0 0 0 1.5px var(--lime), 0 26px 60px rgba(22, 34, 74, .45); }
+
+/* Flüssige Chromtropfen (spiegeln Himmel) */
+.liquid { opacity: 1; filter: drop-shadow(0 18px 30px rgba(22, 34, 74, .45)); }
+.liquid--about { right: -9%; left: auto; top: 46%; width: 34%; height: 46%; opacity: 1; }
+.contact .liquid { left: auto; right: -7%; top: auto; bottom: 2vh; width: min(520px, 46vw); height: 46%; translate: none; opacity: 1; }
+@media (max-width: 700px) {
+  .liquid--about { display: none; }
+  .contact .liquid { width: 70vw; right: -24vw; bottom: -2vh; height: 34%; }
+  .poster-meta--tr { display: none; }
+  .poster-meta--bl { left: calc(var(--gutter-l) + 26px); bottom: 3vh; }
+  .poster-meta--br { bottom: 3vh; }
+  .spark--about { display: none; }
+  .spark--contact { top: 5vh; right: 6vw; width: 32px; height: 32px; }
+}
+
+/* Footer bleibt tiefblau (Impressum gut lesbar) */
+.footer { background: var(--sky-ink); }
+.footer__legal { text-shadow: none; }
+
+/* Player: tiefblau, Lime-Akzente */
+.player, .player::backdrop { background: #101a3c; }
+.player__stage { box-shadow: 0 0 0 1.5px var(--lime), 0 30px 80px rgba(0,0,0,.6); }
+.player__nav, .player__close { background: none; -webkit-background-clip: border-box; background-clip: border-box; animation: none; color: var(--lime); }
+
+/* Maus-Tropfen spiegelt den Himmel */
+.drop { background: radial-gradient(circle at 35% 30%, #ffffff 0%, #e6edfb 20%, #8ea4cf 44%, #16224a 60%, #6f86b8 82%, #e6edfb 100%); }
+
+.grain { opacity: .05; }
+@media (prefers-reduced-motion: reduce) { .spark { animation: none; } .neon path { stroke-dashoffset: 0; } }
+@media (max-width: 700px) {
+  .poster-meta--br { display: none; }
+  .neon path { stroke-width: 2; filter: drop-shadow(0 0 2px var(--lime)) drop-shadow(0 0 8px var(--lime-glow)); }
+}

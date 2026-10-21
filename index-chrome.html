@@ -16,24 +16,26 @@
 <svg class="chrome-defs" width="0" height="0" aria-hidden="true" focusable="false">
   <defs>
     <linearGradient id="chromeStroke" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#3b4350"/><stop offset=".2" stop-color="#f4f6ef"/><stop offset=".38" stop-color="#7d8794"/>
-      <stop offset=".5" stop-color="#1c2129"/><stop offset=".62" stop-color="#c8cfbd"/><stop offset=".8" stop-color="#ffffff"/><stop offset="1" stop-color="#6e7666"/>
+      <stop offset="0" stop-color="#c6ff2e"/><stop offset="1" stop-color="#c6ff2e"/>
     </linearGradient>
+    <symbol id="spark" viewBox="0 0 40 40"><path d="M20 0 C21 13 27 19 40 20 C27 21 21 27 20 40 C19 27 13 21 0 20 C13 19 19 13 20 0 Z M20 8 L20 32 M8 20 L32 20" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
     <linearGradient id="chromeFill" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff"/><stop offset=".3" stop-color="#cfd6dc"/><stop offset=".48" stop-color="#5d6672"/>
-      <stop offset=".52" stop-color="#1a1f27"/><stop offset=".6" stop-color="#7e8778"/><stop offset=".85" stop-color="#e7ebe0"/><stop offset="1" stop-color="#9aa38e"/>
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".22" stop-color="#dfe7f7"/><stop offset=".42" stop-color="#8ea4cf"/>
+      <stop offset=".5" stop-color="#22325e"/><stop offset=".56" stop-color="#3a4f86"/><stop offset=".72" stop-color="#c7d4ee"/><stop offset="1" stop-color="#ffffff"/>
     </linearGradient>
     <!-- "Goo": verschmilzt einzelne Kreise zu flüssigen Tropfen -->
     <filter id="goo" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
       <feGaussianBlur in="SourceGraphic" stdDeviation="14" result="b"/>
       <feColorMatrix in="b" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -9" result="goo"/>
       <!-- Wölbung und Glanzlichter: aus der Fläche wird flüssiges Metall -->
-      <feGaussianBlur in="goo" stdDeviation="6" result="soft"/>
-      <feSpecularLighting in="soft" surfaceScale="9" specularConstant="1.4" specularExponent="34" lighting-color="#ffffff" result="spec"><feDistantLight azimuth="235" elevation="42"/></feSpecularLighting>
+      <feGaussianBlur in="goo" stdDeviation="7" result="soft"/>
+      <!-- Wölbung: dunkler Rand, helle Mitte, scharfe Glanzpunkte = Chrom -->
+      <feDiffuseLighting in="soft" surfaceScale="7" diffuseConstant="1.25" lighting-color="#ffffff" result="diff"><feDistantLight azimuth="250" elevation="38"/></feDiffuseLighting>
+      <feComposite in="goo" in2="diff" operator="arithmetic" k1="1.15" k2="0" k3="0" k4="-.05" result="lit"/>
+      <feSpecularLighting in="soft" surfaceScale="10" specularConstant="1.6" specularExponent="48" lighting-color="#ffffff" result="spec"><feDistantLight azimuth="235" elevation="48"/></feSpecularLighting>
       <feComposite in="spec" in2="goo" operator="in" result="specIn"/>
-      <feDiffuseLighting in="soft" surfaceScale="6" diffuseConstant="1.1" lighting-color="#c9d0d6" result="diff"><feDistantLight azimuth="235" elevation="60"/></feDiffuseLighting>
-      <feComposite in="diff" in2="goo" operator="in" result="diffIn"/>
-      <feComposite in="diffIn" in2="specIn" operator="arithmetic" k1="0" k2=".85" k3="1" k4="0"/>
+      <feComposite in="lit" in2="specIn" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="metal"/>
+      <feComposite in="metal" in2="goo" operator="in"/>
     </filter>
   </defs>
 </svg>
@@ -100,6 +102,10 @@
 
   <!-- ============ ÜBER MICH (reisst von unten ins Bild) ============ -->
   <section class="about band band--blood" id="vorstellung" data-scene="Vorstellung">
+    <div class="skybg" aria-hidden="true"><i></i></div>
+    <svg class="neon neon--about" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M-20,120 C180,40 320,260 220,380 C120,500 -40,420 60,560 C160,700 420,560 520,700 C620,840 380,960 560,1000 C700,1030 860,880 1020,940"/></svg>
+    <div class="poster-meta poster-meta--tr" aria-hidden="true">Showreel ©&nbsp;2026<br>Jule Buchmann<br>Film &amp; Video</div>
+    <svg class="spark spark--about" aria-hidden="true"><use href="#spark"/></svg>
     <svg class="tear" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0,100 L0,58 C70,40 150,38 230,56 C300,72 360,86 450,70 C540,54 590,30 680,36 C770,42 800,74 880,72 C935,70 970,52 1000,44 L1000,100 Z"/><path class="edge__line" d="M0,58 C70,40 150,38 230,56 C300,72 360,86 450,70 C540,54 590,30 680,36 C770,42 800,74 880,72 C935,70 970,52 1000,44"/></svg>
     <div class="band__inner about__inner">
       <p class="label">Regie&nbsp;· Kamera&nbsp;· Dokumentarfilm&nbsp;· Imagefilm&nbsp;· Werbefilm</p>
@@ -112,6 +118,8 @@
 
   <!-- ============ LAUFSCHRIFT + STILL-COLLAGE ============ -->
   <section class="reel band band--blood" data-scene="Laufschrift" aria-label="Kamera, Regie, Doku, Werbung, Image, Ton">
+    <div class="skybg" aria-hidden="true"><i></i></div>
+    <svg class="neon neon--reel" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M1020,80 C820,0 700,200 780,320 C860,440 1000,380 960,560 C920,740 640,640 600,820 C570,960 760,1000 820,1040"/></svg>
     <div class="marquee marquee--tilt" data-speed="0.6" data-start="scroll" aria-hidden="true">
       <div class="marquee__track"><span>Kamera · Regie · Doku · Werbung · Image · Ton</span></div>
     </div>
@@ -125,6 +133,7 @@
   <!-- ============ ARBEITEN: verstreute Bilder, die beim Scrollen
        unterschiedlich schnell nach oben treiben. Klick = Video. ============ -->
   <section class="work band band--blood" id="arbeiten" data-scene="Arbeiten" aria-label="Arbeiten">
+    <div class="skybg" aria-hidden="true"><i></i></div>
     <div class="work__stage" id="workStage">
       <p class="work__hint label">Arbeiten — Bild anklicken für das ganze Video</p>
       <div class="work__field" id="workField"><!-- wird von script.js gefüllt --></div>
@@ -133,7 +142,9 @@
 
   <!-- ============ ÜBER MICH (heller Teil, harte Kante zum Dunkel) ============ -->
   <section class="shards band" id="shards" data-scene="Über mich" aria-labelledby="aboutTitle">
-    <svg class="edge" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true"><path class="edge__fill" d="M0,60 L0,30 C120,6 240,6 360,26 C480,46 560,52 680,34 C800,16 900,14 1000,28 L1000,60 Z"/><path class="edge__line" d="M0,30 C120,6 240,6 360,26 C480,46 560,52 680,34 C800,16 900,14 1000,28"/></svg>
+    <div class="skybg" aria-hidden="true"><i></i></div>
+    <svg class="neon neon--shards" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M-20,300 C120,180 300,120 260,300 C220,480 40,520 120,700 C200,880 520,760 640,900 C740,1010 900,980 1020,860"/></svg>
+    <svg class="edge" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true"><path class="edge__line" d="M0,30 C120,6 240,6 360,26 C480,46 560,52 680,34 C800,16 900,14 1000,28"/></svg>
     <svg class="liquid liquid--about" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <g filter="url(#goo)" fill="url(#chromeFill)">
         <circle cx="200" cy="200" r="70"><animate attributeName="cx" values="200;260;180;200" dur="11s" repeatCount="indefinite"/><animate attributeName="cy" values="200;160;230;200" dur="9s" repeatCount="indefinite"/></circle>
@@ -164,7 +175,12 @@
 
   <!-- ============ KONTAKT ============ -->
   <section class="contact band band--blood" id="kontakt" data-scene="Kontakt" aria-label="Kontakt">
-    <svg class="edge edge--dark" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true"><path class="edge__fill" d="M0,60 L0,30 C120,6 240,6 360,26 C480,46 560,52 680,34 C800,16 900,14 1000,28 L1000,60 Z"/><path class="edge__line" d="M0,30 C120,6 240,6 360,26 C480,46 560,52 680,34 C800,16 900,14 1000,28"/></svg>
+    <div class="skybg" aria-hidden="true"><i></i></div>
+    <svg class="neon neon--contact" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M-20,700 C140,520 340,860 470,640 C600,420 300,280 520,180 C700,100 880,320 1020,200"/></svg>
+    <div class="poster-meta poster-meta--bl" aria-hidden="true">Dokumentarfilm<br>Imagefilm<br>Werbefilm</div>
+    <div class="poster-meta poster-meta--br" aria-hidden="true">Bern<br>Schweiz<br>3097</div>
+    <svg class="spark spark--contact" aria-hidden="true"><use href="#spark"/></svg>
+    <svg class="edge edge--dark" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true"><path class="edge__line" d="M0,30 C120,6 240,6 360,26 C480,46 560,52 680,34 C800,16 900,14 1000,28"/></svg>
     <svg class="liquid" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <g filter="url(#goo)" fill="url(#chromeFill)">
         <circle cx="200" cy="200" r="70"><animate attributeName="cx" values="200;260;180;200" dur="11s" repeatCount="indefinite"/><animate attributeName="cy" values="200;160;230;200" dur="9s" repeatCount="indefinite"/></circle>
