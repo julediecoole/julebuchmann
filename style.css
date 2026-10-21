@@ -315,7 +315,7 @@ a { color: inherit; }
 /* ---------- KONTAKT ---------- */
 .contact { padding-block: 10vh 14vh; overflow: hidden; }
 .marquee--warp { transform: perspective(700px) rotateX(14deg) rotate(-2deg); color: var(--bone); margin-bottom: 4vh; }
-.contact__inner { display: grid; gap: 18px; justify-items: center; text-align: center; }
+.contact__inner { display: grid; gap: 18px; justify-items: center; text-align: center; max-width: none; padding-inline: calc(var(--gutter-l) + 26px); }
 .contact__mail {
   margin: 0; font-family: var(--font-display); font-size: clamp(17px, 2.2vw, 30px); line-height: 1.1; white-space: nowrap;
   min-width: 0; max-width: 100%;

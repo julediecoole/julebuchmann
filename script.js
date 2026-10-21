@@ -418,15 +418,19 @@
         const span = q.track.firstElementChild;
         if (q.fitW !== vw) {
           q.fitW = vw; span.style.fontSize = "";
-          const w0 = span.getBoundingClientRect().width, fs0 = parseFloat(getComputedStyle(span).fontSize);
+          const w0 = span.offsetWidth, fs0 = parseFloat(getComputedStyle(span).fontSize);
           span.style.fontSize = (fs0 * (vw * 0.84) / w0) + "px";
         }
-        const w = span.getBoundingClientRect().width;
+        const w = span.offsetWidth;
         const mr = q.m.getBoundingClientRect();
         const t = clamp((vh - mr.top) / (vh + mr.height), 0, 1);       // 0 = kommt rein, 1 = geht raus
         const free = Math.max(0, vw - w);
-        const x = free / 2 + (0.5 - t) * free * 0.7;                    // bleibt immer innerhalb des Bildes
-        q.track.style.transform = `translate3d(${x}px,0,0) rotate(${(0.5 - t) * 1.6}deg)`;
+        // Kontakt: kommt von rechts und steht ganz unten genau mittig; sonst pendelt er um die Mitte
+        const endCenter = q.m.classList.contains("marquee--warp");
+        const maxScroll = document.documentElement.scrollHeight - vh;
+        const te = endCenter ? clamp(1 - (maxScroll - scrollY) / vh, 0, 1) : t;
+        const x = endCenter ? free / 2 + (1 - te) * free * 0.35 : free / 2 + (0.5 - t) * free * 0.7;   // bleibt immer innerhalb des Bildes
+        q.track.style.transform = `translate3d(${x}px,0,0) rotate(${(endCenter ? (1 - te) * 0.8 : (0.5 - t) * 1.6)}deg)`;
         return;
       }
       const half = q.track.scrollWidth / 2;
