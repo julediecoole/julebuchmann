@@ -326,19 +326,19 @@ a { color: inherit; }
 .contact__status { min-height: 1.4em; margin: 0; font-size: 13px; color: var(--ember); }
 
 /* ---------- FOOTER ---------- */
-.footer { position: relative; z-index: 2; background: var(--ink); }
+.footer { position: relative; z-index: 2; background: var(--blood); }
 .footer__bar {
   position: relative; display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; align-items: center;
   padding-left: calc(var(--gutter-l) + 26px); padding-right: calc(var(--gutter-r) + 30px);
   padding-block: 16px calc(16px + env(safe-area-inset-bottom, 0px));
   font: 700 10px/1 var(--font-sans); font-stretch: 125%; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--ash); background: var(--ink);
+  color: var(--bone); background: var(--blood);
 }
 .footer__bar nav { display: flex; gap: 18px; }
 .footer__legal {
   padding: 0 calc(var(--gutter-l) + 26px) calc(26px + env(safe-area-inset-bottom, 0px));
   display: grid; gap: 8px; max-width: 980px;
-  font: 400 11px/1.55 var(--font-sans); color: var(--ash);
+  font: 400 11px/1.55 var(--font-sans); color: var(--bone); opacity: .8;
 }
 .footer__legal p { margin: 0; }
 .footer__legal strong { font-weight: 800; font-stretch: 125%; letter-spacing: .08em; text-transform: uppercase; font-size: 9.5px; color: var(--bone); margin-right: 8px; }
