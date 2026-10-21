@@ -327,12 +327,12 @@
   /* ---------- Light Leak ----------
      I = 0 nichts, 1 ganz ausgebrannt. Mehrere warme Lichtflecken, die langsam
      wandern und flackern (Canvas mit mix-blend-mode: screen). */
-  const LEAKS = [
-    { x: 0.08, y: 0.25, r: 0.75, c: [255, 120, 40], sp: 0.00031, ph: 0.0 },
-    { x: 0.95, y: 0.15, r: 0.6,  c: [255, 60, 30],  sp: 0.00023, ph: 1.7 },
-    { x: 0.7,  y: 0.9,  r: 0.7,  c: [255, 180, 80], sp: 0.00027, ph: 3.1 },
-    { x: 0.3,  y: 0.75, r: 0.5,  c: [255, 90, 60],  sp: 0.00035, ph: 4.4 },
-    { x: 0.55, y: 0.45, r: 0.55, c: [255, 210, 150], sp: 0.0002, ph: 2.2 },
+  const LEAKS = [   // hellgrün (Big Fish / Salbei)
+    { x: 0.08, y: 0.25, r: 0.75, c: [185, 200, 160], sp: 0.00031, ph: 0.0 },
+    { x: 0.95, y: 0.15, r: 0.6,  c: [153, 175, 130], sp: 0.00023, ph: 1.7 },
+    { x: 0.7,  y: 0.9,  r: 0.7,  c: [205, 222, 180], sp: 0.00027, ph: 3.1 },
+    { x: 0.3,  y: 0.75, r: 0.5,  c: [140, 165, 120], sp: 0.00035, ph: 4.4 },
+    { x: 0.55, y: 0.45, r: 0.55, c: [231, 236, 215], sp: 0.0002, ph: 2.2 },
   ];
   function drawLeak(I, now) {
     if (I <= 0.001) { iris.style.display = "none"; return; }
@@ -349,15 +349,15 @@
       const a = Math.min(1, I * 1.4) * flicker;
       const g = ctx.createRadialGradient(x, y, 0, x, y, rad);
       g.addColorStop(0, `rgba(${l.c[0]},${l.c[1]},${l.c[2]},${0.85 * a})`);
-      g.addColorStop(0.45, `rgba(${l.c[0]},${Math.round(l.c[1] * 0.6)},${Math.round(l.c[2] * 0.5)},${0.35 * a})`);
+      g.addColorStop(0.45, `rgba(${Math.round(l.c[0] * 0.7)},${Math.round(l.c[1] * 0.75)},${Math.round(l.c[2] * 0.65)},${0.35 * a})`);
       g.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, W, H);
     });
-    // Ausbrennen: warmes Weiss über alles, wenn I gegen 1 geht
+    // Ausbrennen: helles Grün (= Hintergrund danach) über alles, wenn I gegen 1 geht
     const burn = Math.max(0, (I - 0.6) / 0.4);
     if (burn > 0) {
-      ctx.fillStyle = `rgba(255,236,214,${Math.pow(burn, 1.6) * 0.97})`;
+      ctx.fillStyle = `rgba(231,233,223,${Math.pow(burn, 1.6) * 0.97})`;
       ctx.fillRect(0, 0, W, H);
     }
   }
