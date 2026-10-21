@@ -212,10 +212,11 @@ a { color: inherit; }
 .about__row { display: flex; align-items: center; gap: clamp(12px, 3vw, 40px); padding-left: clamp(0px, 38vw, 680px); }
 .about__figure { width: clamp(90px, 13vw, 200px); height: auto; flex: none; filter: var(--img-filter) drop-shadow(0 10px 30px rgba(0,0,0,.4)); }
 .about__row .big-serif { min-width: 0; }
-/* Grosse Sätze: Schrift zeigt das Showreel, invertiert (Knockout per Blend-Modes) */
+/* Grosse Sätze: Schrift zeigt das Showreel, invertiert (Knockout per Blend-Modes).
+   Video etwas kleiner als die schwarze Fläche, damit keine Haarlinien am Rand durchblitzen. */
 .knock { position: relative; width: fit-content; max-width: 100%; min-width: 0; isolation: isolate; mix-blend-mode: screen; }
-.knock__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: invert(1) saturate(1.15); pointer-events: none; }
-.knock .big-serif { position: relative; background: #000; color: #fff; mix-blend-mode: multiply; }
+.knock__video { position: absolute; inset: 4px; width: 100%; height: 100%; object-fit: cover; filter: invert(1) saturate(1.15); pointer-events: none; }
+.knock .big-serif { position: relative; background: #000; box-shadow: 0 0 0 4px #000; color: #fff; mix-blend-mode: multiply; }
 
 /* ---------- LAUFSCHRIFT + COLLAGE ---------- */
 .reel { min-height: 100vh; overflow: hidden; padding-block: 10vh 12vh; display: grid; align-content: center; }
