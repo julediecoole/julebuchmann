@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jule Buchmann Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Jule Buchmann – Regie und Kamera aus Bern. Dokumentar-, Image- und Werbefilm.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ FIXE UI (Logo links, Links rechts) ============ -->
+<a class="side-logo" href="#top" aria-label="Nach oben">Jule Buchmann</a>
+<nav class="top-nav" aria-label="Hauptnavigation">
+  <a href="#arbeiten">Arbeiten</a>
+  <a href="#ueber-mich">Über mich</a>
+  <a href="#kontakt">Kontakt</a>
+</nav>
+<div class="grain" aria-hidden="true"></div>
+
+<main id="top">
+
+  <!-- ============ INTRO: 3D-Parallax aus Bild-Ebenen ============
+       Ebenen aus deinem Panorama (img/intro): sky = Himmel mit Sonne,
+       far = Ebene und Hügel links, mid = Hauptmassiv, fore = Felsbrocken vorne.
+       Erstellt mit split_intro.py (gegradet auf die Palette).          -->
+  <section class="intro" data-scene="Intro" aria-label="Intro">
+    <div class="intro__stage" id="introStage">
+      <div class="layer layer--sky"  data-depth="0.06" style="background-image:url(img/intro/sky.webp)"></div>
+      <div class="layer layer--far"  data-depth="0.26" style="background-image:url(img/intro/far.webp)"></div>
+      <div class="layer layer--mid"  data-depth="0.58" style="background-image:url(img/intro/mid.webp)"></div>
+      <div class="intro__logo" id="introLogo">
+        <h1>Jule Buchmann</h1>
+        <p>Regie &amp; Kamera</p>
+      </div>
+      <div class="layer layer--fore" data-depth="1" style="background-image:url(img/intro/fore.webp)"></div>
+      <div class="letterbox letterbox--top" id="lbTop"></div>
+      <div class="letterbox letterbox--bottom" id="lbBottom"></div>
+      <div class="intro__cue">Scrollen</div>
+    </div>
+  </section>
+
+  <!-- ============ ÜBER MICH (reisst von unten ins Bild) ============ -->
+  <section class="about band band--blood" id="vorstellung" data-scene="Vorstellung">
+    <svg class="tear" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0,100 L0,70 L13.5,57.6 L32.1,59.2 L44.8,64.9 L71.7,79.4 L86.5,61.3 L100.4,58.4 L112.7,57.7 L129.9,83.3 L153.9,85.9 L170.3,60.4 L181.1,74.0 L202.8,88.4 L221.2,57.1 L234.6,75.4 L250.1,53.2 L266.3,57.2 L288.5,81.4 L300.6,59.6 L321.6,72.3 L337.9,80.9 L350.1,65.5 L367.9,67.8 L379.3,63.9 L403.8,46.2 L411.2,73.9 L430.7,71.1 L449.7,61.8 L472.6,60.5 L482.3,60.7 L501.6,58.4 L514.9,77.7 L531.2,71.8 L554.9,49.3 L561.4,61.5 L586.5,73.6 L596.8,61.2 L612.8,68.7 L627.8,76.2 L654.8,93.6 L669.5,84.3 L677.6,63.4 L705.6,84.3 L715.6,83.8 L734.8,79.9 L747.5,54.0 L766.0,58.7 L781.9,84.4 L798.0,44.5 L811.2,59.7 L836.7,65.7 L847.5,49.0 L872.4,67.6 L879.8,56.3 L894.7,52.8 L918.8,59.1 L927.8,69.7 L947.0,95.9 L962.1,70.9 L986.6,67.2 L1000,60 L1000,100 Z"/></svg>
+    <div class="band__inner about__inner">
+      <p class="label">Jule Buchmann macht Regie und Kamera für Dokumentar-, Image- und Werbefilm.</p>
+      <p class="big-serif reveal">Echte Momente, sauber gedreht. Nah an den Menschen und nur ganz selten selbst im Bild. Macht einfach weiter, als wär ich nicht da.</p>
+      <div class="about__row">
+        <p class="big-serif big-serif--sm reveal">Für alle, die eine Geschichte haben und jemanden suchen, der genau hinschaut.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LAUFSCHRIFT + STILL-COLLAGE ============ -->
+  <section class="reel band band--blood" data-scene="Laufschrift" aria-label="Kamera, Regie, Doku, Werbung, Live">
+    <div class="marquee marquee--tilt" data-speed="0.6" aria-hidden="true">
+      <div class="marquee__track"><span>Kamera · Regie · Doku · Werbung · Live ·&nbsp;</span><span>Kamera · Regie · Doku · Werbung · Live ·&nbsp;</span></div>
+    </div>
+    <div class="reel__collage">
+      <img class="reel__card reel__card--a" data-par="-0.12" src="img/still-studio.webp" alt="Standbild: Band im Studio" width="1200" height="750">
+      <img class="reel__card reel__card--b" data-par="0.10"  src="img/still-road.webp" alt="Standbild: Velofahrer bei Sonnenuntergang" width="1200" height="750">
+      <img class="reel__card reel__card--c" data-par="-0.22" src="img/still-portrait.webp" alt="Standbild: Porträt im Seitenlicht" width="1200" height="750">
+    </div>
+    <div class="band__inner reel__cta">
+      <p class="label">Konzept, Dreh und Schnitt aus einer Hand. Ich kenne meine Technik gut genug, um sie im richtigen Moment zu vergessen.</p>
+      <a class="pill" href="#arbeiten">Arbeiten ansehen</a>
+    </div>
+  </section>
+
+  <!-- ============ ARBEITEN: verstreute Bilder, die beim Scrollen
+       unterschiedlich schnell nach oben treiben. Klick = Video. ============ -->
+  <section class="work band band--blood" id="arbeiten" data-scene="Arbeiten" aria-label="Arbeiten">
+    <div class="work__stage" id="workStage">
+      <p class="work__hint label">Arbeiten — Bild anklicken für das ganze Video</p>
+      <div class="work__field" id="workField"><!-- wird von script.js gefüllt --></div>
+    </div>
+  </section>
+
+  <!-- ============ ÜBER MICH: der Fels bricht auf ============
+       Die Bergstücke fliegen auseinander und geben "Über mich" frei. -->
+  <section class="shards band" id="shards" data-scene="Über mich" aria-labelledby="aboutTitle">
+    <span class="anchor" id="ueber-mich"></span>
+    <div class="shards__stage">
+      <!-- Der Stein (img/stone.webp) zerbricht in vier Teile -->
+      <div class="shard" data-dx="-38" data-dy="-20" data-r="-10" aria-hidden="true" style="--clip:polygon(0% 0%,46% 0%,41% 34%,53% 54%,0% 61%)"></div>
+      <div class="shard" data-dx="36"  data-dy="-32" data-r="8"   aria-hidden="true" style="--clip:polygon(46% 0%,100% 0%,100% 41%,71% 46%,53% 54%,41% 34%)"></div>
+      <div class="shard" data-dx="40"  data-dy="22"  data-r="12"  aria-hidden="true" style="--clip:polygon(100% 41%,100% 100%,63% 100%,57% 71%,71% 46%)"></div>
+      <div class="shard" data-dx="-32" data-dy="34"  data-r="-6"  aria-hidden="true" style="--clip:polygon(0% 61%,53% 54%,71% 46%,57% 71%,63% 100%,0% 100%)"></div>
+
+      <div class="aboutme" id="aboutme">
+        <figure class="aboutme__photo">
+          <img src="img/jule.webp" alt="Jule Buchmann mit Filmklappe am Set vor dem Greenscreen" width="900" height="1125">
+        </figure>
+        <div class="aboutme__text">
+          <p class="label">Über mich</p>
+          <h2 class="aboutme__name" id="aboutTitle">Jule Buchmann</h2>
+          <p>Ich bin 21, komme aus Bern und studiere Multimedia Production an der FHGR, Major Dokumentarfilm. Mich interessiert, wie Dinge funktionieren: Menschen, Geschichten und Kameras.</p>
+          <p>Am liebsten stehe ich hinter der Kamera: bei Dokumentarfilmen, Werbespots und überall dort, wo der Moment zählt.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ KONTAKT ============ -->
+  <section class="contact band band--bone" id="kontakt" data-scene="Kontakt" aria-label="Kontakt">
+    <div class="marquee marquee--warp" data-speed="-0.5" aria-hidden="true">
+      <div class="marquee__track"><span>Lass uns was drehen · Lass uns was drehen ·&nbsp;</span><span>Lass uns was drehen · Lass uns was drehen ·&nbsp;</span></div>
+    </div>
+    <div class="band__inner contact__inner">
+      <p class="label">Ein Projekt, ein Auftrag oder erst mal nur eine Idee?</p>
+      <p class="contact__mail"><span id="mailText">jule.buchmann@bluewin.ch</span></p>
+      <div class="contact__actions">
+        <button class="pill pill--ink" type="button" id="copyMail">Adresse kopieren</button>
+      </div>
+      <p class="contact__status" id="copyStatus" role="status"></p>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer" data-scene="Abspann">
+    <div class="footer__bar">
+      <span>© 2026 Jule Buchmann</span>
+      <nav aria-label="Footer">
+        <a href="#kontakt">Kontakt</a>
+        <a href="#top">Impressum</a>
+      </nav>
+      <span>Bern, Schweiz</span>
+    </div>
+  </footer>
+</main>
+
+<!-- ============ VIDEO-PLAYER ============ -->
+<dialog class="player" id="player" aria-labelledby="plTitle">
+  <div class="player__top">
+    <p class="label" id="plMeta"></p>
+    <button class="player__close" type="button" id="plClose">Schliessen</button>
+  </div>
+  <div class="player__stage">
+    <video class="player__video" id="plVideo" controls playsinline preload="none"></video>
+    <div class="player__loading" id="plLoading" hidden></div>
+  </div>
+  <div class="player__bottom">
+    <button class="player__nav" type="button" id="plPrev" aria-label="Vorheriges Projekt">&larr;</button>
+    <div class="player__text">
+      <h3 id="plTitle"></h3>
+      <p id="plDesc"></p>
+    </div>
+    <button class="player__nav" type="button" id="plNext" aria-label="Nächstes Projekt">&rarr;</button>
+  </div>
+</dialog>
+
+<script src="script.js"></script>
+</body>
+</html>

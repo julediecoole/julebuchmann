@@ -1,0 +1,7 @@
+# Videos sind zu gross für GitHub (max. 100 MB pro Datei).
+# Die lädst du einmal per SFTP direkt zu Infomaniak hoch.
+video/
+
+# macOS / Hilfsdateien
+.DS_Store
+split_intro.py
