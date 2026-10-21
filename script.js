@@ -300,6 +300,7 @@
   const intro = $(".intro");
   const reelBox = $("#showreel");
   const reelSec = $(".reel"), cards = $$(".reel__card").map((el) => ({ el, par: parseFloat(el.dataset.par), base: getComputedStyle(el).transform }));
+  const scatter = $$(".scatter").map((el) => ({ el, par: parseFloat(el.dataset.par) }));
   const marquees = $$(".marquee").map((m) => ({ m, track: $(".marquee__track", m), speed: parseFloat(m.dataset.speed), x: 0 }));
   // Schriftgrösse neu einpassen, sobald die Schriften wirklich geladen sind
   if (document.fonts) { const refit = () => marquees.forEach((q) => { q.fitW = 0; }); document.fonts.ready.then(refit); document.fonts.addEventListener("loadingdone", refit); }
@@ -439,6 +440,7 @@
     cards.forEach(({ el, par, base }) => {
       el.style.transform = `translateY(${rp * par * vh * 1.6}px) ${base === "none" ? "" : base}`;
     });
+    scatter.forEach(({ el, par }) => { el.style.transform = `translate3d(0, ${Math.round(rp * par * vh * 1.6)}px, 0)`; });
 
     /* Laufschriften: Zeit + Scroll */
     marquees.forEach((q) => {
@@ -465,8 +467,8 @@
         const endCenter = q.m.classList.contains("marquee--warp");
         const maxScroll = document.documentElement.scrollHeight - vh;
         const te = endCenter ? clamp(1 - (maxScroll - scrollY) / vh, 0, 1) : t;
-        const x = endCenter ? free / 2 + (1 - te) * free * 0.35 : free / 2 + (0.5 - t) * free * 0.7;   // bleibt immer innerhalb des Bildes
-        q.track.style.transform = `translate3d(${x}px,0,0) rotate(${(endCenter ? (1 - te) * 0.8 : (0.5 - t) * 1.6)}deg)`;
+        const x = endCenter ? free / 2 : free / 2 + (0.5 - t) * free * 0.7;   // Kontakt: steht ruhig in der Mitte   // bleibt immer innerhalb des Bildes
+        q.track.style.transform = endCenter ? `translate3d(${x}px,0,0)` : `translate3d(${x}px,0,0) rotate(${(0.5 - t) * 1.6}deg)`;
         return;
       }
       const half = q.track.scrollWidth / 2;
@@ -564,4 +566,23 @@
     if (show !== on) { on = show; corner.classList.toggle("is-on", show); corner.tabIndex = show ? 0 : -1; }
   };
   addEventListener("scroll", check, { passive: true }); addEventListener("resize", check); check();
+})();
+
+/* Showreel in den grossen Sätzen: läuft nur, wenn sichtbar, synchron zum grossen Showreel */
+(() => {
+  const vids = [...document.querySelectorAll(".knock__video")], main = document.getElementById("reelVideo");
+  if (!vids.length) return;
+  vids.forEach((v) => {
+    v.muted = true; v.defaultMuted = true; v.volume = 0;
+    v.addEventListener("volumechange", () => { if (!v.muted) v.muted = true; });
+    v.addEventListener("error", () => v.removeAttribute("src"));   // ohne Video bleibt die Schrift einfach hell
+  });
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+    const v = e.target;
+    if (e.isIntersecting) {
+      if (main && main.readyState > 0 && v.readyState > 0 && Math.abs(v.currentTime - main.currentTime) > 0.5) v.currentTime = main.currentTime;
+      const p = v.play(); if (p && p.catch) p.catch(() => {});
+    } else v.pause();
+  }), { rootMargin: "100px" });
+  vids.forEach((v) => io.observe(v));
 })();

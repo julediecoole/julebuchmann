@@ -47,19 +47,22 @@
     <svg class="tear" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0,100 L0,58 C70,40 150,38 230,56 C300,72 360,86 450,70 C540,54 590,30 680,36 C770,42 800,74 880,72 C935,70 970,52 1000,44 L1000,100 Z"/></svg>
     <div class="band__inner about__inner">
       <p class="label">Regie&nbsp;· Kamera&nbsp;· Dokumentarfilm&nbsp;· Imagefilm&nbsp;· Werbefilm</p>
-      <p class="big-serif reveal">Echte Momente.<br>Nah an den Menschen und nur ganz selten selbst im Bild.</p>
+      <div class="knock"><video class="knock__video" src="video/showreel-stumm.mp4" muted loop playsinline autoplay preload="metadata" aria-hidden="true" tabindex="-1"></video><p class="big-serif reveal">Echte Momente.<br>Nah an den Menschen und nur ganz selten selbst im Bild.</p></div>
       <div class="about__row">
-        <p class="big-serif big-serif--sm reveal">Für alle, die eine Geschichte haben und jemanden suchen, der genau hinschaut.</p>
+        <div class="knock"><video class="knock__video" src="video/showreel-stumm.mp4" muted loop playsinline autoplay preload="metadata" aria-hidden="true" tabindex="-1"></video><p class="big-serif big-serif--sm reveal">Für alle, die eine Geschichte haben und jemanden suchen, der genau hinschaut.</p></div>
       </div>
     </div>
   </section>
 
   <!-- ============ LAUFSCHRIFT + STILL-COLLAGE ============ -->
   <section class="reel band band--blood" data-scene="Laufschrift" aria-label="Kamera, Regie, Doku, Werbung, Image, Ton">
-    <div class="marquee marquee--tilt" data-speed="0.6" data-start="scroll" aria-hidden="true">
-      <div class="marquee__track"><span>Kamera · Regie · Doku · Werbung · Image · Ton</span></div>
-    </div>
     <div class="reel__collage">
+      <span class="scatter scatter--k" data-par="-0.18" aria-hidden="true">Kamera</span>
+      <span class="scatter scatter--r" data-par="0.14" aria-hidden="true">Regie</span>
+      <span class="scatter scatter--d" data-par="-0.08" aria-hidden="true">Doku</span>
+      <span class="scatter scatter--w" data-par="0.2" aria-hidden="true">Werbung</span>
+      <span class="scatter scatter--i" data-par="-0.25" aria-hidden="true">Image</span>
+      <span class="scatter scatter--t" data-par="0.1" aria-hidden="true">Ton</span>
       <img class="reel__card reel__card--a" data-par="-0.12" src="img/making-picknick.webp" alt="Making-of: Dreh am Fluss mit Kamera und Tonangel" width="1600" height="1000">
       <img class="reel__card reel__card--b" data-par="0.10"  src="img/making-holzstube.webp" alt="Making-of: Interview-Setup mit Licht in einer Holzstube" width="900" height="1200">
       <img class="reel__card reel__card--c" id="greenCard" data-par="-0.22" src="img/making-greenscreen.webp" alt="Making-of: Greenscreen-Dreh mit Filmklappe und Tonangel" width="900" height="1200">
