@@ -29,8 +29,8 @@
       desc: "" },
     { title: "BERN131", type: "Imagefilm", role: "Kamera", img: "img/bern131-still.webp", thumb: "img/bern131-thumb.webp", video: "video/bern131.mp4", real: true,
       desc: "Für Losinger Marazzi. Ein Blick in die Vorfertigung für das Bauprojekt BERN131." },
-    { title: "Projekt 11", type: "Platzhalter", role: "", img: "img/platzhalter-city-still.webp", thumb: "img/platzhalter-city-thumb.webp", video: "video/platzhalter-city.mp4", real: false,
-      desc: "Platzhalter. Hier kommt ein eigenes Projekt hin." },
+    { title: "Hochwasser", type: "Forschungsfilm", role: "", img: "img/platzhalter-city-still.webp", thumb: "img/platzhalter-city-thumb.webp", video: "video/hochwasser.mp4", real: true,   // TODO: Thumbnail aus hochwasser.mp4
+      desc: "Video für ein Forschungsprojekt der Universität Bern über Hochwassergefahr." },
     { title: "Patschifig", type: "3D-Intro (fiktiv)", role: "Alles selbst, in Blender", img: "img/patschifig-still.webp", thumb: "img/patschifig-thumb.webp", video: "video/patschifig.mp4", real: true,
       desc: "Fiktives Intro für ein Format bei RTR. Komplett selbst in Blender gebaut, beleuchtet, animiert und gerendert." },
     { title: "Cheer me on", type: "Dokumentarfilm", role: "Kamera", img: "img/cheer-me-on-still.webp", thumb: "img/cheer-me-on-thumb.webp", video: "video/cheer-me-on.mp4", real: true, tile: { wide: true, size: 0.6 },
