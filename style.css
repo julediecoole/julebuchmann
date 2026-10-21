@@ -447,3 +447,27 @@ a { color: inherit; }
   .about { margin-top: 0; }
   .letterbox { display: none; }
 }
+
+/* ---------- Easter Eggs ---------- */
+/* 1) Fünfmal schnell aufs Logo klicken: "Cut!" */
+.showreel__logo { pointer-events: auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.cut {
+  position: absolute; inset: 14px; z-index: 3; pointer-events: none; display: grid; place-items: center;
+  border: 3px solid #d8483a; opacity: 0; transition: opacity .12s;
+}
+.cut span {
+  font: 900 clamp(48px, 12vw, 180px)/1 var(--font-sans); font-stretch: 125%; letter-spacing: .02em; text-transform: uppercase;
+  color: #d8483a; transform: rotate(-6deg) scale(.8); transition: transform .25s cubic-bezier(.2,1.6,.4,1);
+}
+.cut.is-on { opacity: 1; }
+.cut.is-on span { transform: rotate(-6deg) scale(1); }
+.cut.is-on::before {   /* kurzer Blitz wie beim Klappenschlag */
+  content: ""; position: absolute; inset: -14px; background: #fff; animation: cutflash .25s ease-out forwards;
+}
+@keyframes cutflash { from { opacity: .55; } to { opacity: 0; } }
+.showreel.is-frozen { filter: grayscale(1) contrast(1.1); transition: filter .2s; }
+.cut.is-on ~ .showreel__logo { opacity: 0; transition: opacity .1s; }
+.showreel__logo { transition: opacity .3s; }
+/* 2) Greenscreen-Foto anklicken: Grün wird weggekeyt */
+#greenCard { cursor: pointer; pointer-events: auto; transition: opacity .25s; }
+#greenCard.is-swapping { opacity: .2; }

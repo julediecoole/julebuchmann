@@ -1,6 +1,19 @@
 /* Jule Buchmann Portfolio – Scroll-Effekte ohne Libraries */
 (() => {
   "use strict";
+
+  // Easter Egg 3: Nachricht für alle, die in die Konsole schauen
+  try {
+    console.log("%c" + [
+      "  ________________",
+      " |  \u25CF REC         |   /|",
+      " |      ( \u25C9 )     |--< |",
+      " |________________|   \\|",
+    ].join("\n"), "font-family: monospace; color: #99a38e; font-size: 12px; line-height: 1.2;");
+    console.log("%cDu schaust hinter die Kulissen? Ich auch.%c\n→ jule.buchmann@bluewin.ch",
+      "font: 700 14px sans-serif; color: #99a38e;", "font: 12px sans-serif; color: #99a38e;");
+  } catch (e) {}
+
   if (!document.documentElement.lang) document.documentElement.lang = "de";
 
   /* ======================================================
@@ -232,6 +245,41 @@
   reel.addEventListener("click", () => {
     const t = $("#vorstellung"); scrollTo({ top: t.getBoundingClientRect().top + scrollY, behavior: "smooth" });
   });
+  /* ---------- Easter Eggs ---------- */
+  // 1) Fünfmal schnell aufs JB-Logo: Bild friert ein, "CUT!", dann läuft es weiter
+  (() => {
+    const logoEl = $(".showreel__logo"), cut = $("#cut");
+    if (!logoEl || !cut) return;
+    let clicks = [], busy = false;
+    logoEl.addEventListener("click", (e) => {
+      e.stopPropagation();                       // nicht runterscrollen
+      const now = performance.now();
+      clicks = clicks.filter((t) => now - t < 1600); clicks.push(now);
+      if (clicks.length < 5 || busy) return;
+      clicks = []; busy = true;
+      const wasPlaying = !reelVideo.paused; reelVideo.pause();
+      reel.classList.add("is-frozen"); cut.classList.add("is-on");
+      setTimeout(() => {
+        cut.classList.remove("is-on"); reel.classList.remove("is-frozen");
+        if (wasPlaying) { const pr = reelVideo.play(); if (pr && pr.catch) pr.catch(() => {}); }
+        busy = false;
+      }, 1400);
+    });
+  })();
+
+  // 2) Greenscreen-Foto anklicken: Grün weg, Jule steht am Palmenstrand; nochmal klicken = zurück ins Studio
+  (() => {
+    const card = $("#greenCard"); if (!card) return;
+    const srcs = ["img/making-greenscreen.webp", "img/egg-greenscreen-strand.webp"];
+    srcs.slice(1).forEach((u) => { const i = new Image(); i.src = u; });   // vorladen, damit es ohne Flackern wechselt
+    let k = 0;
+    card.addEventListener("click", () => {
+      k = (k + 1) % srcs.length;
+      card.classList.add("is-swapping");
+      setTimeout(() => { card.src = srcs[k]; card.classList.remove("is-swapping"); }, 220);
+    });
+  })();
+
   $("#plClose").addEventListener("click", closePlayer);
   $("#plPrev").addEventListener("click", () => openProject(current - 1));
   $("#plNext").addEventListener("click", () => openProject(current + 1));
