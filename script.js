@@ -2,17 +2,6 @@
 (() => {
   "use strict";
 
-  // Easter Egg 3: Nachricht für alle, die in die Konsole schauen
-  try {
-    console.log("%c" + [
-      "  ________________",
-      " |  \u25CF REC         |   /|",
-      " |      ( \u25C9 )     |--< |",
-      " |________________|   \\|",
-    ].join("\n"), "font-family: monospace; color: #99a38e; font-size: 12px; line-height: 1.2;");
-    console.log("%cDu schaust hinter die Kulissen? Ich auch.%c\n→ jule.buchmann@bluewin.ch",
-      "font: 700 14px sans-serif; color: #99a38e;", "font: 12px sans-serif; color: #99a38e;");
-  } catch (e) {}
 
   if (!document.documentElement.lang) document.documentElement.lang = "de";
 
