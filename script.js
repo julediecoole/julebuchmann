@@ -185,15 +185,9 @@
   const closePlayer = () => { plLoading.hidden = true; plVideo.pause(); plVideo.removeAttribute("src"); plVideo.load(); player.close ? player.close() : player.removeAttribute("open"); };
   /* ---------- Showreel (Intro) ----------
      Solange video/showreel.mp4 fehlt, bleibt der Platzhalter sichtbar. */
-  const reel = $("#showreel"), reelVideo = $("#reelVideo"), reelPlay = $("#reelPlay");
-  reelVideo.addEventListener("loadeddata", () => { reel.classList.add("is-ready"); reelPlay.hidden = false; });
+  const reel = $("#showreel"), reelVideo = $("#reelVideo");
+  reelVideo.addEventListener("loadeddata", () => reel.classList.add("is-ready"));
   reelVideo.addEventListener("error", () => { reelVideo.removeAttribute("src"); });
-  reelPlay.addEventListener("click", () => {
-    plVideo.poster = ""; plLoading.hidden = false; plVideo.src = reelVideo.currentSrc || "video/showreel.mp4";
-    $("#plMeta").textContent = "Regie · Kamera · Schnitt"; $("#plTitle").textContent = "Showreel"; $("#plDesc").textContent = "";
-    if (!player.open) { if (typeof player.showModal === "function") player.showModal(); else player.setAttribute("open", ""); }
-    const pr = plVideo.play(); if (pr && pr.catch) pr.catch(() => {});
-  });
   $("#plClose").addEventListener("click", closePlayer);
   $("#plPrev").addEventListener("click", () => openProject(current - 1));
   $("#plNext").addEventListener("click", () => openProject(current + 1));
@@ -255,8 +249,7 @@
 
   /* ---------- Elemente für den Loop ---------- */
   const intro = $(".intro");
-  const reelBox = $("#showreel"), reelTc = $("#reelTc");
-  const logo = $("#introLogo"), lbTop = $("#lbTop"), lbBottom = $("#lbBottom"), cue = $(".intro__cue");
+  const reelBox = $("#showreel");
   const reelSec = $(".reel"), cards = $$(".reel__card").map((el) => ({ el, par: parseFloat(el.dataset.par), base: getComputedStyle(el).transform }));
   const marquees = $$(".marquee").map((m) => ({ m, track: $(".marquee__track", m), speed: parseFloat(m.dataset.speed), x: 0 }));
   const work = $(".work");
@@ -387,21 +380,8 @@
     const r = intro.getBoundingClientRect();
     if (r.bottom > 0) {
       const p = clamp(-r.top / (r.height - vh), 0, 1);
-      reelBox.style.transform = `scale(${1 + p * 0.12 + load * 0.08}) translate3d(${-smx * 10}px, ${-smy * 8}px, 0)`;
+      reelBox.style.transform = `scale(${1 + p * 0.08 + load * 0.06})`;
       reelBox.style.opacity = String(1 - clamp((p - 0.55) / 0.45, 0, 1) * 0.6);
-      if (reelTc) {   // laufender Timecode im Platzhalter
-        const f = Math.floor((now - t0) / 40), fr = f % 25, sec = Math.floor(f / 25);
-        const pad = (n) => String(n).padStart(2, "0");
-        reelTc.textContent = `00:${pad(Math.floor(sec / 60) % 60)}:${pad(sec % 60)}:${pad(fr)}`;
-      }
-      const lp = clamp(p * 1.8, 0, 1);
-      logo.style.transform = `translate3d(${smx * -12}px, ${p * 26 - load * 4}vh, 0) scale(${1 - p * 0.15})`;
-      logo.style.opacity = String(clamp(1 - lp * 1.2, 0, 1) * (1 - load));
-      logo.style.letterSpacing = `${load * 0.4}em`;
-      const bars = 1 - clamp(p / 0.22, 0, 1);
-      lbTop.style.transform = `scaleY(${bars})`;
-      lbBottom.style.transform = `scaleY(${bars})`;
-      cue.style.opacity = String(1 - clamp(p * 8, 0, 1));
     }
 
     /* Collage-Parallaxe */

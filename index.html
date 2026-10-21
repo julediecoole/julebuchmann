@@ -25,26 +25,15 @@
 
 <main id="top">
 
-  <!-- ============ INTRO: Showreel ============
-       Platzhalter: sobald video/showreel.mp4 existiert, läuft es hier stumm im Loop
-       und der Knopf "Showreel ansehen" erscheint (mit Ton im Player).            -->
+  <!-- ============ INTRO: Showreel (Vollbild) ============
+       Platzhalter: sobald video/showreel.mp4 existiert, läuft es hier
+       stumm im Loop über den ganzen Bildschirm.                        -->
   <section class="intro" data-scene="Showreel" aria-label="Showreel">
     <div class="intro__stage" id="introStage">
       <div class="showreel" id="showreel">
-        <div class="showreel__ph" aria-hidden="true">
-          <span class="showreel__ph-label">Showreel · Platzhalter</span>
-          <span class="showreel__tc" id="reelTc">00:00:00:00</span>
-        </div>
+        <div class="showreel__ph" aria-hidden="true"></div>
         <video class="showreel__video" id="reelVideo" src="video/showreel.mp4" muted loop playsinline autoplay preload="metadata"></video>
       </div>
-      <div class="intro__logo" id="introLogo">
-        <h1>Jule Buchmann</h1>
-        <p>Regie &amp; Kamera</p>
-        <button class="pill showreel__play" type="button" id="reelPlay" hidden>Showreel ansehen</button>
-      </div>
-      <div class="letterbox letterbox--top" id="lbTop"></div>
-      <div class="letterbox letterbox--bottom" id="lbBottom"></div>
-      <div class="intro__cue">Scrollen</div>
     </div>
   </section>
 

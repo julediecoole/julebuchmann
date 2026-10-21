@@ -134,24 +134,16 @@ a { color: inherit; }
 .showreel__play[hidden] { display: none; }
 .showreel { position: absolute; inset: 0; will-change: transform; }
 .showreel__ph {
-  position: absolute; inset: 0; display: grid; place-items: end start;
-  padding: 0 0 calc(11vh + 22px) calc(var(--gutter-l) + 26px);
+  position: absolute; inset: 0;
   background:
     radial-gradient(60% 50% at 30% 40%, rgba(153,163,142,.16), transparent 70%),
     radial-gradient(50% 60% at 75% 65%, rgba(18,26,36,.9), transparent 70%),
     linear-gradient(160deg, #0a1018, var(--blood) 60%);
   background-size: 140% 140%; animation: drift 18s ease-in-out infinite alternate;
 }
-.showreel__ph::after {   /* feiner Rahmen wie im Sucher */
-  content: ""; position: absolute; inset: calc(11vh + 14px) 14px; border: 1px solid rgba(153,163,142,.14);
-}
-.showreel__ph-label, .showreel__tc {
-  font: 700 10px/1 var(--font-sans); font-stretch: 125%; letter-spacing: .26em; text-transform: uppercase; color: var(--ash);
-}
-.showreel__tc { position: absolute; right: calc(var(--gutter-l) + 26px); bottom: calc(11vh + 22px); font-variant-numeric: tabular-nums; letter-spacing: .14em; }
 @keyframes drift { from { background-position: 0% 0%; } to { background-position: 100% 100%; } }
 .showreel__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s; }
-.showreel.is-ready .showreel__video { opacity: .85; }
+.showreel.is-ready .showreel__video { opacity: 1; }
 .showreel.is-ready .showreel__ph { display: none; }
 .showreel__play { margin-top: 26px; }
 .intro__logo {
