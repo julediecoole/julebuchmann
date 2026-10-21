@@ -288,9 +288,9 @@ a { color: inherit; }
   background: rgba(0,0,8,.18); opacity: 0; transition: opacity .25s;
 }
 .tile::after {
-  content: "▶"; position: absolute; left: 50%; top: 50%; width: 42px; height: 42px; margin: -21px 0 0 -21px;
-  display: grid; place-items: center; font-size: 13px; padding-left: 3px;
-  background: var(--bone); color: var(--ink); border-radius: 50%;
+  content: ""; position: absolute; left: 50%; top: 50%; width: 42px; height: 42px; margin: -21px 0 0 -21px;
+  background: var(--bone) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'%3E%3Cpath d='M17 14v14l11-7z' fill='%23000008'/%3E%3C/svg%3E") center / 100% no-repeat;
+  border-radius: 50%;
   opacity: 0; transition: opacity .2s; z-index: 2;
 }
 /* Titel liegt im Bild (unten, mit Verlauf) und bricht um: kann nie über andere Bilder laufen */
@@ -504,8 +504,8 @@ a { color: inherit; }
 .marquee--knock .marquee__track { position: relative; isolation: isolate; mix-blend-mode: screen; }
 .marquee--knock .knock__video { z-index: 0; }
 .marquee--knock .marquee__track span { position: relative; z-index: 1; background: #000; color: #fff; mix-blend-mode: multiply; box-shadow: 0 0 0 40px #000; }
-/* Platz rechts im Footer, damit das Eck-Logo "Bern, Schweiz" nicht verdeckt */
-@media (min-width: 701px) { .footer__bar { padding-right: calc(var(--gutter-r) + clamp(90px, 8vw, 130px)); } }
+/* Footer: Name links und "Bern, Schweiz" rechts mit genau gleichem Abstand zum Rand */
+.footer__bar { padding-right: calc(var(--gutter-r) + 26px); }
 /* Schwarzer Rand (40px) ragt weit über das Video hinaus: so kann an keiner Kante ein Streifen Video durchblitzen.
    Schwarz verschwindet durch "screen" auf dem Dunkelblau komplett. */
 /* Lesbarkeit: das invertierte Video wird nie dunkler als ein Mindest-Grau.
@@ -521,3 +521,6 @@ a { color: inherit; }
 
 /* Schrift-Video ist schon fertig invertiert und aufgehellt (video/schrift-loop.mp4) */
 .knock__video { filter: none; }
+
+/* Pfeile und Kreuz als kleine Zeichnungen statt Schriftzeichen: so bleibt es bei genau 2 Schriften */
+.ico { display: inline-block; vertical-align: -1px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
