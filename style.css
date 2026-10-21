@@ -130,17 +130,32 @@ a { color: inherit; }
   position: sticky; top: 0; height: 100vh; height: 100svh;
   overflow: hidden; background: var(--ink);
 }
-.layer {
-  filter: var(--img-filter);
-  position: absolute; inset: -8% -6%;
-  background-size: cover; background-position: center bottom; background-repeat: no-repeat;
-  will-change: transform;
+.intro { height: 220vh; }
+.showreel__play[hidden] { display: none; }
+.showreel { position: absolute; inset: 0; will-change: transform; }
+.showreel__ph {
+  position: absolute; inset: 0; display: grid; place-items: end start;
+  padding: 0 0 calc(11vh + 22px) calc(var(--gutter-l) + 26px);
+  background:
+    radial-gradient(60% 50% at 30% 40%, rgba(153,163,142,.16), transparent 70%),
+    radial-gradient(50% 60% at 75% 65%, rgba(18,26,36,.9), transparent 70%),
+    linear-gradient(160deg, #0a1018, var(--blood) 60%);
+  background-size: 140% 140%; animation: drift 18s ease-in-out infinite alternate;
 }
-
-.layer--fore { transform-origin: 55% 100%; }
-.intro .layer { filter: none; }  /* das Foto ist schon gegradet */
+.showreel__ph::after {   /* feiner Rahmen wie im Sucher */
+  content: ""; position: absolute; inset: calc(11vh + 14px) 14px; border: 1px solid rgba(153,163,142,.14);
+}
+.showreel__ph-label, .showreel__tc {
+  font: 700 10px/1 var(--font-sans); font-stretch: 125%; letter-spacing: .26em; text-transform: uppercase; color: var(--ash);
+}
+.showreel__tc { position: absolute; right: calc(var(--gutter-l) + 26px); bottom: calc(11vh + 22px); font-variant-numeric: tabular-nums; letter-spacing: .14em; }
+@keyframes drift { from { background-position: 0% 0%; } to { background-position: 100% 100%; } }
+.showreel__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s; }
+.showreel.is-ready .showreel__video { opacity: .85; }
+.showreel.is-ready .showreel__ph { display: none; }
+.showreel__play { margin-top: 26px; }
 .intro__logo {
-  position: absolute; left: 0; right: 0; top: 30%; text-align: center;
+  position: absolute; left: 0; right: 0; top: 50%; translate: 0 -50%; text-align: center; z-index: 2;
   will-change: transform, opacity;
 }
 .intro__logo h1 {
@@ -252,27 +267,37 @@ a { color: inherit; }
 .tile:hover::after, .tile:focus-visible::after { opacity: 1; transform: scale(1); }
 .tile:hover .tile__cap, .tile:focus-visible .tile__cap { opacity: 1; }
 
-/* ---------- ÜBER MICH (Schärfe ziehen) ----------
-   Die Sektion schiebt sich 100vh über das Ende der Bildwolke, die Felsen
-   steigen also schon auf, während die letzten Bilder rauslaufen.        */
+/* ---------- ÜBER MICH: Morgendämmerung ----------
+   Kein Pinning mehr: die Sektion scrollt normal. Oben ein langer, weicher
+   Verlauf vom Dunkel ins helle Grün, darin ein Lichtschimmer und eine
+   feine Lichtkante, die beim Scrollen leicht mitwandern.               */
 .shards {
-  height: 260vh; margin-top: -100vh; pointer-events: none;
-  background: linear-gradient(to bottom, transparent 0, transparent 100vh, var(--paper) 100vh);
-  color: var(--ink);
+  position: relative; color: var(--ink); overflow: hidden;
+  padding: 72vh 0 16vh;
+  background: linear-gradient(to bottom,
+    var(--blood) 0, #050b12 10vh, #1a231f 24vh, #4a5546 38vh, #8d987f 50vh, #c6ccb8 60vh, var(--paper) 70vh);
 }
-/* Nach dem Light Leak: heller Grund, dunkle Schrift */
-.shards__stage.is-light { background: var(--paper); }
+.dawn { position: absolute; left: 0; right: 0; top: 0; height: 80vh; pointer-events: none; }
+.dawn__glow {
+  position: absolute; left: -20%; right: -20%; top: 22vh; height: 46vh;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(231,236,215,.38), rgba(185,194,172,.12) 45%, transparent 70%);
+  filter: blur(10px); will-change: transform, opacity;
+}
+.dawn__line {
+  position: absolute; left: 0; right: 0; top: 40vh; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(231,236,215,.7) 30%, rgba(255,255,245,.9) 50%, rgba(231,236,215,.7) 70%, transparent);
+  box-shadow: 0 0 18px 2px rgba(231,236,215,.35); transform-origin: center; will-change: transform, opacity;
+}
 .shards .aboutme__text, .shards .aboutme__name { color: var(--ink); }
 .shards .aboutme__text .label { color: #3d4436; }
 .shards .aboutme__text p:not(.label) { color: #1b2030; }
 .shards .aboutme__photo img { box-shadow: 0 24px 50px rgba(0,0,8,.22); }
-.anchor { position: absolute; top: 55%; }
-.shards__stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+.anchor { position: absolute; top: -12vh; }
+.shards__stage { position: relative; }
 .aboutme {
-  position: absolute; inset: 0; margin: auto; pointer-events: auto;
+  position: relative; margin: 0 auto;
   width: min(1040px, calc(100% - 2 * (var(--gutter-l) + 26px)));
-  height: fit-content; max-height: calc(100% - 100px);
-  display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(20px, 4vw, 56px); align-items: center;
+    display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(20px, 4vw, 56px); align-items: center;
   will-change: transform, opacity;
 }
 .aboutme__photo { margin: 0; display: grid; gap: 8px; position: relative; }
@@ -362,8 +387,9 @@ a { color: inherit; }
 @media (max-width: 700px) {
   .about__row { padding-left: 22vw; }
   .top-nav { gap: 12px; }
-  .aboutme { grid-template-columns: minmax(0, 1fr); gap: 14px; max-height: calc(100% - 70px); }
-  .aboutme__photo img { aspect-ratio: 16 / 10; max-height: 22vh; }
+  .aboutme { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .aboutme__photo img { aspect-ratio: 4 / 5; max-height: 52vh; }
+  .shards { padding-top: 60vh; }
   .aboutme__photo figcaption { display: none; }
   .aboutme__text { gap: 10px; }
   .aboutme__text p:not(.label) { font-size: 14px; }
@@ -371,7 +397,6 @@ a { color: inherit; }
   .aboutme__facts dd { font-size: 13px; }
   .work__hint { top: calc(40px + env(safe-area-inset-top, 0px)); max-width: 30ch; line-height: 1.35; }
   .work__field { top: calc(84px + env(safe-area-inset-top, 0px)); }
-  .intro__logo { top: 16%; }
   .big-serif { hyphens: auto; font-size: 30px; }
   .big-serif--sm { font-size: 26px; }
   .footer__bar { padding-block: 16px calc(40px + env(safe-area-inset-bottom, 0px)); }
@@ -382,8 +407,9 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .grain, .intro__cue::after { animation: none; }
-  .intro, .shards { height: auto; }
-  .intro__stage, .work__stage, .shards__stage { position: relative; }
+  .intro { height: auto; }
+  .intro__stage, .work__stage { position: relative; }
+  .showreel__ph { animation: none; }
   .about { margin-top: 0; }
   .letterbox { display: none; }
 }

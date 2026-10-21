@@ -25,20 +25,23 @@
 
 <main id="top">
 
-  <!-- ============ INTRO: 3D-Parallax aus Bild-Ebenen ============
-       Ebenen aus deinem Panorama (img/intro): sky = Himmel mit Sonne,
-       far = Ebene und Hügel links, mid = Hauptmassiv, fore = Felsbrocken vorne.
-       Erstellt mit split_intro.py (gegradet auf die Palette).          -->
-  <section class="intro" data-scene="Intro" aria-label="Intro">
+  <!-- ============ INTRO: Showreel ============
+       Platzhalter: sobald video/showreel.mp4 existiert, läuft es hier stumm im Loop
+       und der Knopf "Showreel ansehen" erscheint (mit Ton im Player).            -->
+  <section class="intro" data-scene="Showreel" aria-label="Showreel">
     <div class="intro__stage" id="introStage">
-      <div class="layer layer--sky"  data-depth="0.06" style="background-image:url(img/intro/sky.webp)"></div>
-      <div class="layer layer--far"  data-depth="0.26" style="background-image:url(img/intro/far.webp)"></div>
-      <div class="layer layer--mid"  data-depth="0.58" style="background-image:url(img/intro/mid.webp)"></div>
+      <div class="showreel" id="showreel">
+        <div class="showreel__ph" aria-hidden="true">
+          <span class="showreel__ph-label">Showreel · Platzhalter</span>
+          <span class="showreel__tc" id="reelTc">00:00:00:00</span>
+        </div>
+        <video class="showreel__video" id="reelVideo" src="video/showreel.mp4" muted loop playsinline autoplay preload="metadata"></video>
+      </div>
       <div class="intro__logo" id="introLogo">
         <h1>Jule Buchmann</h1>
         <p>Regie &amp; Kamera</p>
+        <button class="pill showreel__play" type="button" id="reelPlay" hidden>Showreel ansehen</button>
       </div>
-      <div class="layer layer--fore" data-depth="1" style="background-image:url(img/intro/fore.webp)"></div>
       <div class="letterbox letterbox--top" id="lbTop"></div>
       <div class="letterbox letterbox--bottom" id="lbBottom"></div>
       <div class="intro__cue">Scrollen</div>
@@ -83,13 +86,13 @@
   </section>
 
   <!-- ============ ÜBER MICH ============
-       Übergang wählbar in script.js (TRANSITION): "leak" = warmes Light Leak
-       brennt rein und gibt das Porträt frei, "iris" = Kamerablende schliesst
-       sich über den Projekten und öffnet sich auf das Porträt,
-       "focus" = Kamerasucher, Porträt wird scharf gezogen. -->
+       Übergang "Morgendämmerung": das Dunkel der Bildwolke wird über einen
+       weichen Verlauf hell, eine feine Lichtkante zieht mit, und das Porträt
+       entwickelt sich wie ein Polaroid (hell/blass → volle Farbe). -->
   <section class="shards band" id="shards" data-scene="Über mich" aria-labelledby="aboutTitle">
-    <span class="anchor" id="ueber-mich"></span>
+    <div class="dawn" aria-hidden="true"><i class="dawn__glow" id="dawnGlow"></i><i class="dawn__line" id="dawnLine"></i></div>
     <div class="shards__stage">
+      <span class="anchor" id="ueber-mich"></span>
       <div class="aboutme" id="aboutme">
         <figure class="aboutme__photo" id="focusFrame">
           <img src="img/jule.webp" alt="Jule Buchmann mit Filmklappe am Set vor dem Greenscreen" width="900" height="1125" id="focusImg">

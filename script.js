@@ -183,6 +183,17 @@
     const pr = plVideo.play(); if (pr && pr.catch) pr.catch(() => {});
   }
   const closePlayer = () => { plLoading.hidden = true; plVideo.pause(); plVideo.removeAttribute("src"); plVideo.load(); player.close ? player.close() : player.removeAttribute("open"); };
+  /* ---------- Showreel (Intro) ----------
+     Solange video/showreel.mp4 fehlt, bleibt der Platzhalter sichtbar. */
+  const reel = $("#showreel"), reelVideo = $("#reelVideo"), reelPlay = $("#reelPlay");
+  reelVideo.addEventListener("loadeddata", () => { reel.classList.add("is-ready"); reelPlay.hidden = false; });
+  reelVideo.addEventListener("error", () => { reelVideo.removeAttribute("src"); });
+  reelPlay.addEventListener("click", () => {
+    plVideo.poster = ""; plLoading.hidden = false; plVideo.src = reelVideo.currentSrc || "video/showreel.mp4";
+    $("#plMeta").textContent = "Regie · Kamera · Schnitt"; $("#plTitle").textContent = "Showreel"; $("#plDesc").textContent = "";
+    if (!player.open) { if (typeof player.showModal === "function") player.showModal(); else player.setAttribute("open", ""); }
+    const pr = plVideo.play(); if (pr && pr.catch) pr.catch(() => {});
+  });
   $("#plClose").addEventListener("click", closePlayer);
   $("#plPrev").addEventListener("click", () => openProject(current - 1));
   $("#plNext").addEventListener("click", () => openProject(current + 1));
@@ -215,9 +226,12 @@
   });
 
   /* ---------- Logo/Links dunkel über dem hellen Kontaktbereich ---------- */
-  const lightSecs = [...$$(".band--bone"), $("#shards .shards__stage")].filter(Boolean);
+  const lightSecs = [...$$(".band--bone")];
+  const shardsEl = $("#shards");
   const updateHeader = () => {
-    const on = lightSecs.some((el) => { const r = el.getBoundingClientRect(); return r.top < 40 && r.bottom > 40; });
+    const sh = shardsEl.getBoundingClientRect();
+    const on = (sh.top + vh * 0.6 < 40 && sh.bottom > 40) ||   // heller Teil von "Über mich"
+      lightSecs.some((el) => { const r = el.getBoundingClientRect(); return r.top < 40 && r.bottom > 40; });
     document.body.classList.toggle("on-light", on);
   };
   addEventListener("scroll", updateHeader, { passive: true });
@@ -241,18 +255,19 @@
 
   /* ---------- Elemente für den Loop ---------- */
   const intro = $(".intro");
-  const layers = $$(".layer", intro).map((el) => ({ el, d: parseFloat(el.dataset.depth), fore: el.classList.contains("layer--fore") }));
+  const reelBox = $("#showreel"), reelTc = $("#reelTc");
   const logo = $("#introLogo"), lbTop = $("#lbTop"), lbBottom = $("#lbBottom"), cue = $(".intro__cue");
   const reelSec = $(".reel"), cards = $$(".reel__card").map((el) => ({ el, par: parseFloat(el.dataset.par), base: getComputedStyle(el).transform }));
   const marquees = $$(".marquee").map((m) => ({ m, track: $(".marquee__track", m), speed: parseFloat(m.dataset.speed), x: 0 }));
   const work = $(".work");
-  /* Übergang zu "Über mich": "leak" (Light Leak), "iris" (Kamerablende) oder "focus" (Schärfe ziehen) */
-  const TRANSITION = "leak";
+  /* Übergang zu "Über mich": "dawn" (Morgendämmerung, Standard), "leak" (Light Leak), "iris" (Kamerablende) oder "focus" (Schärfe ziehen) */
+  const TRANSITION = "dawn";
   const shardsSec = $("#shards");
   const aboutme = $("#aboutme");
   const stage = $("#shards .shards__stage");
   const focusImg = $("#focusImg"), vf = $("#viewfinder"), vfAf = $("#vfAf"), aboutText = $("#aboutText");
   const contact = $(".contact");
+  const dawnGlow = $("#dawnGlow"), dawnLine = $("#dawnLine");
 
   /* Maus = leichte Kamerabewegung im Intro */
   let mx = 0, my = 0, smx = 0, smy = 0;
@@ -372,14 +387,13 @@
     const r = intro.getBoundingClientRect();
     if (r.bottom > 0) {
       const p = clamp(-r.top / (r.height - vh), 0, 1);
-      layers.forEach(({ el, d, fore }) => {
-        const s = 1 + p * d * (fore ? 1.6 : 0.9) + load * (0.15 + d * 0.35);
-        const ty = -p * d * 22 + (fore ? p * 6 : 0);
-        const tx = -smx * d * 40;
-        const tyMouse = -smy * d * 22;
-        el.style.transform = `translate3d(${tx}vw, calc(${ty}vh + ${tyMouse}px), 0) scale(${s})`;
-        if (load > 0.001) el.style.filter = `blur(${load * d * 10}px)`; else if (el.style.filter) el.style.filter = "";
-      });
+      reelBox.style.transform = `scale(${1 + p * 0.12 + load * 0.08}) translate3d(${-smx * 10}px, ${-smy * 8}px, 0)`;
+      reelBox.style.opacity = String(1 - clamp((p - 0.55) / 0.45, 0, 1) * 0.6);
+      if (reelTc) {   // laufender Timecode im Platzhalter
+        const f = Math.floor((now - t0) / 40), fr = f % 25, sec = Math.floor(f / 25);
+        const pad = (n) => String(n).padStart(2, "0");
+        reelTc.textContent = `00:${pad(Math.floor(sec / 60) % 60)}:${pad(sec % 60)}:${pad(fr)}`;
+      }
       const lp = clamp(p * 1.8, 0, 1);
       logo.style.transform = `translate3d(${smx * -12}px, ${p * 26 - load * 4}vh, 0) scale(${1 - p * 0.15})`;
       logo.style.opacity = String(clamp(1 - lp * 1.2, 0, 1) * (1 - load));
@@ -420,7 +434,26 @@
     /* Bergstücke brechen auseinander */
     /* Über mich: Übergang */
     const sr = shardsSec.getBoundingClientRect();
-    if (TRANSITION === "leak") {
+    if (TRANSITION === "dawn") {
+      if (sr.top < vh * 1.2 && sr.bottom > 0) {
+        // Lichtschimmer und Lichtkante wandern sanft mit
+        const k = clamp(1 - sr.top / vh, 0, 1.6);
+        dawnGlow.style.transform = `translate3d(0, ${-k * 8}vh, 0) scale(${0.85 + k * 0.25})`;
+        dawnGlow.style.opacity = String(clamp(k * 1.2, 0, 1));
+        dawnLine.style.transform = `translate3d(0, ${-k * 4}vh, 0) scaleX(${clamp(0.2 + k * 0.9, 0, 1)})`;
+        dawnLine.style.opacity = String(clamp(k * 1.5, 0, 1) * (1 - clamp((k - 1.1) / 0.4, 0, 1)));
+        // Porträt entwickelt sich wie ein Polaroid
+        const ir = focusImg.getBoundingClientRect();
+        const o = easeInOut(clamp((vh * 0.95 - ir.top) / (vh * 0.6), 0, 1));
+        focusImg.style.filter = o < 0.999 ? `brightness(${1.6 - o * 0.6}) contrast(${0.6 + o * 0.4}) saturate(${0.15 + o * 0.85}) sepia(${(1 - o) * 0.35})` : "";
+        const tr = aboutText.getBoundingClientRect();
+        const t = clamp((vh * 0.9 - tr.top) / (vh * 0.35), 0, 1);
+        aboutText.style.opacity = String(t);
+        aboutText.style.transform = `translate3d(0, ${(1 - t) * 24}px, 0)`;
+        aboutText.style.pointerEvents = t > 0.5 ? "auto" : "none";
+        vf.style.display = "none";
+      }
+    } else if (TRANSITION === "leak") {
       // brennt rein, während die Sektion von unten kommt; blendet aus, sobald sie oben steht
       const sp = stickyProgress(shardsSec);
       let I = 0;
