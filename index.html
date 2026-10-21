@@ -155,21 +155,26 @@
 
 <!-- ============ VIDEO-PLAYER ============ -->
 <dialog class="player" id="player" aria-labelledby="plTitle">
-  <div class="player__top">
-    <p class="label" id="plMeta"></p>
-    <button class="player__close" type="button" id="plClose">Schliessen</button>
-  </div>
-  <div class="player__stage">
-    <video class="player__video" id="plVideo" controls playsinline preload="none"></video>
-    <div class="player__loading" id="plLoading" hidden></div>
-  </div>
-  <div class="player__bottom">
-    <button class="player__nav" type="button" id="plPrev" aria-label="Vorheriges Projekt">&larr;</button>
-    <div class="player__text">
-      <h3 id="plTitle"></h3>
-      <p id="plDesc"></p>
+  <div class="player__frame">
+    <div class="player__top">
+      <p class="player__meta" id="plMeta"></p>
+      <button class="player__close" type="button" id="plClose" aria-label="Schliessen">Schliessen <span aria-hidden="true">✕</span></button>
     </div>
-    <button class="player__nav" type="button" id="plNext" aria-label="Nächstes Projekt">&rarr;</button>
+    <div class="player__stage">
+      <video class="player__video" id="plVideo" controls playsinline preload="none"></video>
+      <div class="player__loading" id="plLoading" hidden></div>
+    </div>
+    <div class="player__bottom">
+      <div class="player__text">
+        <h3 id="plTitle"></h3>
+        <p id="plDesc"></p>
+      </div>
+      <div class="player__navs">
+        <button class="player__nav" type="button" id="plPrev" aria-label="Vorheriges Projekt">← Zurück</button>
+        <span class="player__count" id="plCount"></span>
+        <button class="player__nav" type="button" id="plNext" aria-label="Nächstes Projekt">Weiter →</button>
+      </div>
+    </div>
   </div>
 </dialog>
 

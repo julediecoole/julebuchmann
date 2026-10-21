@@ -200,7 +200,8 @@
     $("#plMeta").textContent = [p.type, p.role, p.real ? "" : "Platzhalter"].filter(Boolean).join(" · ");
     $("#plTitle").textContent = p.title;
     $("#plDesc").textContent = p.desc;
-    if (!player.open) { if (typeof player.showModal === "function") player.showModal(); else player.setAttribute("open", ""); }
+    $("#plCount").textContent = `${String(current + 1).padStart(2, "0")} / ${String(PROJECTS.length).padStart(2, "0")}`;
+    if (!player.open) { if (typeof player.showModal === "function") player.showModal(); else player.setAttribute("open", ""); plVideo.focus({ preventScroll: true }); }
     const pr = plVideo.play(); if (pr && pr.catch) pr.catch(() => {});
   }
   const closePlayer = () => { plLoading.hidden = true; plVideo.pause(); plVideo.removeAttribute("src"); plVideo.load(); player.close ? player.close() : player.removeAttribute("open"); };
