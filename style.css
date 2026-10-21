@@ -195,13 +195,14 @@ a { color: inherit; }
 
 /* ---------- LAUFSCHRIFT + COLLAGE ---------- */
 .reel { min-height: 100vh; overflow: hidden; padding-block: 10vh 12vh; display: grid; align-content: center; }
-.marquee { white-space: nowrap; overflow: hidden; pointer-events: none; }
+.marquee { white-space: nowrap; overflow: visible; pointer-events: none; }
+.marquee[data-start="scroll"] .marquee__track span { padding: 0; }
 .marquee__track { display: inline-flex; will-change: transform; }
 .marquee__track span {
   font-family: var(--font-display); text-transform: uppercase;
   font-size: clamp(80px, 17vw, 280px); line-height: .9; letter-spacing: -.02em;
 }
-.marquee--tilt { position: absolute; left: -12vw; right: -12vw; top: 50%; transform: translateY(-50%) rotate(-3deg); color: var(--deco); }
+.marquee--tilt { position: relative; transform: rotate(-3deg); color: var(--ash); margin-bottom: 2vh; z-index: 3; }   /* über der Collage, nichts verdeckt die Schrift */
 .reel__collage { position: relative; height: 70vh; z-index: 2; }
 .reel__card {
   position: absolute; width: clamp(160px, 30vw, 460px); height: auto; aspect-ratio: 16 / 10; object-fit: cover;
@@ -308,7 +309,7 @@ a { color: inherit; }
 
 /* ---------- KONTAKT ---------- */
 .contact { padding-block: 10vh 14vh; overflow: hidden; }
-.marquee--warp { margin-inline: -12vw; transform: perspective(700px) rotateX(18deg) rotate(-2deg); color: var(--bone); margin-bottom: 4vh; }
+.marquee--warp { transform: perspective(700px) rotateX(14deg) rotate(-2deg); color: var(--bone); margin-bottom: 4vh; }
 .contact__inner { display: grid; gap: 18px; justify-items: start; }
 .contact__mail {
   margin: 0; font-family: var(--font-display); font-size: clamp(22px, 7vw, 110px); line-height: 1; white-space: nowrap;
