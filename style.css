@@ -312,11 +312,12 @@ a { color: inherit; }
 .marquee--warp { transform: perspective(700px) rotateX(14deg) rotate(-2deg); color: var(--bone); margin-bottom: 4vh; }
 .contact__inner { display: grid; gap: 18px; justify-items: start; }
 .contact__mail {
-  margin: 0; font-family: var(--font-display); font-size: clamp(22px, 7vw, 110px); line-height: 1; white-space: nowrap;
+  margin: 0; font-family: var(--font-display); font-size: clamp(17px, 2.2vw, 30px); line-height: 1.1; white-space: nowrap;
   min-width: 0; max-width: 100%;
   user-select: all;
 }
 .contact__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.contact__actions .pill { font-size: 9px; padding: 6px 10px; }
 .contact__status { min-height: 1.4em; margin: 0; font-size: 13px; color: var(--ember); }
 
 /* ---------- FOOTER ---------- */
