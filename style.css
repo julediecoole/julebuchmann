@@ -223,7 +223,7 @@ a { color: inherit; }
 
 /* ---------- ARBEITEN (Bilderfeld wie bei Caora) ---------- */
 .work { height: 300vh; }
-.work__stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+.work__stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; isolation: isolate; }
 .work__hint {
   /* gleiche Linie wie das Menü oben rechts (top 14px, Zeilenhöhe 1) */
   position: absolute; z-index: 3; top: calc(14px + env(safe-area-inset-top, 0px));
@@ -232,7 +232,7 @@ a { color: inherit; }
 /* Freier Streifen oben (Logo, Menü, Hinweis) und links (vertikales Logo):
    die Bilder laufen nur darunter und verschwinden davor jeweils als Ganzes. */
 .work__field {
-  position: absolute; overflow: hidden;
+  position: absolute; overflow: hidden; contain: layout paint; transform: translateZ(0);   /* eigene, stabile Ebene (Safari) */
   top: calc(56px + env(safe-area-inset-top, 0px)); bottom: 0;
   left: calc(var(--gutter-l) + 26px); right: var(--gutter-r);
 }
@@ -243,7 +243,7 @@ a { color: inherit; }
   box-shadow: 0 14px 30px rgba(0,0,0,.35);
 }
 .tile img {
-  width: 100%; height: auto; object-fit: cover; display: block;   /* Thumbnails = deine Videos: nicht eingefärbt */
+  width: 100%; height: auto; object-fit: cover; display: block; transform: translateZ(0);   /* Thumbnails = deine Videos: nicht eingefärbt */
 }
 /* dezentes Abdunkeln statt Aufhellen beim Hover, ohne das Bild neu zu berechnen */
 .tile::before {
@@ -272,7 +272,7 @@ a { color: inherit; }
 .tile.is-hover .tile__cap, .tile:focus-visible .tile__cap { opacity: 1; }
 
 /* ---------- ÜBER MICH: heller Teil, fixe Kante zum dunklen Teil ---------- */
-.shards { position: relative; z-index: 3; margin-top: -80vh; color: var(--blood); background: var(--bone); padding: 16vh 0; }   /* schiebt sich über das Ende der Bildwolke, kein leerer Raum */
+.shards { position: relative; z-index: 3; margin-top: -80vh; transform: translateZ(0); color: var(--blood); background: var(--bone); padding: 16vh 0; }   /* schiebt sich über das Ende der Bildwolke, kein leerer Raum */
 .shards .aboutme__text, .shards .aboutme__name { color: var(--blood); }
 .shards .aboutme__text .label { color: var(--blood); opacity: .75; }
 .shards .aboutme__text p:not(.label) { color: var(--blood); }
