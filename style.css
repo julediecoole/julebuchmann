@@ -261,10 +261,10 @@ a { color: inherit; }
   font: 800 10px/1.25 var(--font-sans); font-stretch: 125%; letter-spacing: .06em; text-transform: uppercase;
   opacity: 0; transition: opacity .2s; pointer-events: none; z-index: 2;
 }
-.tile:hover, .tile:focus-visible { scale: 1.03; }
-.tile:hover::before, .tile:focus-visible::before { opacity: 1; }
-.tile:hover::after, .tile:focus-visible::after { opacity: 1; transform: scale(1); }
-.tile:hover .tile__cap, .tile:focus-visible .tile__cap { opacity: 1; }
+.tile.is-hover, .tile:focus-visible { scale: 1.03; }
+.tile.is-hover::before, .tile:focus-visible::before { opacity: 1; }
+.tile.is-hover::after, .tile:focus-visible::after { opacity: 1; transform: scale(1); }
+.tile.is-hover .tile__cap, .tile:focus-visible .tile__cap { opacity: 1; }
 
 /* ---------- ÜBER MICH: heller Teil, fixe Kante zum dunklen Teil ---------- */
 .shards { position: relative; z-index: 3; margin-top: -80vh; color: var(--blood); background: var(--bone); padding: 16vh 0; }   /* schiebt sich über das Ende der Bildwolke, kein leerer Raum */

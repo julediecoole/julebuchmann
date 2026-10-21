@@ -67,7 +67,7 @@
      sind alle oben rausgelaufen und das Feld ist leer. */
   const field = $("#workField");
   const TRAVEL = 2.2;   // wie weit eine Spalte wandert (in Feldhöhen, bei Tempo 1)
-  const FADE = 140;     // px über denen ein Bild oben ganz ausblendet
+  const FADE = 60;      // px über denen ein Bild oben ganz ausblendet
   let GAP = 36;         // Mindestabstand zwischen Bildern in px (Handy: 20)
   let columns = [];
 
@@ -137,6 +137,21 @@
     const stretch = pExit / 0.97;
     columns.forEach((col) => { col.speed *= stretch; });
   }
+
+  /* Hover selber ausrechnen (Maus-Position vs. Bildrahmen) statt :hover:
+     Safari verliert :hover bei bewegten Ebenen ständig -> Flackern. */
+  let px = -1, py = -1, hoverEl = null;
+  addEventListener("pointermove", (e) => { px = e.clientX; py = e.clientY; }, { passive: true });
+  document.addEventListener("pointerleave", () => { px = py = -1; });
+  const updateHover = () => {
+    let hit = null;
+    if (px >= 0) for (const col of columns) for (const t of col.items) {
+      if (t.vis === "hidden" || t.pe === "none") continue;
+      const r = t.el.getBoundingClientRect();
+      if (px >= r.left && px <= r.right && py >= r.top && py <= r.bottom) hit = t.el;
+    }
+    if (hit !== hoverEl) { if (hoverEl) hoverEl.classList.remove("is-hover"); if (hit) hit.classList.add("is-hover"); hoverEl = hit; }
+  };
 
   const placeTiles = (wp) => {
     columns.forEach((col) => {
@@ -248,7 +263,8 @@
 
   if (reduce) {
     // Ruhiger Modus: keine Bewegung
-    addEventListener("scroll", () => placeTiles(stickyProgress($(".work"))), { passive: true });
+    addEventListener("scroll", () => { placeTiles(stickyProgress($(".work"))); updateHover(); }, { passive: true });
+    addEventListener("pointermove", updateHover, { passive: true });
     return;
   }
 
@@ -428,7 +444,8 @@
 
     /* Arbeiten: Bilderfeld treibt nach oben */
     const wr = work.getBoundingClientRect();
-    if (wr.top < vh && wr.bottom > 0) { const wp = stickyProgress(work); if (wp !== lastWp) { lastWp = wp; placeTiles(wp); } }
+    if (wr.top < vh && wr.bottom > 0) { const wp = stickyProgress(work); if (wp !== lastWp) { lastWp = wp; placeTiles(wp); } updateHover(); }
+    else if (hoverEl) { hoverEl.classList.remove("is-hover"); hoverEl = null; }
 
     /* Bergstücke brechen auseinander */
     /* Über mich: Übergang */
