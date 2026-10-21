@@ -1,4 +1,9 @@
 /* Jule Buchmann Portfolio – Scroll-Effekte ohne Libraries */
+
+/* Projektvideos und Showreel liegen bei Cloudflare R2 (Infomaniak-Starter hat nur 10 MB).
+   Zum Testen mit lokalen Videos: VIDEO_BASE = "video/" setzen. */
+const VIDEO_BASE = "https://pub-ef171a0094e444728aa668ad2a0d800e.r2.dev/";
+const videoUrl = (path) => VIDEO_BASE + path.replace(/^video\//, "");
 (() => {
   "use strict";
 
@@ -205,7 +210,7 @@
     const p = PROJECTS[current];
     plVideo.poster = p.img;
     plLoading.hidden = false; $("#plMsg").hidden = true;
-    plVideo.src = p.video;
+    plVideo.src = videoUrl(p.video);
     $("#plMeta").textContent = [p.type, p.role, p.real ? "" : "Platzhalter"].filter(Boolean).join(" · ");
     $("#plTitle").textContent = p.title;
     $("#plDesc").textContent = p.desc;
