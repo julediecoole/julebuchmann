@@ -676,3 +676,29 @@ html, body { background: #3a5796; }
   .poster-meta--br { display: none; }
   .neon path { stroke-width: 2; filter: drop-shadow(0 0 2px var(--lime)) drop-shadow(0 0 8px var(--lime-glow)); }
 }
+
+/* =====================================================================
+   NEON-VERSION · Himmel weg, wieder tiefblau; Schrift wieder klar lesbar.
+   Neon-Lime, Linien, Sternchen und Chromtropfen bleiben.
+   ===================================================================== */
+html, body { background: var(--ink); }
+.skybg { display: none; }
+.band--blood, .shards { background: var(--blood); }
+.tear, .edge__fill { fill: var(--blood); }
+.edge { top: calc(-9vh + 1px); }
+
+/* Grosse Schrift: zurück zur Instrument Serif, voll und hell */
+.big-serif, .aboutme__name, .marquee--warp span, .player__text h3 { font-family: var(--font-display); font-weight: 400; }
+.big-serif .w, .aboutme__name, .shards .aboutme__name, .marquee--warp span, .player__text h3 {
+  background: none; -webkit-background-clip: border-box; background-clip: border-box;
+  color: var(--bone); animation: none; filter: none; font-weight: 400;
+}
+.marquee--warp span { color: var(--bone); }
+.aboutme__text p:not(.label), .shards .aboutme__text p:not(.label), .contact__mail { text-shadow: none; }
+.label, .top-nav a, .side-logo, .work__hint, .footer__bar, .footer__bar a, .player__meta, .aboutme__photo figcaption, .poster-meta { text-shadow: none; }
+.footer { background: var(--blood); }
+.player, .player::backdrop { background: var(--blood); }
+.pill, .band--blood .pill, .contact__actions .pill { background: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.shards .label, .shards .aboutme__text .label { color: var(--lime); opacity: 1; }
+.liquid--about { top: 72%; right: -10%; width: 28%; height: 40%; }
+@media (max-width: 700px) { .neon { opacity: .6; } }
