@@ -496,15 +496,12 @@ a { color: inherit; }
   .scatter--w { left: 34%; top: 94%; }
 }
 
-/* Footer: hell mit derselben Welle wie nach dem Showreel */
-.footer { background: var(--bone); color: var(--ink); padding-top: 4vh; }
-.tear--footer { fill: var(--bone); }
-.footer__bar, .footer__legal { background: none; color: var(--ink); }
-.footer__bar a, .footer__legal strong { color: var(--ink); }
-.footer__legal { opacity: .85; }
-.footer__bar a:hover { color: var(--blood); text-decoration: underline; }
+/* Welle, wo nach dem hellen "Über mich" das Dunkelblau anfängt (wie nach dem Showreel) */
+.contact { z-index: 4; overflow: visible; overflow-x: clip; }   /* Welle darf nach oben rausragen */
 
 /* "Was willst du erzählen?": gleicher Showreel-Effekt wie bei den grossen Sätzen */
 .marquee--knock .marquee__track { position: relative; isolation: isolate; mix-blend-mode: screen; }
 .marquee--knock .knock__video { z-index: 0; }
 .marquee--knock .marquee__track span { position: relative; z-index: 1; background: #000; color: #fff; mix-blend-mode: multiply; box-shadow: 0 0 0 4px #000; }
+/* Platz rechts im Footer, damit das Eck-Logo "Bern, Schweiz" nicht verdeckt */
+@media (min-width: 701px) { .footer__bar { padding-right: calc(var(--gutter-r) + clamp(90px, 8vw, 130px)); } }
