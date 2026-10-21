@@ -495,3 +495,11 @@ a { color: inherit; }
   .scatter--d { left: 8%;  top: 82%; }
   .scatter--w { left: 34%; top: 94%; }
 }
+
+/* Footer: hell mit derselben Welle wie nach dem Showreel */
+.footer { background: var(--bone); color: var(--ink); padding-top: 4vh; }
+.tear--footer { fill: var(--bone); }
+.footer__bar, .footer__legal { background: none; color: var(--ink); }
+.footer__bar a, .footer__legal strong { color: var(--ink); }
+.footer__legal { opacity: .85; }
+.footer__bar a:hover { color: var(--blood); text-decoration: underline; }
