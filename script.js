@@ -29,7 +29,7 @@
       desc: "" },
     { title: "BERN131", type: "Imagefilm", role: "Kamera", img: "img/bern131-still.webp", thumb: "img/bern131-thumb.webp", video: "video/bern131.mp4", real: true,
       desc: "Für Losinger Marazzi. Ein Blick in die Vorfertigung für das Bauprojekt BERN131." },
-    { title: "Hochwasser", type: "Forschungsfilm", role: "Alles selbst", img: "img/platzhalter-city-still.webp", thumb: "img/platzhalter-city-thumb.webp", video: "video/hochwasser.mp4", real: true,   // TODO: Thumbnail aus hochwasser.mp4
+    { title: "Hochwasser", type: "Forschungsfilm", role: "Alles selbst", img: "img/hochwasser-still.webp", thumb: "img/hochwasser-thumb.webp", video: "video/hochwasser.mp4", real: true,
       desc: "Video für ein Forschungsprojekt der Universität Bern über Hochwassergefahr." },
     { title: "Patschifig", type: "3D-Intro (fiktiv)", role: "Alles selbst, in Blender", img: "img/patschifig-still.webp", thumb: "img/patschifig-thumb.webp", video: "video/patschifig.mp4", real: true,
       desc: "Fiktives Intro für ein Format bei RTR. Komplett selbst in Blender gebaut, beleuchtet, animiert und gerendert." },
