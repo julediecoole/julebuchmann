@@ -503,3 +503,8 @@ a { color: inherit; }
 .footer__bar a, .footer__legal strong { color: var(--ink); }
 .footer__legal { opacity: .85; }
 .footer__bar a:hover { color: var(--blood); text-decoration: underline; }
+
+/* "Was willst du erzählen?": gleicher Showreel-Effekt wie bei den grossen Sätzen */
+.marquee--knock .marquee__track { position: relative; isolation: isolate; mix-blend-mode: screen; }
+.marquee--knock .knock__video { z-index: 0; }
+.marquee--knock .marquee__track span { position: relative; z-index: 1; background: #000; color: #fff; mix-blend-mode: multiply; box-shadow: 0 0 0 4px #000; }
