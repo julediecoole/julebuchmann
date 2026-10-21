@@ -453,11 +453,11 @@ a { color: inherit; }
 .showreel__logo { pointer-events: auto; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .cut {
   position: absolute; inset: 14px; z-index: 3; pointer-events: none; display: grid; place-items: center;
-  border: 3px solid #d8483a; opacity: 0; transition: opacity .12s;
+  border: 3px solid #a30016; opacity: 0; transition: opacity .12s;
 }
 .cut span {
-  font: 900 clamp(48px, 12vw, 180px)/1 var(--font-sans); font-stretch: 125%; letter-spacing: .02em; text-transform: uppercase;
-  color: #d8483a; transform: rotate(-6deg) scale(.8); transition: transform .25s cubic-bezier(.2,1.6,.4,1);
+  font: 400 clamp(64px, 16vw, 240px)/1 var(--font-display); letter-spacing: -.01em; text-transform: uppercase;
+  color: #a30016; transform: rotate(-6deg) scale(.8); transition: transform .25s cubic-bezier(.2,1.6,.4,1);
 }
 .cut.is-on { opacity: 1; }
 .cut.is-on span { transform: rotate(-6deg) scale(1); }
