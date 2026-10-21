@@ -216,7 +216,7 @@ a { color: inherit; }
    Video etwas kleiner als die schwarze Fläche, damit keine Haarlinien am Rand durchblitzen. */
 .knock { position: relative; width: fit-content; max-width: 100%; min-width: 0; isolation: isolate; mix-blend-mode: screen; }
 .knock__video { position: absolute; inset: 4px; width: 100%; height: 100%; object-fit: cover; filter: invert(1) saturate(1.15); pointer-events: none; }
-.knock .big-serif { position: relative; background: #000; box-shadow: 0 0 0 4px #000; color: #fff; mix-blend-mode: multiply; }
+.knock .big-serif { position: relative; background: #000; box-shadow: 0 0 0 40px #000; color: #fff; mix-blend-mode: multiply; }
 
 /* ---------- LAUFSCHRIFT + COLLAGE ---------- */
 .reel { min-height: 100vh; overflow: hidden; padding-block: 10vh 12vh; display: grid; align-content: center; }
@@ -502,6 +502,16 @@ a { color: inherit; }
 /* "Was willst du erzählen?": gleicher Showreel-Effekt wie bei den grossen Sätzen */
 .marquee--knock .marquee__track { position: relative; isolation: isolate; mix-blend-mode: screen; }
 .marquee--knock .knock__video { z-index: 0; }
-.marquee--knock .marquee__track span { position: relative; z-index: 1; background: #000; color: #fff; mix-blend-mode: multiply; box-shadow: 0 0 0 4px #000; }
+.marquee--knock .marquee__track span { position: relative; z-index: 1; background: #000; color: #fff; mix-blend-mode: multiply; box-shadow: 0 0 0 40px #000; }
 /* Platz rechts im Footer, damit das Eck-Logo "Bern, Schweiz" nicht verdeckt */
 @media (min-width: 701px) { .footer__bar { padding-right: calc(var(--gutter-r) + clamp(90px, 8vw, 130px)); } }
+/* Schwarzer Rand (40px) ragt weit über das Video hinaus: so kann an keiner Kante ein Streifen Video durchblitzen.
+   Schwarz verschwindet durch "screen" auf dem Dunkelblau komplett. */
+/* Lesbarkeit: das invertierte Video wird nie dunkler als ein Mindest-Grau.
+   Dunkle Stellen werden per "lighten" auf diesen Wert angehoben, helle bleiben wie sie sind. */
+:root { --knock-floor: #9a9a9a; }
+.knock::before, .marquee--knock .marquee__track::before {
+  content: ""; position: absolute; inset: 4px; z-index: -1; background: var(--knock-floor);
+}
+.knock__video { z-index: 0; mix-blend-mode: lighten; }
+.knock .big-serif { z-index: 1; }
