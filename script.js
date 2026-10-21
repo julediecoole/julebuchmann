@@ -186,7 +186,16 @@
   /* ---------- Showreel (Intro) ----------
      Solange video/showreel.mp4 fehlt, bleibt der Platzhalter sichtbar. */
   const reel = $("#showreel"), reelVideo = $("#reelVideo");
-  reelVideo.addEventListener("loadeddata", () => reel.classList.add("is-ready"));
+  // Safari spielt nur ab, wenn das Video sicher stumm ist; sonst beim ersten Scrollen/Tippen nochmal versuchen
+  reelVideo.muted = true; reelVideo.defaultMuted = true; reelVideo.playsInline = true;
+  reelVideo.setAttribute("muted", ""); reelVideo.setAttribute("playsinline", "");
+  const tryPlay = () => { const pr = reelVideo.play(); if (pr && pr.catch) pr.catch(() => {}); };
+  reelVideo.addEventListener("loadeddata", () => { reel.classList.add("is-ready"); tryPlay(); });
+  reelVideo.addEventListener("canplay", tryPlay, { once: true });
+  ["pointerdown", "touchstart", "scroll", "keydown"].forEach((ev) =>
+    addEventListener(ev, () => { if (reelVideo.paused) tryPlay(); }, { passive: true, once: true }));
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && reelVideo.paused) tryPlay(); });
+  tryPlay();
   reelVideo.addEventListener("error", () => { reelVideo.removeAttribute("src"); });
   // Klick aufs Showreel: weiter runter zum Text
   reel.addEventListener("click", () => {
