@@ -262,7 +262,7 @@ a { color: inherit; }
 .tile:hover .tile__cap, .tile:focus-visible .tile__cap { opacity: 1; }
 
 /* ---------- ÜBER MICH: heller Teil, fixe Kante zum dunklen Teil ---------- */
-.shards { position: relative; color: var(--ink); background: var(--paper); padding: 16vh 0; }
+.shards { position: relative; z-index: 3; margin-top: -80vh; color: var(--ink); background: var(--paper); padding: 16vh 0; }   /* schiebt sich über das Ende der Bildwolke, kein leerer Raum */
 .shards .aboutme__text, .shards .aboutme__name { color: var(--ink); }
 .shards .aboutme__text .label { color: #3d4436; }
 .shards .aboutme__text p:not(.label) { color: #1b2030; }
@@ -292,7 +292,7 @@ a { color: inherit; }
 .vf__af::before { left: 50%; top: 50%; width: 10px; height: 1.5px; margin: -.75px 0 0 -5px; }
 .vf__af::after { left: 50%; top: 50%; width: 1.5px; height: 10px; margin: -5px 0 0 -.75px; }
 .vf.is-sharp .vf__c, .vf.is-sharp .vf__af { border-color: var(--ember); }
-.aboutme__photo img { object-position: 50% 40%; width: 100%; aspect-ratio: 5 / 4; max-height: 66vh; object-fit: cover; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
+.aboutme__photo img { object-position: 50% 40%; width: 100%; height: auto; aspect-ratio: 5 / 4; max-height: 66vh; object-fit: cover; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
 .aboutme__photo figcaption { font: 700 10px/1 var(--font-sans); font-stretch: 125%; letter-spacing: .08em; text-transform: uppercase; color: var(--ash); }
 .aboutme__text { display: grid; gap: 16px; min-width: 0; }
 .aboutme__text p:not(.label) { margin: 0; max-width: 52ch; font-size: clamp(15px, 1.25vw, 18px); line-height: 1.55; }
@@ -383,6 +383,7 @@ a { color: inherit; }
   html { scroll-behavior: auto; }
   .grain, .intro__cue::after { animation: none; }
   .intro { height: auto; }
+  .shards { margin-top: 0; }
   .intro__stage, .work__stage { position: relative; }
   .showreel__ph { animation: none; }
   .about { margin-top: 0; }

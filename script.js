@@ -134,7 +134,7 @@
     }));
     // Tempo so strecken, dass das letzte Bild erst kurz vor Ende des Abschnitts oben raus ist
     const pExit = Math.max(...columns.map((col) => Math.max(...col.items.map((t) => t.y0 + t.h)) / (TRAVEL * col.H * col.speed)));
-    const stretch = pExit / 0.94;
+    const stretch = pExit / 0.97;
     columns.forEach((col) => { col.speed *= stretch; });
   }
 
