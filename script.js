@@ -575,7 +575,7 @@
   vids.forEach((v) => {
     v.muted = true; v.defaultMuted = true; v.volume = 0;
     v.addEventListener("volumechange", () => { if (!v.muted) v.muted = true; });
-    v.addEventListener("error", () => v.removeAttribute("src"));   // ohne Video bleibt die Schrift einfach hell
+    v.addEventListener("error", () => { v.parentElement.classList.add("no-video"); v.removeAttribute("src"); });   // ohne Video bleibt die Schrift einfach hell
   });
   const io = new IntersectionObserver((entries) => entries.forEach((e) => {
     const v = e.target;

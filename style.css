@@ -8,9 +8,9 @@
   /* Palette: Benthic Black + Big Fish */
   --ink:   #000008;   /* fast schwarz, Navy-Stich */
   --blood: #000011;   /* Benthic Black, Hauptfläche */
-  --ember: #b9c2ac;   /* helles Big Fish, Akzent */
-  --bone:  #99a38e;   /* Big Fish: Text und heller Kontaktbereich */
-  --ash:   #646c5c;   /* gedämpfter Text */
+  --ember: #b3ebe8;   /* helles Türkis, Akzent (Hover) */
+  --bone:  #80d8d4;   /* Türkis: Text und helle Bereiche */
+  --ash:   #5a8f8c;   /* gedämpfter Text */
   --deco:  #121a24;   /* grosse Hintergrundschrift auf der Hauptfläche */
   --paper: #e7e9df;   /* heller Grund nach dem Light Leak (Über mich) */
   /* färbt die Platzhalterbilder passend ein. Bei eigenen Fotos auf
@@ -156,7 +156,7 @@ a { color: inherit; }
 .showreel__ph {
   position: absolute; inset: 0;
   background:
-    radial-gradient(60% 50% at 30% 40%, rgba(153,163,142,.16), transparent 70%),
+    radial-gradient(60% 50% at 30% 40%, rgba(128,216,212,.16), transparent 70%),
     radial-gradient(50% 60% at 75% 65%, rgba(18,26,36,.9), transparent 70%),
     linear-gradient(160deg, #0a1018, var(--blood) 60%);
   background-size: 140% 140%; animation: drift 18s ease-in-out infinite alternate;
@@ -405,7 +405,7 @@ a { color: inherit; }
 .player__video { position: absolute; inset: 0; width: 100%; height: 100%; background: #000; object-fit: contain; display: block; }
 .player__loading {
   position: absolute; left: 50%; top: 50%; width: 38px; height: 38px; margin: -19px 0 0 -19px; border-radius: 50%;
-  border: 2px solid rgba(153,163,142,.25); border-top-color: var(--bone);
+  border: 2px solid rgba(128,216,212,.25); border-top-color: var(--bone);
   animation: spin .8s linear infinite; pointer-events: none;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
@@ -496,8 +496,9 @@ a { color: inherit; }
   .scatter--w { left: 34%; top: 94%; }
 }
 
-/* Welle, wo nach dem hellen "Über mich" das Dunkelblau anfängt (wie nach dem Showreel) */
-.contact { z-index: 4; overflow: visible; overflow-x: clip; transform: translateZ(0); }   /* Safari: eigene Ebene, sonst malt das "Über mich" (translateZ) über die Welle */   /* Welle darf nach oben rausragen */
+/* Welle, wo nach dem hellen "Über mich" das Dunkelblau anfängt (wie nach dem Showreel).
+   Sitzt unten im "Über mich"-Band selbst, damit Safari sie nicht überdeckt. */
+.tear--shards { top: auto; bottom: -1px; fill: var(--blood); z-index: 5; pointer-events: none; }
 
 /* "Was willst du erzählen?": gleicher Showreel-Effekt wie bei den grossen Sätzen */
 .marquee--knock .marquee__track { position: relative; isolation: isolate; mix-blend-mode: screen; }
@@ -511,7 +512,9 @@ a { color: inherit; }
    Dunkle Stellen werden per "lighten" auf diesen Wert angehoben, helle bleiben wie sie sind. */
 :root { --knock-floor: #9a9a9a; }
 .knock::before, .marquee--knock .marquee__track::before {
-  content: ""; position: absolute; inset: 4px; z-index: -1; background: var(--knock-floor);
+  content: ""; position: absolute; inset: -30px; z-index: -1; background: var(--knock-floor);
 }
+/* Falls das Video nicht lädt: kein Grau, die Schrift bleibt einfach hell */
+.knock.no-video::before, .marquee--knock .marquee__track.no-video::before { display: none; }
 .knock__video { z-index: 0; mix-blend-mode: lighten; }
 .knock .big-serif { z-index: 1; }
