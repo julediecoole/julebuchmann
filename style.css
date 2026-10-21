@@ -301,7 +301,7 @@ a { color: inherit; }
 .aboutme__photo figcaption { font: 700 10px/1 var(--font-sans); font-stretch: 125%; letter-spacing: .08em; text-transform: uppercase; color: var(--ash); }
 .aboutme__text { display: grid; gap: 16px; min-width: 0; }
 .aboutme__text p:not(.label) { margin: 0; max-width: 52ch; font-size: clamp(15px, 1.25vw, 18px); line-height: 1.55; }
-.aboutme__name { margin: 0; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; font-size: clamp(48px, 7vw, 120px); line-height: .85; }
+.aboutme__name { margin: 0; font-family: var(--font-display); font-weight: 400; text-transform: uppercase; font-size: clamp(48px, 7vw, 120px); line-height: 1; }
 .aboutme__facts { margin: 6px 0 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 22px; border-top: 1px solid rgba(236,220,209,.25); padding-top: 14px; }
 .aboutme__facts dt { font: 800 10px/1.7 var(--font-sans); font-stretch: 125%; letter-spacing: .08em; text-transform: uppercase; color: var(--ash); }
 .aboutme__facts dd { margin: 0; font-size: 14px; }
