@@ -143,9 +143,14 @@
   /* Hover selber ausrechnen (Maus-Position vs. Bildrahmen) statt :hover:
      Safari verliert :hover bei bewegten Ebenen ständig -> Flackern. */
   let px = -1, py = -1, hoverEl = null;
-  addEventListener("pointermove", (e) => { px = e.clientX; py = e.clientY; }, { passive: true });
+  // nur echte Maus: auf Handy/Tablet gibt es keinen Hover (sonst bleibt er nach dem Tippen hängen)
+  addEventListener("pointermove", (e) => { if (e.pointerType === "mouse") { px = e.clientX; py = e.clientY; } else { px = py = -1; } }, { passive: true });
   document.addEventListener("pointerleave", () => { px = py = -1; });
+  addEventListener("blur", () => { px = py = -1; });
+  const inside = (el, pad) => { const r = el.getBoundingClientRect(); return px >= r.left - pad && px <= r.right + pad && py >= r.top - pad && py <= r.bottom + pad; };
   const updateHover = () => {
+    // bleibt auf dem aktuellen Bild, solange die Maus (mit etwas Spielraum) drauf ist: kein Hin- und Herspringen
+    if (hoverEl && px >= 0 && hoverEl.style.visibility !== "hidden" && hoverEl.style.pointerEvents !== "none" && inside(hoverEl, 6)) return;
     let hit = null;
     if (px >= 0) for (const col of columns) for (const t of col.items) {
       if (t.vis === "hidden" || t.pe === "none") continue;
@@ -159,7 +164,7 @@
     columns.forEach((col) => {
       const shift = wp * TRAVEL * col.H * col.speed;
       col.items.forEach((t) => {
-        const y = Math.round((t.y0 - shift) * 2) / 2;
+        const y = Math.round(t.y0 - shift);
         // nur schreiben, wenn sich etwas ändert: ständiges Neusetzen lässt Safari den Hover verlieren (Flackern)
         if (t.y !== y) { t.y = y; t.el.style.transform = `translate3d(0, ${y}px, 0)`; }
         // oben: ganzes Bild blendet aus, bevor es den Rand erreicht (kein angeschnittener Streifen)
@@ -187,15 +192,17 @@
 
   /* Videos werden erst beim Klick geladen (Streaming).
      Davor sieht man nur die kleinen Thumbnails (thumb-*.webp).        */
-  plVideo.addEventListener("waiting", () => { plLoading.hidden = false; });
+  plVideo.addEventListener("waiting", () => { if ($("#plMsg").hidden) plLoading.hidden = false; });
   plVideo.addEventListener("playing", () => { plLoading.hidden = true; });
   plVideo.addEventListener("canplay", () => { plLoading.hidden = true; });
+  // fehlt ein Video (noch nicht hochgeladen), kein ewiges Laden: kurzer Hinweis statt Spinner
+  plVideo.addEventListener("error", () => { if (!plVideo.getAttribute("src")) return; plLoading.hidden = true; $("#plMsg").hidden = false; });
 
   function openProject(i) {
     current = (i + PROJECTS.length) % PROJECTS.length;
     const p = PROJECTS[current];
     plVideo.poster = p.img;
-    plLoading.hidden = false;
+    plLoading.hidden = false; $("#plMsg").hidden = true;
     plVideo.src = p.video;
     $("#plMeta").textContent = [p.type, p.role, p.real ? "" : "Platzhalter"].filter(Boolean).join(" · ");
     $("#plTitle").textContent = p.title;
@@ -420,9 +427,15 @@
         // beim Scrollen wandert er nur leicht und schwingt sanft mit
         const span = q.track.firstElementChild;
         if (q.fitW !== vw) {
-          q.fitW = vw; span.style.fontSize = "";
+          q.fitW = vw; span.style.fontSize = ""; span.style.whiteSpace = ""; span.style.display = ""; span.style.width = ""; span.style.textAlign = "";
           const w0 = span.offsetWidth, fs0 = parseFloat(getComputedStyle(span).fontSize);
-          span.style.fontSize = (fs0 * (vw * 0.84) / w0) + "px";
+          let fs = fs0 * (vw * 0.84) / w0;
+          if (fs < 30 && vw < 700) {
+            // Handy: lieber zwei Zeilen in gut lesbarer Grösse als eine winzige
+            span.style.whiteSpace = "normal"; span.style.display = "inline-block"; span.style.width = (vw * 0.84) + "px"; span.style.textAlign = "center";
+            fs = Math.min(fs * 2, vw * 0.11);
+          }
+          span.style.fontSize = fs + "px";
         }
         const w = span.offsetWidth;
         const mr = q.m.getBoundingClientRect();
