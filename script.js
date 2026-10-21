@@ -235,27 +235,6 @@
     const t = $("#vorstellung"); scrollTo({ top: t.getBoundingClientRect().top + scrollY, behavior: "smooth" });
   });
   /* ---------- Easter Eggs ---------- */
-  // 1) Fünfmal schnell aufs JB-Logo: Bild friert ein, "CUT!", dann läuft es weiter
-  (() => {
-    const logoEl = $(".showreel__logo"), cut = $("#cut");
-    if (!logoEl || !cut) return;
-    let clicks = [], busy = false;
-    logoEl.addEventListener("click", (e) => {
-      e.stopPropagation();                       // nicht runterscrollen
-      const now = performance.now();
-      clicks = clicks.filter((t) => now - t < 1600); clicks.push(now);
-      if (clicks.length < 5 || busy) return;
-      clicks = []; busy = true;
-      const wasPlaying = !reelVideo.paused; reelVideo.pause();
-      reel.classList.add("is-frozen"); cut.classList.add("is-on");
-      setTimeout(() => {
-        cut.classList.remove("is-on"); reel.classList.remove("is-frozen");
-        if (wasPlaying) { const pr = reelVideo.play(); if (pr && pr.catch) pr.catch(() => {}); }
-        busy = false;
-      }, 1400);
-    });
-  })();
-
   // 2) Greenscreen-Foto anklicken: Grün weg, Jule steht am Palmenstrand; nochmal klicken = zurück ins Studio
   (() => {
     const card = $("#greenCard"); if (!card) return;
