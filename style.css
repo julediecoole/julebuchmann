@@ -132,7 +132,7 @@ a { color: inherit; }
 }
 .intro { height: 220vh; }
 .showreel__play[hidden] { display: none; }
-.showreel { position: absolute; inset: 0; will-change: transform; }
+.showreel { position: absolute; inset: 0; will-change: transform; cursor: pointer; }
 .showreel__ph {
   position: absolute; inset: 0;
   background:
@@ -187,7 +187,7 @@ a { color: inherit; }
 .about__row .big-serif { min-width: 0; }
 
 /* ---------- LAUFSCHRIFT + COLLAGE ---------- */
-.reel { min-height: 120vh; overflow: hidden; padding-block: 10vh 12vh; display: grid; align-content: center; }
+.reel { min-height: 100vh; overflow: hidden; padding-block: 10vh 12vh; display: grid; align-content: center; }
 .marquee { white-space: nowrap; overflow: hidden; pointer-events: none; }
 .marquee__track { display: inline-flex; will-change: transform; }
 .marquee__track span {
@@ -198,11 +198,11 @@ a { color: inherit; }
 .reel__collage { position: relative; height: 70vh; z-index: 2; }
 .reel__card {
   position: absolute; width: clamp(160px, 30vw, 460px); height: auto; aspect-ratio: 16 / 10; object-fit: cover;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, .45); will-change: transform; filter: var(--img-filter);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, .45); will-change: transform;
 }
-.reel__card--a { left: 22%; top: 2%; transform: rotate(-4deg); }
-.reel__card--b { left: 46%; top: 22%; transform: rotate(3deg); }
-.reel__card--c { left: 30%; top: 50%; width: clamp(120px, 20vw, 300px); transform: rotate(-1deg); }
+.reel__card--a { left: 12%; top: 6%; transform: rotate(-4deg); }
+.reel__card--b { left: 54%; top: 0; width: clamp(130px, 21vw, 320px); aspect-ratio: 3 / 4; transform: rotate(3deg); }
+.reel__card--c { left: 36%; top: 44%; width: clamp(110px, 15vw, 230px); aspect-ratio: 3 / 4; transform: rotate(-2deg); }
 .reel__cta { position: relative; z-index: 3; display: grid; gap: 12px; justify-items: start; }
 
 /* ---------- STATEMENT ---------- */
@@ -392,7 +392,7 @@ a { color: inherit; }
   .big-serif { hyphens: auto; font-size: 30px; }
   .big-serif--sm { font-size: 26px; }
   .footer__bar { padding-block: 16px calc(40px + env(safe-area-inset-bottom, 0px)); }
-  .reel__card--a { left: 4%; } .reel__card--b { left: 36%; } .reel__card--c { left: 12%; top: 56%; }
+  .reel__card--a { left: 3%; top: 4%; width: 60vw; } .reel__card--b { left: 60%; top: 14%; width: 36vw; } .reel__card--c { left: 18%; top: 40%; width: 32vw; }
   .footer__bar { justify-content: flex-start; }
 }
 

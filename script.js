@@ -188,6 +188,10 @@
   const reel = $("#showreel"), reelVideo = $("#reelVideo");
   reelVideo.addEventListener("loadeddata", () => reel.classList.add("is-ready"));
   reelVideo.addEventListener("error", () => { reelVideo.removeAttribute("src"); });
+  // Klick aufs Showreel: weiter runter zum Text
+  reel.addEventListener("click", () => {
+    const t = $("#vorstellung"); scrollTo({ top: t.getBoundingClientRect().top + scrollY, behavior: "smooth" });
+  });
   $("#plClose").addEventListener("click", closePlayer);
   $("#plPrev").addEventListener("click", () => openProject(current - 1));
   $("#plNext").addEventListener("click", () => openProject(current + 1));
