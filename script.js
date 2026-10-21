@@ -413,13 +413,16 @@
     });
 
     /* Text-Highlights */
-    reveals.forEach(({ el, words }) => {
-      const b = el.getBoundingClientRect();
-      if (b.bottom < -50 || b.top > vh + 50) return;
-      const q = clamp((vh * 0.88 - b.top) / (b.height + vh * 0.35), 0, 1);
-      const lit = Math.round(q * words.length * 1.05);
-      words.forEach((w, i) => { w.style.opacity = i < lit ? "1" : "0.28"; });
-    });
+    // alle Texte nacheinander: erst der erste ganz, dann der nächste
+    if (reveals.length) {
+      const a = reveals[0].el.getBoundingClientRect(), z = reveals[reveals.length - 1].el.getBoundingClientRect();
+      if (z.bottom > -50 && a.top < vh + 50) {
+        const q = clamp((vh * 0.85 - a.top) / (z.bottom - a.top + vh * 0.1), 0, 1);
+        const all = reveals.flatMap((r) => r.words);
+        const lit = Math.round(q * all.length * 1.03);
+        all.forEach((w, i) => { w.style.opacity = i < lit ? "1" : "0.28"; });
+      }
+    }
 
     /* Arbeiten: Bilderfeld treibt nach oben */
     const wr = work.getBoundingClientRect();
