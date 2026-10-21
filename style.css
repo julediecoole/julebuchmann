@@ -146,7 +146,7 @@ a { color: inherit; }
 .showreel.is-ready .showreel__video { opacity: 1; }
 .showreel__logo {   /* Logo mittig über dem Showreel, im Pastellgrün */
   position: absolute; left: 50%; top: 50%; translate: -50% -50%; z-index: 2; pointer-events: none;
-  width: clamp(90px, 13vw, 200px); height: auto; color: var(--bone);
+  width: clamp(110px, 15vw, 240px); height: auto; color: var(--bone);
   filter: drop-shadow(0 1px 0 rgba(255, 255, 255, .35)) drop-shadow(0 6px 24px rgba(0, 0, 8, .6));   /* Chrom-Look */
 }
 .showreel__video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; }
