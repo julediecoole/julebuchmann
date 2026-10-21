@@ -9,7 +9,8 @@
      thumb: kleines Vorschaubild fürs Bilderfeld (ca. 480 px breit)
      video: Pfad zur .mp4-Datei (die Platzhalter-Videos in /video ersetzen)
      real:  true = echtes Projekt, false = Platzhalter
-     tile:  optional, z.B. { size: 0.55, align: "right", wide: true } = kleineres Querformat-Bild rechts
+     tile:  optional, z.B. { wide: true } = Querformat, { tall: true, size: 1 } = grosses Hochformat,
+            size = Grösse (0–1), align: "left"/"right"
      ====================================================== */
   const PROJECTS = [
     { title: "Fjälla", type: "Dokumentarfilm", role: "Regie, Kamera, Schnitt", img: "img/fjaella-still.webp", thumb: "img/fjaella-thumb.webp", video: "video/fjaella.mp4", real: true, tile: { wide: true },
@@ -20,22 +21,22 @@
       desc: "Bildregie für Live-Sendungen beim Berner Gemeinschaftsradio." },
     { title: "We Should Get Married", type: "Musikvideo", role: "Kamera, Color Grading", img: "img/photobooth-still.webp", thumb: "img/photobooth-thumb.webp", video: "video/photobooth.mp4", real: true,
       desc: "Musikvideo für Jonny Breaux zum Song „We Should Get Married“." },
+    { title: "Necessaire", type: "Museumsfilm", role: "Schnitt, Color Grading", img: "img/necessaire-still.webp", thumb: "img/necessaire-thumb.webp", video: "video/necessaire.mp4", real: true, tile: { wide: true, size: 0.62, pair: "Queer durch Berlin" },
+      desc: "Ein Video zu einem Necessaire für das Rätische Museum in Chur." },
+    { title: "Queer durch Berlin", type: "Dokumentarfilm", role: "Regie", img: "img/queer-berlin-still.webp", thumb: "img/queer-berlin-thumb.webp", video: "video/queer-berlin.mp4", real: true, tile: { tall: true, size: 1 },
+      desc: "Ein Dokumentarfilm über queeres Leben in Berlin." },
     { title: "Brennpunkt Welschdörfli", type: "Reportage", role: "Regie, Schnitt", img: "img/welschdoerfli-still.webp", thumb: "img/welschdoerfli-thumb.webp", video: "video/welschdoerfli.mp4", real: true,
       desc: "" },
-    { title: "Queer durch Berlin", type: "Dokumentarfilm", role: "Regie", img: "img/queer-berlin-still.webp", thumb: "img/queer-berlin-thumb.webp", video: "video/queer-berlin.mp4", real: true,
-      desc: "Ein Dokumentarfilm über queeres Leben in Berlin." },
     { title: "BERN131", type: "Imagefilm", role: "Kamera", img: "img/bern131-still.webp", thumb: "img/bern131-thumb.webp", video: "video/bern131.mp4", real: true,
       desc: "Für Losinger Marazzi. Ein Blick in die Vorfertigung für das Bauprojekt BERN131." },
     { title: "Projekt 11", type: "Platzhalter", role: "", img: "img/platzhalter-city-still.webp", thumb: "img/platzhalter-city-thumb.webp", video: "video/platzhalter-city.mp4", real: false,
       desc: "Platzhalter. Hier kommt ein eigenes Projekt hin." },
     { title: "Patschifig", type: "3D-Intro (fiktiv)", role: "Alles selbst, in Blender", img: "img/patschifig-still.webp", thumb: "img/patschifig-thumb.webp", video: "video/patschifig.mp4", real: true,
       desc: "Fiktives Intro für ein Format bei RTR. Komplett selbst in Blender gebaut, beleuchtet, animiert und gerendert." },
-    { title: "Cheer me on", type: "Dokumentarfilm", role: "Kamera", img: "img/cheer-me-on-still.webp", thumb: "img/cheer-me-on-thumb.webp", video: "video/cheer-me-on.mp4", real: true,
+    { title: "Cheer me on", type: "Dokumentarfilm", role: "Kamera", img: "img/cheer-me-on-still.webp", thumb: "img/cheer-me-on-thumb.webp", video: "video/cheer-me-on.mp4", real: true, tile: { wide: true, size: 0.6 },
       desc: "" },
-    { title: "Leben mit dem Wind", type: "Dokumentarfilm", role: "Alles selbst", img: "img/leben-mit-dem-wind-still.webp", thumb: "img/leben-mit-dem-wind-thumb.webp", video: "video/leben-mit-dem-wind.mp4", real: true,
+    { title: "Leben mit dem Wind", type: "Dokumentarfilm", role: "Alles selbst", img: "img/leben-mit-dem-wind-still.webp", thumb: "img/leben-mit-dem-wind-thumb.webp", video: "video/leben-mit-dem-wind.mp4", real: true, tile: { wide: true, size: 0.6 },
       desc: "" },
-    { title: "Necessaire", type: "Museumsfilm", role: "Schnitt, Color Grading", img: "img/necessaire-still.webp", thumb: "img/necessaire-thumb.webp", video: "video/necessaire.mp4", real: true,
-      desc: "Ein Video zu einem Necessaire für das Rätische Museum in Chur." },
     { title: "Projekt 12", type: "Platzhalter", role: "", img: "img/platzhalter-portrait-still.webp", thumb: "img/platzhalter-portrait-thumb.webp", video: "video/platzhalter-portrait.mp4", real: false,
       desc: "Platzhalter. Hier kommt ein eigenes Projekt hin." },
   ];
@@ -96,11 +97,15 @@
         // optional pro Projekt: tile: { size: 0.55, align: "right", wide: true }
         const opt = p.tile || {};
         const r1 = rand(), r2 = rand(), r3 = rand();
-        const tall = opt.wide ? false : r1 > 0.55;
+        const tall = opt.wide ? false : opt.tall ? true : r1 > 0.55;
         const w = opt.size ? maxW * opt.size : maxW * (0.72 + r2 * 0.28);
         const h = tall ? w * 4 / 3 : w * 10 / 16;
         const free = colW - GAP - w;
-        const x = c * colW + GAP / 2 + (opt.align === "right" ? free : opt.align === "left" ? 0 : r3 * free);
+        // Paar (z.B. Necessaire neben Berlin): zur Partner-Spalte hin ausrichten
+        const partnerOf = (q) => PROJECTS.findIndex((o) => o.title === q);
+        const pi = opt.pair ? partnerOf(opt.pair) : PROJECTS.findIndex((o) => o.tile && o.tile.pair === p.title);
+        const align = opt.align || (pi < 0 ? "" : (pi % nCols) > c ? "right" : "left");
+        const x = c * colW + GAP / 2 + (align === "right" ? free : align === "left" ? 0 : r3 * free);
         const y0 = FADE + 20 + j * slot + rand() * Math.max(0, Math.min(slot - GAP - h, H * 0.35));   // startet unter der Ausblend-Zone, bleibt im eigenen Slot
         const b = document.createElement("button");
         b.type = "button";
@@ -111,10 +116,22 @@
         b.setAttribute("aria-label", `${p.title}: Video ansehen`);
         b.addEventListener("click", () => openProject(PROJECTS.indexOf(p)));
         field.appendChild(b);
-        items.push({ el: b, y0, h });
+        items.push({ el: b, y0, h, p });
       });
       columns.push({ speed, maxH, items, H });
     }
+    // Paare auf gleiche Höhe bringen: wenn der Partner mittig im Bild ist,
+    // steht das Paar-Bild mittig daneben (nur wenn es in der Spalte Platz hat)
+    columns.forEach((col) => col.items.forEach((t) => {
+      const opt = t.p.tile || {}; if (!opt.pair) return;
+      const pc = columns.find((cc) => cc.items.some((u) => u.p.title === opt.pair)); if (!pc || pc === col) return;
+      const u = pc.items.find((v) => v.p.title === opt.pair);
+      const S = (cc) => TRAVEL * cc.H * cc.speed;
+      const wp = (u.y0 - (pc.H - u.h) / 2) / S(pc);
+      const y0 = (col.H - t.h) / 2 + wp * S(col);
+      const free = col.items.every((v) => v === t || y0 + t.h + GAP <= v.y0 || v.y0 + v.h + GAP <= y0);
+      if (free && y0 >= FADE + 20) t.y0 = y0;
+    }));
     // Tempo so strecken, dass das letzte Bild erst kurz vor Ende des Abschnitts oben raus ist
     const pExit = Math.max(...columns.map((col) => Math.max(...col.items.map((t) => t.y0 + t.h)) / (TRAVEL * col.H * col.speed)));
     const stretch = pExit / 0.94;
@@ -198,7 +215,7 @@
   });
 
   /* ---------- Logo/Links dunkel über dem hellen Kontaktbereich ---------- */
-  const lightSecs = $$(".band--bone");
+  const lightSecs = [...$$(".band--bone"), $("#shards .shards__stage")].filter(Boolean);
   const updateHeader = () => {
     const on = lightSecs.some((el) => { const r = el.getBoundingClientRect(); return r.top < 40 && r.bottom > 40; });
     document.body.classList.toggle("on-light", on);
@@ -233,6 +250,7 @@
   const TRANSITION = "leak";
   const shardsSec = $("#shards");
   const aboutme = $("#aboutme");
+  const stage = $("#shards .shards__stage");
   const focusImg = $("#focusImg"), vf = $("#viewfinder"), vfAf = $("#vfAf"), aboutText = $("#aboutText");
   const contact = $(".contact");
 
@@ -410,6 +428,7 @@
       else if (sr.top <= 0 && sr.bottom > 0) I = 1 - easeInOut(clamp((sp - 0.02) / 0.3, 0, 1));
       drawLeak(I, now);
       aboutme.style.visibility = sr.top > 2 ? "hidden" : "";
+      stage.classList.toggle("is-light", sr.top <= 2);
       const o = sr.top <= 0 ? clamp((sp - 0.02) / 0.35, 0, 1) : 0;   // Porträt: überbelichtet → normal
       focusImg.style.filter = o < 0.999 ? `brightness(${1.7 - o * 0.7}) contrast(${0.8 + o * 0.2}) saturate(${0.6 + o * 0.4})` : "";
       focusImg.style.transform = "";

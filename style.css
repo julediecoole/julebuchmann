@@ -8,6 +8,7 @@
   --bone:  #99a38e;   /* Big Fish: Text und heller Kontaktbereich */
   --ash:   #646c5c;   /* gedämpfter Text */
   --deco:  #121a24;   /* grosse Hintergrundschrift auf der Hauptfläche */
+  --paper: #e7e9df;   /* heller Grund nach dem Light Leak (Über mich) */
   /* färbt die Platzhalterbilder passend ein. Bei eigenen Fotos auf
      "saturate(1)" setzen, wenn sie unverändert erscheinen sollen. */
   --img-filter: grayscale(1) sepia(.35) hue-rotate(45deg) saturate(.7) brightness(.85);
@@ -256,8 +257,15 @@ a { color: inherit; }
    steigen also schon auf, während die letzten Bilder rauslaufen.        */
 .shards {
   height: 260vh; margin-top: -100vh; pointer-events: none;
-  background: linear-gradient(to bottom, transparent 0, transparent 100vh, var(--blood) 100vh);
+  background: linear-gradient(to bottom, transparent 0, transparent 100vh, var(--paper) 100vh);
+  color: var(--ink);
 }
+/* Nach dem Light Leak: heller Grund, dunkle Schrift */
+.shards__stage.is-light { background: var(--paper); }
+.shards .aboutme__text, .shards .aboutme__name { color: var(--ink); }
+.shards .aboutme__text .label { color: #3d4436; }
+.shards .aboutme__text p:not(.label) { color: #1b2030; }
+.shards .aboutme__photo img { box-shadow: 0 24px 50px rgba(0,0,8,.22); }
 .anchor { position: absolute; top: 55%; }
 .shards__stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
 .aboutme {
@@ -295,15 +303,15 @@ a { color: inherit; }
 
 /* ---------- KONTAKT ---------- */
 .contact { padding-block: 10vh 14vh; overflow: hidden; }
-.marquee--warp { transform: perspective(700px) rotateX(18deg) rotate(-2deg); color: var(--blood); margin-bottom: 4vh; }
+.marquee--warp { transform: perspective(700px) rotateX(18deg) rotate(-2deg); color: var(--bone); margin-bottom: 4vh; }
 .contact__inner { display: grid; gap: 18px; justify-items: start; }
 .contact__mail {
-  margin: 0; font-family: var(--font-display); font-size: clamp(30px, 7vw, 110px); line-height: 1;
-  overflow-wrap: anywhere; min-width: 0; max-width: 100%;
+  margin: 0; font-family: var(--font-display); font-size: clamp(22px, 7vw, 110px); line-height: 1; white-space: nowrap;
+  min-width: 0; max-width: 100%;
   user-select: all;
 }
 .contact__actions { display: flex; flex-wrap: wrap; gap: 10px; }
-.contact__status { min-height: 1.4em; margin: 0; font-size: 13px; color: var(--blood); }
+.contact__status { min-height: 1.4em; margin: 0; font-size: 13px; color: var(--ember); }
 
 /* ---------- FOOTER ---------- */
 .footer { position: relative; z-index: 2; background: var(--ink); }
