@@ -1,4 +1,4 @@
-# Lädt die Website bei jedem Push auf "main" automatisch zu Infomaniak hoch.
+# Lädt die Website zu Infomaniak hoch (FTPS).
 # Benötigte GitHub-Secrets (Repo → Settings → Secrets and variables → Actions):
 #   FTP_SERVER    z.B. abcd.ftp.infomaniak.com
 #   FTP_USERNAME  FTP/SSH-Benutzer aus dem Infomaniak Manager
@@ -6,9 +6,11 @@
 #   FTP_DIR       Zielordner der Website auf dem Server, mit / am Ende, z.B. /sites/julebuchmann.ch/
 name: Deploy zu Infomaniak
 
+# Im Moment nur von Hand: Actions → "Deploy zu Infomaniak" → "Run workflow".
+# Für automatischen Upload bei jedem Push wieder einfügen:
+#   push:
+#     branches: [main]
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 jobs:

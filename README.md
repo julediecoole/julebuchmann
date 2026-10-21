@@ -7,5 +7,5 @@ Regie & Kamera. Statische Website (HTML/CSS/JS, ohne Libraries).
 - `video/` – **nicht im Repo** (zu gross), liegt direkt auf dem Server
 - Projekte bearbeiten: Liste `PROJECTS` oben in `script.js`
 
-Jeder Push auf `main` lädt die Seite automatisch per FTPS zu Infomaniak hoch
-(`.github/workflows/deploy.yml`).
+Hochladen zu Infomaniak: im Moment von Hand über Actions → „Deploy zu Infomaniak“ → „Run workflow“
+(`.github/workflows/deploy.yml`, braucht die Secrets FTP_SERVER, FTP_USERNAME, FTP_PASSWORD, FTP_DIR).
