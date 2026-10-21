@@ -27,6 +27,8 @@
       desc: "Ein Dokumentarfilm über queeres Leben in Berlin." },
     { title: "Brennpunkt Welschdörfli", type: "Reportage", role: "Regie, Schnitt", img: "img/welschdoerfli-still.webp", thumb: "img/welschdoerfli-thumb.webp", video: "video/welschdoerfli.mp4", real: true,
       desc: "" },
+    { title: "Segelschule Thunersee", type: "Lehrvideo-Reihe", role: "Alles selbst, inkl. Drohne", img: "img/segelschule-still.webp", thumb: "img/segelschule-thumb.webp", video: "video/rueckwaerts-anlegen.mp4", real: true, tile: { tall: true, size: 1 },
+      desc: "Videoreihe für die Segelschule Thunersee: Infovideos, wie man Motorboot fährt. Hier: rückwärts anlegen." },
     { title: "BERN131", type: "Imagefilm", role: "Kamera", img: "img/bern131-still.webp", thumb: "img/bern131-thumb.webp", video: "video/bern131.mp4", real: true,
       desc: "Für Losinger Marazzi. Ein Blick in die Vorfertigung für das Bauprojekt BERN131." },
     { title: "Hochwasser", type: "Forschungsfilm", role: "Alles selbst", img: "img/hochwasser-still.webp", thumb: "img/hochwasser-thumb.webp", video: "video/hochwasser.mp4", real: true,
