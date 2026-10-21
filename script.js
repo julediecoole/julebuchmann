@@ -37,7 +37,7 @@
       desc: "" },
     { title: "Leben mit dem Wind", type: "Dokumentarfilm", role: "Alles selbst", img: "img/leben-mit-dem-wind-still.webp", thumb: "img/leben-mit-dem-wind-thumb.webp", video: "video/leben-mit-dem-wind.mp4", real: true, tile: { wide: true, size: 0.6 },
       desc: "" },
-    { title: "Nacht der Forschung", type: "Eventfilm", role: "", img: "img/nachtderforschung-still.webp", thumb: "img/nachtderforschung-thumb.webp", video: "video/nachtderforschung.mp4", real: true,
+    { title: "Nacht der Forschung", type: "Eventfilm", role: "Alles selbst", img: "img/nachtderforschung-still.webp", thumb: "img/nachtderforschung-thumb.webp", video: "video/nachtderforschung.mp4", real: true,
       desc: "Nacht der Forschung 2025 an der Universität Bern: Das Mobiliar Lab für Naturrisiken zeigt mit einem Lego-Modell, wie Hochwasser entsteht." },
   ];
 
