@@ -497,7 +497,7 @@ a { color: inherit; }
 }
 
 /* Welle, wo nach dem hellen "Über mich" das Dunkelblau anfängt (wie nach dem Showreel) */
-.contact { z-index: 4; overflow: visible; overflow-x: clip; }   /* Welle darf nach oben rausragen */
+.contact { z-index: 4; overflow: visible; overflow-x: clip; transform: translateZ(0); }   /* Safari: eigene Ebene, sonst malt das "Über mich" (translateZ) über die Welle */   /* Welle darf nach oben rausragen */
 
 /* "Was willst du erzählen?": gleicher Showreel-Effekt wie bei den grossen Sätzen */
 .marquee--knock .marquee__track { position: relative; isolation: isolate; mix-blend-mode: screen; }
