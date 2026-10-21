@@ -299,6 +299,8 @@
   const reelBox = $("#showreel");
   const reelSec = $(".reel"), cards = $$(".reel__card").map((el) => ({ el, par: parseFloat(el.dataset.par), base: getComputedStyle(el).transform }));
   const marquees = $$(".marquee").map((m) => ({ m, track: $(".marquee__track", m), speed: parseFloat(m.dataset.speed), x: 0 }));
+  // Schriftgrösse neu einpassen, sobald die Schriften wirklich geladen sind
+  if (document.fonts) { const refit = () => marquees.forEach((q) => { q.fitW = 0; }); document.fonts.ready.then(refit); document.fonts.addEventListener("loadingdone", refit); }
   const work = $(".work");
   /* Übergang zu "Über mich": "none" (fixe Kante, Standard), "leak" (Light Leak), "iris" (Kamerablende) oder "focus" (Schärfe ziehen) */
   const TRANSITION = "none";
