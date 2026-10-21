@@ -235,10 +235,10 @@
     const t = $("#vorstellung"); scrollTo({ top: t.getBoundingClientRect().top + scrollY, behavior: "smooth" });
   });
   /* ---------- Easter Eggs ---------- */
-  // 2) Greenscreen-Foto anklicken: Grün weg, Jule steht am Palmenstrand; nochmal klicken = zurück ins Studio
+  // 2) Greenscreen-Foto anklicken: Grün weg; durchklicken: Strand, Berge, Schnee, zurück ins Studio
   (() => {
     const card = $("#greenCard"); if (!card) return;
-    const srcs = ["img/making-greenscreen.webp", "img/egg-greenscreen-strand.webp"];
+    const srcs = ["img/making-greenscreen.webp", "img/egg-greenscreen-strand.webp", "img/egg-greenscreen-berge.webp", "img/egg-greenscreen-schnee.webp"];
     srcs.slice(1).forEach((u) => { const i = new Image(); i.src = u; });   // vorladen, damit es ohne Flackern wechselt
     let k = 0;
     card.addEventListener("click", () => {
