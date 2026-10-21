@@ -259,32 +259,13 @@ a { color: inherit; }
 .tile:hover::after, .tile:focus-visible::after { opacity: 1; transform: scale(1); }
 .tile:hover .tile__cap, .tile:focus-visible .tile__cap { opacity: 1; }
 
-/* ---------- ÜBER MICH: Morgendämmerung ----------
-   Kein Pinning mehr: die Sektion scrollt normal. Oben ein langer, weicher
-   Verlauf vom Dunkel ins helle Grün, darin ein Lichtschimmer und eine
-   feine Lichtkante, die beim Scrollen leicht mitwandern.               */
-.shards {
-  position: relative; color: var(--ink); overflow: hidden;
-  padding: 72vh 0 16vh;
-  background: linear-gradient(to bottom,
-    var(--blood) 0, #050b12 10vh, #1a231f 24vh, #4a5546 38vh, #8d987f 50vh, #c6ccb8 60vh, var(--paper) 70vh);
-}
-.dawn { position: absolute; left: 0; right: 0; top: 0; height: 80vh; pointer-events: none; }
-.dawn__glow {
-  position: absolute; left: -20%; right: -20%; top: 22vh; height: 46vh;
-  background: radial-gradient(50% 50% at 50% 50%, rgba(231,236,215,.38), rgba(185,194,172,.12) 45%, transparent 70%);
-  filter: blur(10px); will-change: transform, opacity;
-}
-.dawn__line {
-  position: absolute; left: 0; right: 0; top: 40vh; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(231,236,215,.7) 30%, rgba(255,255,245,.9) 50%, rgba(231,236,215,.7) 70%, transparent);
-  box-shadow: 0 0 18px 2px rgba(231,236,215,.35); transform-origin: center; will-change: transform, opacity;
-}
+/* ---------- ÜBER MICH: heller Teil, fixe Kante zum dunklen Teil ---------- */
+.shards { position: relative; color: var(--ink); background: var(--paper); padding: 16vh 0; }
 .shards .aboutme__text, .shards .aboutme__name { color: var(--ink); }
 .shards .aboutme__text .label { color: #3d4436; }
 .shards .aboutme__text p:not(.label) { color: #1b2030; }
 .shards .aboutme__photo img { box-shadow: 0 24px 50px rgba(0,0,8,.22); }
-.anchor { position: absolute; top: -12vh; }
+.anchor { position: absolute; top: -16vh; }
 .shards__stage { position: relative; }
 .aboutme {
   position: relative; margin: 0 auto;
@@ -381,7 +362,7 @@ a { color: inherit; }
   .top-nav { gap: 12px; }
   .aboutme { grid-template-columns: minmax(0, 1fr); gap: 18px; }
   .aboutme__photo img { aspect-ratio: 4 / 5; max-height: 52vh; }
-  .shards { padding-top: 60vh; }
+  .shards { padding-block: 12vh; }
   .aboutme__photo figcaption { display: none; }
   .aboutme__text { gap: 10px; }
   .aboutme__text p:not(.label) { font-size: 14px; }

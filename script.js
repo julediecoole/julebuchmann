@@ -228,7 +228,7 @@
   const shardsEl = $("#shards");
   const updateHeader = () => {
     const sh = shardsEl.getBoundingClientRect();
-    const on = (sh.top + vh * 0.6 < 40 && sh.bottom > 40) ||   // heller Teil von "Über mich"
+    const on = (sh.top < 40 && sh.bottom > 40) ||   // heller Teil von "Über mich"
       lightSecs.some((el) => { const r = el.getBoundingClientRect(); return r.top < 40 && r.bottom > 40; });
     document.body.classList.toggle("on-light", on);
   };
@@ -257,14 +257,13 @@
   const reelSec = $(".reel"), cards = $$(".reel__card").map((el) => ({ el, par: parseFloat(el.dataset.par), base: getComputedStyle(el).transform }));
   const marquees = $$(".marquee").map((m) => ({ m, track: $(".marquee__track", m), speed: parseFloat(m.dataset.speed), x: 0 }));
   const work = $(".work");
-  /* Übergang zu "Über mich": "dawn" (Morgendämmerung, Standard), "leak" (Light Leak), "iris" (Kamerablende) oder "focus" (Schärfe ziehen) */
-  const TRANSITION = "dawn";
+  /* Übergang zu "Über mich": "none" (fixe Kante, Standard), "leak" (Light Leak), "iris" (Kamerablende) oder "focus" (Schärfe ziehen) */
+  const TRANSITION = "none";
   const shardsSec = $("#shards");
   const aboutme = $("#aboutme");
   const stage = $("#shards .shards__stage");
   const focusImg = $("#focusImg"), vf = $("#viewfinder"), vfAf = $("#vfAf"), aboutText = $("#aboutText");
   const contact = $(".contact");
-  const dawnGlow = $("#dawnGlow"), dawnLine = $("#dawnLine");
 
   /* Maus = leichte Kamerabewegung im Intro */
   let mx = 0, my = 0, smx = 0, smy = 0;
@@ -418,25 +417,9 @@
     /* Bergstücke brechen auseinander */
     /* Über mich: Übergang */
     const sr = shardsSec.getBoundingClientRect();
-    if (TRANSITION === "dawn") {
-      if (sr.top < vh * 1.2 && sr.bottom > 0) {
-        // Lichtschimmer und Lichtkante wandern sanft mit
-        const k = clamp(1 - sr.top / vh, 0, 1.6);
-        dawnGlow.style.transform = `translate3d(0, ${-k * 8}vh, 0) scale(${0.85 + k * 0.25})`;
-        dawnGlow.style.opacity = String(clamp(k * 1.2, 0, 1));
-        dawnLine.style.transform = `translate3d(0, ${-k * 4}vh, 0) scaleX(${clamp(0.2 + k * 0.9, 0, 1)})`;
-        dawnLine.style.opacity = String(clamp(k * 1.5, 0, 1) * (1 - clamp((k - 1.1) / 0.4, 0, 1)));
-        // Porträt entwickelt sich wie ein Polaroid
-        const ir = focusImg.getBoundingClientRect();
-        const o = easeInOut(clamp((vh * 0.95 - ir.top) / (vh * 0.6), 0, 1));
-        focusImg.style.filter = o < 0.999 ? `brightness(${1.6 - o * 0.6}) contrast(${0.6 + o * 0.4}) saturate(${0.15 + o * 0.85}) sepia(${(1 - o) * 0.35})` : "";
-        const tr = aboutText.getBoundingClientRect();
-        const t = clamp((vh * 0.9 - tr.top) / (vh * 0.35), 0, 1);
-        aboutText.style.opacity = String(t);
-        aboutText.style.transform = `translate3d(0, ${(1 - t) * 24}px, 0)`;
-        aboutText.style.pointerEvents = t > 0.5 ? "auto" : "none";
-        vf.style.display = "none";
-      }
+    if (TRANSITION === "none") {
+      // fixe Kante, keine Effekte
+      vf.style.display = "none";
     } else if (TRANSITION === "leak") {
       // brennt rein, während die Sektion von unten kommt; blendet aus, sobald sie oben steht
       const sp = stickyProgress(shardsSec);
