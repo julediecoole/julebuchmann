@@ -546,3 +546,5 @@ button.contact__mail:hover, button.contact__mail[aria-expanded="true"] { text-de
 /* Making-of schiebt sich über das Ende der Bildwolke (statt "Über mich" wie vorher): kein leerer Raum */
 .reel { margin-top: -80vh; z-index: 3; }
 @media (prefers-reduced-motion: reduce) { .reel { margin-top: 0; } }
+/* Nur für Suchmaschinen und Screenreader sichtbar */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
