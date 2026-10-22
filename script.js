@@ -13,8 +13,8 @@ const videoUrl = (path) => VIDEO_BASE + path.replace(/^video\//, "");
   /* ======================================================
      PROJEKTE – hier eigene Projekte eintragen.
      img:   grosses Standbild (wird im Player angezeigt, bis das Video läuft)
-     thumb: kleines Vorschaubild fürs Bilderfeld (ca. 480 px breit)
-     video: Pfad zur .mp4-Datei (die Platzhalter-Videos in /video ersetzen)
+     thumb: Vorschaubild fürs Bilderfeld (ca. 1280 px breit)
+     video: "video/<name>.mp4" – liegt bei Cloudflare R2 (siehe VIDEO_BASE)
      real:  true = echtes Projekt, false = Platzhalter
      tile:  optional, z.B. { wide: true } = Querformat, { tall: true, size: 1 } = grosses Hochformat,
             size = Grösse (0–1), align: "left"/"right"
