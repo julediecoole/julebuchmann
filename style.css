@@ -248,9 +248,9 @@ a { color: inherit; }
 }
 .scatter--k { left: 2%;  top: 58%; }
 .scatter--d { left: 2%;  top: 82%; }
-.scatter--r { left: 79%; top: 2%; }
-.scatter--i { left: 79%; top: 36%; }
-.scatter--w { left: 78%; top: 70%; }
+.scatter--r { left: auto; right: 4%; top: 2%; }
+.scatter--i { left: auto; right: 4%; top: 36%; }
+.scatter--w { left: auto; right: 4%; top: 70%; }
 .scatter--t { left: 56%; top: 78%; }
 .reel__cta { position: relative; z-index: 3; display: grid; gap: 12px; justify-items: start; }
 
