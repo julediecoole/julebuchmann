@@ -62,6 +62,16 @@
     </div>
   </section>
 
+
+  <!-- ============ ARBEITEN: verstreute Bilder, die beim Scrollen
+       unterschiedlich schnell nach oben treiben. Klick = Video. ============ -->
+  <section class="work band band--blood" id="arbeiten" data-scene="Arbeiten" aria-label="Arbeiten">
+    <div class="work__stage" id="workStage">
+      <p class="work__hint label">Arbeiten — Bild anklicken für das ganze Video</p>
+      <div class="work__field" id="workField"><!-- wird von script.js gefüllt --></div>
+    </div>
+  </section>
+
   <!-- ============ LAUFSCHRIFT + STILL-COLLAGE ============ -->
   <section class="reel band band--blood" data-scene="Laufschrift" aria-label="Kamera, Regie, Doku, Werbung, Image, Ton">
     <div class="reel__collage">
@@ -71,18 +81,9 @@
       <span class="scatter scatter--w" data-par="0.2" aria-hidden="true">Werbung</span>
       <span class="scatter scatter--i" data-par="-0.25" aria-hidden="true">Image</span>
       <span class="scatter scatter--t" data-par="0.1" aria-hidden="true">Ton</span>
-      <img class="reel__card reel__card--a" data-par="-0.12" src="img/making-picknick.webp" alt="Making-of: Dreh am Fluss mit Kamera und Tonangel" width="1600" height="1000">
-      <img class="reel__card reel__card--b" data-par="0.10"  src="img/making-holzstube.webp" alt="Making-of: Interview-Setup mit Licht in einer Holzstube" width="900" height="1200">
+      <div class="reel__card reel__card--a fx fx--rain" data-par="-0.12"><img src="img/making-picknick.webp" alt="Making-of: Dreh am Fluss mit Kamera und Tonangel" width="1600" height="1000"><canvas class="fx__rain" aria-hidden="true"></canvas></div>
+      <div class="reel__card reel__card--b fx fx--lamp" data-par="0.10"><img src="img/making-holzstube.webp" alt="Making-of: Interview-Setup mit Licht in einer Holzstube" width="900" height="1200"><img class="fx__off" src="img/making-holzstube-aus.webp" alt="" aria-hidden="true" width="900" height="1200"></div>
       <img class="reel__card reel__card--c" id="greenCard" data-par="-0.22" src="img/making-greenscreen.webp" alt="Making-of: Greenscreen-Dreh mit Filmklappe und Tonangel" width="900" height="1200">
-    </div>
-  </section>
-
-  <!-- ============ ARBEITEN: verstreute Bilder, die beim Scrollen
-       unterschiedlich schnell nach oben treiben. Klick = Video. ============ -->
-  <section class="work band band--blood" id="arbeiten" data-scene="Arbeiten" aria-label="Arbeiten">
-    <div class="work__stage" id="workStage">
-      <p class="work__hint label">Arbeiten — Bild anklicken für das ganze Video</p>
-      <div class="work__field" id="workField"><!-- wird von script.js gefüllt --></div>
     </div>
   </section>
 
@@ -115,9 +116,12 @@
       <div class="marquee__track"><span>Was willst du erzählen?</span></div>
     </div>
     <div class="band__inner contact__inner">
-      <p class="contact__mail"><span id="mailText">jule.buchmann@bluewin.ch</span></p>
-      <div class="contact__actions">
-        <a class="pill pill--ink" href="mailto:jule.buchmann@bluewin.ch">Mail schicken</a>
+      <div class="mailbox">
+        <button class="contact__mail" type="button" id="mailBtn" aria-haspopup="true" aria-expanded="false" aria-controls="mailMenu">jule.buchmann@bluewin.ch</button>
+        <div class="mailmenu" id="mailMenu" hidden>
+          <button class="mailmenu__item" type="button" id="mailCopy">Adresse kopieren</button>
+          <a class="mailmenu__item" href="mailto:jule.buchmann@bluewin.ch">Mail schreiben</a>
+        </div>
       </div>
     </div>
   </section>
@@ -153,6 +157,7 @@
         <p id="plDesc"></p>
       </div>
       <div class="player__navs">
+        <button class="player__nav" type="button" id="plFull" aria-label="Video im Vollbild">Vollbild <svg class="ico" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true" focusable="false"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg></button>
         <button class="player__nav" type="button" id="plPrev" aria-label="Vorheriges Projekt"><svg class="ico" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true" focusable="false"><path d="M14 8H2M7 3 2 8l5 5"/></svg> Zurück</button>
         <span class="player__count" id="plCount"></span>
         <button class="player__nav" type="button" id="plNext" aria-label="Nächstes Projekt">Weiter <svg class="ico" viewBox="0 0 16 16" width="11" height="11" aria-hidden="true" focusable="false"><path d="M2 8h12M9 3l5 5-5 5"/></svg></button>

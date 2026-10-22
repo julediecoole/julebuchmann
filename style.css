@@ -508,3 +508,44 @@ a { color: inherit; }
 .footer__bar { padding-right: calc(var(--gutter-r) + 26px); }
 /* Pfeile und Kreuz als kleine Zeichnungen statt Schriftzeichen: so bleibt es bei genau 2 Schriften */
 .ico { display: inline-block; vertical-align: -1px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- Reihenfolge neu: Arbeiten vor Making-of -> "Über mich" schiebt sich nicht mehr über die Bildwolke ---------- */
+.shards { margin-top: 0; }
+
+/* ---------- Making-of-Fotos mit kleinen Effekten ---------- */
+.fx { overflow: hidden; }
+.fx img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Wohnzimmer: Lampe geht an und aus (zweites Bild mit ausgeschalteter Lampe drüber, flackert ein/aus) */
+.fx__off { opacity: 0; animation: lamp 9s steps(1, end) infinite; }
+@keyframes lamp {
+  0%, 52% { opacity: 0; }
+  53% { opacity: 1; } 54% { opacity: 0; } 55% { opacity: 1; } 56% { opacity: .2; } 57%, 84% { opacity: 1; }
+  85% { opacity: 0; } 86% { opacity: 1; } 87%, 100% { opacity: 0; }
+}
+/* Fluss: plötzlicher Regen (Tropfen auf einer Zeichenfläche, Bild wird dabei etwas grauer) */
+.fx--rain img { transition: filter 1.2s ease; }
+.fx--rain.is-raining img { filter: brightness(.78) saturate(.7) contrast(.95); }
+.fx__rain { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; transition: opacity 1s ease; }
+.fx--rain.is-raining .fx__rain { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .fx__off { animation: none; } .fx__rain { display: none; } }
+
+/* ---------- Kontakt: Mailadresse antippen -> kopieren oder Mail schreiben ---------- */
+.contact__actions { display: none; }
+.mailbox { position: relative; display: grid; justify-items: center; gap: 12px; }
+button.contact__mail {
+  background: none; border: 0; padding: 4px 2px; cursor: pointer; color: var(--bone);
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; text-decoration-color: rgba(128, 216, 212, .45);
+  user-select: none; transition: text-decoration-color .2s;
+}
+button.contact__mail:hover, button.contact__mail[aria-expanded="true"] { text-decoration-color: var(--bone); }
+.mailmenu { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.mailmenu[hidden] { display: none; }
+.mailmenu__item {
+  font: 800 10px/1 var(--font-sans); font-stretch: 125%; letter-spacing: .08em; text-transform: uppercase; text-decoration: none;
+  padding: 9px 14px; border-radius: 999px; cursor: pointer;
+  color: var(--bone); background: transparent; border: 1px solid rgba(128, 216, 212, .55); transition: background .2s, color .2s;
+}
+.mailmenu__item:hover, .mailmenu__item:focus-visible { background: var(--bone); color: var(--ink); }
+/* Making-of schiebt sich über das Ende der Bildwolke (statt "Über mich" wie vorher): kein leerer Raum */
+.reel { margin-top: -80vh; z-index: 3; }
+@media (prefers-reduced-motion: reduce) { .reel { margin-top: 0; } }

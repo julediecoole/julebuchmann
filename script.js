@@ -123,7 +123,7 @@ const videoUrl = (path) => VIDEO_BASE + path.replace(/^video\//, "");
         b.style.width = w + "px";
         b.innerHTML = `<img src="${p.thumb}" alt="" loading="lazy" decoding="async" style="aspect-ratio:${tall ? "3/4" : "16/10"}"><span class="tile__cap">${p.title} · ${p.type}</span>`;
         b.setAttribute("aria-label", `${p.title}: Video ansehen`);
-        b.addEventListener("click", () => openProject(PROJECTS.indexOf(p)));
+        b.addEventListener("click", () => openFromPage(PROJECTS.indexOf(p)));
         field.appendChild(b);
         items.push({ el: b, y0, h, p });
       });
@@ -253,10 +253,53 @@ const videoUrl = (path) => VIDEO_BASE + path.replace(/^video\//, "");
     });
   })();
 
-  $("#plClose").addEventListener("click", closePlayer);
+  /* ---------- Zurück-Knopf des Browsers ----------
+     Menü und Logo springen ohne #-Adresse; jeder Sprung und jedes geöffnete Video
+     ist ein eigener Schritt im Verlauf. "Zurück" bringt genau an die vorherige Stelle
+     bzw. schliesst den Player statt die Seite zu verlassen.                         */
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  const cleanUrl = location.pathname + location.search;
+  if (location.hash) history.replaceState(history.state, "", cleanUrl);
+  const remember = () => history.replaceState({ ...(history.state || {}), y: scrollY }, "", cleanUrl);
+  const targetY = (sel) => {
+    if (sel === "#top") return 0;
+    const el = document.querySelector(sel); if (!el) return null;
+    return el.getBoundingClientRect().top + scrollY;
+  };
+  document.querySelectorAll('a[href^="#"]').forEach((a) => a.addEventListener("click", (e) => {
+    const y = targetY(a.getAttribute("href")); if (y == null) return;
+    e.preventDefault();
+    remember();
+    history.pushState({ y }, "", cleanUrl);
+    scrollTo({ top: y, behavior: "smooth" });
+  }));
+  let playerInHistory = false;
+  addEventListener("popstate", (e) => {
+    if (player.open) { playerInHistory = false; closePlayer(); return; }
+    const y = e.state && typeof e.state.y === "number" ? e.state.y : 0;
+    scrollTo({ top: y, behavior: "smooth" });
+  });
+  const openFromPage = (i) => {   // Player öffnen = ein Schritt im Verlauf
+    if (!player.open && !playerInHistory) { remember(); history.pushState({ player: true, y: scrollY }, "", cleanUrl); playerInHistory = true; }
+    openProject(i);
+  };
+  const closeFromPage = () => { if (playerInHistory) history.back(); else closePlayer(); };
+
+  /* Vollbild: Knopf im Player oder Doppelklick aufs Video (iPhone: eigener Vollbild-Player) */
+  const goFull = () => {
+    const v = plVideo;
+    if (document.fullscreenElement) return document.exitFullscreen();
+    if (v.requestFullscreen) v.requestFullscreen().catch(() => {});
+    else if (v.webkitRequestFullscreen) v.webkitRequestFullscreen();
+    else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();
+  };
+  $("#plFull").addEventListener("click", goFull);
+  plVideo.addEventListener("dblclick", goFull);
+
+  $("#plClose").addEventListener("click", closeFromPage);
   $("#plPrev").addEventListener("click", () => openProject(current - 1));
   $("#plNext").addEventListener("click", () => openProject(current + 1));
-  player.addEventListener("cancel", (e) => { e.preventDefault(); closePlayer(); });
+  player.addEventListener("cancel", (e) => { e.preventDefault(); closeFromPage(); });
   addEventListener("keydown", (e) => {
     if (!player.open) return;
     if (e.key === "ArrowRight") openProject(current + 1);
@@ -571,4 +614,52 @@ const videoUrl = (path) => VIDEO_BASE + path.replace(/^video\//, "");
     if (show !== on) { on = show; corner.classList.toggle("is-on", show); corner.tabIndex = show ? 0 : -1; }
   };
   addEventListener("scroll", check, { passive: true }); addEventListener("resize", check); check();
+})();
+
+/* ---------- Making-of: plötzlicher Regen über dem Foto am Fluss ---------- */
+(() => {
+  const card = document.querySelector(".fx--rain"), cv = card && card.querySelector(".fx__rain");
+  if (!cv || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const ctx = cv.getContext("2d");
+  let drops = [], visible = false, raining = false, last = 0, nextSwitch = performance.now() + 2500;
+  const size = () => { const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2); cv.width = Math.max(1, r.width * d); cv.height = Math.max(1, r.height * d); };
+  const spawn = () => ({ x: Math.random() * cv.width * 1.2, y: Math.random() * -cv.height, v: (0.9 + Math.random() * 0.6) * cv.height / 38, l: (8 + Math.random() * 14) * (cv.height / 300) });
+  new IntersectionObserver((e) => { visible = e[0].isIntersecting; if (visible) { size(); requestAnimationFrame(loop); } }).observe(card);
+  addEventListener("resize", size);
+  function loop(t) {
+    if (!visible) return;
+    if (t > nextSwitch) {   // trocken ca. 5 s, Regen ca. 4 s
+      raining = !raining; card.classList.toggle("is-raining", raining);
+      nextSwitch = t + (raining ? 4000 + Math.random() * 1500 : 4500 + Math.random() * 2500);
+    }
+    const want = raining ? Math.round(cv.width * cv.height / 2600) : 0;
+    while (drops.length < want) drops.push(spawn());
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.strokeStyle = "rgba(225, 236, 244, 0.7)"; ctx.lineWidth = Math.max(1.2, cv.width / 480); ctx.beginPath();
+    for (const p of drops) { ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.l * 0.25, p.y + p.l); p.y += p.v; p.x -= p.v * 0.25; }
+    ctx.stroke();
+    // unten raus: bei Regen oben neu starten, sonst verschwinden lassen
+    drops = drops.map((p) => (p.y > cv.height + p.l ? (raining ? { ...spawn(), y: -p.l } : null) : p)).filter(Boolean);
+    requestAnimationFrame(loop);
+  }
+})();
+
+/* ---------- Kontakt: Mailadresse antippen -> Auswahl kopieren / schreiben ---------- */
+(() => {
+  const btn = document.getElementById("mailBtn"), menu = document.getElementById("mailMenu"), copy = document.getElementById("mailCopy");
+  if (!btn) return;
+  const addr = "jule.buchmann@bluewin.ch";
+  const set = (open) => { menu.hidden = !open; btn.setAttribute("aria-expanded", String(open)); };
+  btn.addEventListener("click", (e) => { e.stopPropagation(); set(menu.hidden); });
+  document.addEventListener("click", (e) => { if (!menu.hidden && !e.target.closest(".mailbox")) set(false); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") set(false); });
+  copy.addEventListener("click", async () => {
+    let ok = false;
+    try { await navigator.clipboard.writeText(addr); ok = true; } catch (_) {
+      const t = document.createElement("textarea"); t.value = addr; t.setAttribute("readonly", ""); t.style.position = "fixed"; t.style.opacity = "0";
+      document.body.appendChild(t); t.select(); try { ok = document.execCommand("copy"); } catch (_) {} t.remove();
+    }
+    copy.textContent = ok ? "Kopiert" : addr;
+    setTimeout(() => { copy.textContent = "Adresse kopieren"; set(false); }, 1600);
+  });
 })();
