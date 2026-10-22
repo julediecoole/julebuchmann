@@ -246,12 +246,12 @@ a { color: inherit; }
   font-family: var(--font-display); font-weight: 400; letter-spacing: -.02em; line-height: 1;
   font-size: clamp(28px, 4.5vw, 74px); color: var(--bone); will-change: transform;
 }
-.scatter--k { left: 2%;  top: 54%; }
+.scatter--k { left: 2%;  top: 58%; }
 .scatter--d { left: 2%;  top: 82%; }
 .scatter--r { left: 79%; top: 2%; }
 .scatter--i { left: 79%; top: 36%; }
-.scatter--t { left: 79%; top: 70%; }
-.scatter--w { left: 55%; top: 78%; }
+.scatter--w { left: 78%; top: 70%; }
+.scatter--t { left: 56%; top: 78%; }
 .reel__cta { position: relative; z-index: 3; display: grid; gap: 12px; justify-items: start; }
 
 /* ---------- STATEMENT ---------- */
@@ -566,8 +566,9 @@ button.contact__mail:hover, button.contact__mail[aria-expanded="true"] { text-de
 .player__nav[hidden] { display: none; }
 
 /* ---------- "Was ich mache": Titel über der Making-of-Collage, kurze Erklärung unter jedem Wort ---------- */
-.reel__head { position: relative; z-index: 3; margin-bottom: clamp(56px, 10vh, 120px); }
-.reel__head .label { margin: 0 0 10px; }
+.reel__head { position: relative; z-index: 3; margin-bottom: clamp(48px, 9vh, 110px); }
+.reel__head .label { margin: 0; }
+.reel__label { font-weight: 800; color: var(--bone); opacity: .7; max-width: none; line-height: 1; }
 .reel__title { margin: 0; font-family: var(--font-display); font-weight: 400; letter-spacing: -.02em; line-height: 1.05; font-size: clamp(30px, 4.5vw, 74px); color: var(--bone); }
 .scatter { display: grid; gap: 8px; white-space: normal; }
 .scatter__w { font-weight: inherit; white-space: nowrap; }
