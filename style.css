@@ -515,19 +515,16 @@ a { color: inherit; }
 /* ---------- Making-of-Fotos mit kleinen Effekten ---------- */
 .fx { overflow: hidden; }
 .fx img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-/* Wohnzimmer: Lampe geht an und aus (zweites Bild mit ausgeschalteter Lampe drüber, flackert ein/aus) */
-.fx__off { opacity: 0; animation: lamp 9s steps(1, end) infinite; }
-@keyframes lamp {
-  0%, 52% { opacity: 0; }
-  53% { opacity: 1; } 54% { opacity: 0; } 55% { opacity: 1; } 56% { opacity: .2; } 57%, 84% { opacity: 1; }
-  85% { opacity: 0; } 86% { opacity: 1; } 87%, 100% { opacity: 0; }
-}
-/* Fluss: plötzlicher Regen (Tropfen auf einer Zeichenfläche, Bild wird dabei etwas grauer) */
+/* Easter Egg Wohnzimmer: Klick schaltet die Lampe flackernd aus/an (zweites Bild mit ausgeschalteter Lampe drüber) */
+.fx__off { opacity: 0; transition: opacity .06s linear; }
+.fx--lamp.is-off .fx__off { opacity: 1; }
+.fx--lamp, .fx--rain { cursor: pointer; }
+/* Easter Egg Fluss: Klick lässt es regnen (Tropfen auf einer Zeichenfläche, Bild wird dabei etwas grauer) */
 .fx--rain img { transition: filter 1.2s ease; }
 .fx--rain.is-raining img { filter: brightness(.78) saturate(.7) contrast(.95); }
 .fx__rain { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; transition: opacity 1s ease; }
 .fx--rain.is-raining .fx__rain { opacity: 1; }
-@media (prefers-reduced-motion: reduce) { .fx__off { animation: none; } .fx__rain { display: none; } }
+@media (prefers-reduced-motion: reduce) { .fx__rain { display: none; } }
 
 /* ---------- Kontakt: Mailadresse antippen -> kopieren oder Mail schreiben ---------- */
 .contact__actions { display: none; }

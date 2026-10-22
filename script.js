@@ -616,22 +616,32 @@ const videoUrl = (path) => VIDEO_BASE + path.replace(/^video\//, "");
   addEventListener("scroll", check, { passive: true }); addEventListener("resize", check); check();
 })();
 
-/* ---------- Making-of: plötzlicher Regen über dem Foto am Fluss ---------- */
+/* ---------- Easter Eggs Making-of: Klick auf die Lampe im Wohnzimmer / Regen am Fluss ---------- */
+(() => {
+  const card = document.querySelector(".fx--lamp"); if (!card) return;
+  let busy = false;
+  card.addEventListener("click", () => {
+    if (busy) return; busy = true;
+    const end = !card.classList.contains("is-off");      // Ziel: aus (true) oder wieder an
+    [70, 140, 230, 300].forEach((ms, i) => setTimeout(() => card.classList.toggle("is-off", i % 2 === 0 ? end : !end), ms));   // kurz flackern
+    setTimeout(() => { card.classList.toggle("is-off", end); busy = false; }, 420);
+  });
+})();
+/* Regen über dem Foto am Fluss */
 (() => {
   const card = document.querySelector(".fx--rain"), cv = card && card.querySelector(".fx__rain");
   if (!cv || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const ctx = cv.getContext("2d");
-  let drops = [], visible = false, raining = false, last = 0, nextSwitch = performance.now() + 2500;
+  let drops = [], visible = false, raining = false, nextSwitch = 0;
+  const setRain = (on) => { raining = on; card.classList.toggle("is-raining", on); if (on) nextSwitch = performance.now() + 7000; };
+  card.addEventListener("click", () => setRain(!raining));   // Easter Egg: nur auf Klick
   const size = () => { const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2); cv.width = Math.max(1, r.width * d); cv.height = Math.max(1, r.height * d); };
   const spawn = () => ({ x: Math.random() * cv.width * 1.2, y: Math.random() * -cv.height, v: (0.9 + Math.random() * 0.6) * cv.height / 38, l: (8 + Math.random() * 14) * (cv.height / 300) });
   new IntersectionObserver((e) => { visible = e[0].isIntersecting; if (visible) { size(); requestAnimationFrame(loop); } }).observe(card);
   addEventListener("resize", size);
   function loop(t) {
     if (!visible) return;
-    if (t > nextSwitch) {   // trocken ca. 5 s, Regen ca. 4 s
-      raining = !raining; card.classList.toggle("is-raining", raining);
-      nextSwitch = t + (raining ? 4000 + Math.random() * 1500 : 4500 + Math.random() * 2500);
-    }
+    if (raining && t > nextSwitch) setRain(false);   // hört nach ein paar Sekunden von selbst auf
     const want = raining ? Math.round(cv.width * cv.height / 2600) : 0;
     while (drops.length < want) drops.push(spawn());
     ctx.clearRect(0, 0, cv.width, cv.height);
