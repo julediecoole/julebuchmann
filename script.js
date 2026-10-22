@@ -673,3 +673,8 @@ const videoUrl = (path) => VIDEO_BASE + path.replace(/^video\//, "");
     setTimeout(() => { copy.textContent = "Adresse kopieren"; set(false); }, 1600);
   });
 })();
+
+/* Easter Eggs auch per Tastatur (Enter / Leertaste) */
+document.querySelectorAll(".fx[role=button]").forEach((el) => el.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" || e.key === " ") { e.preventDefault(); el.click(); }
+}));
