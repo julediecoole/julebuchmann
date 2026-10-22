@@ -246,12 +246,12 @@ a { color: inherit; }
   font-family: var(--font-display); font-weight: 400; letter-spacing: -.02em; line-height: 1;
   font-size: clamp(28px, 4.5vw, 74px); color: var(--bone); will-change: transform;
 }
-.scatter--k { left: 6%;  top: -12%; }
-.scatter--r { left: 80%; top: 6%; }
-.scatter--d { left: 2%;  top: 70%; }
-.scatter--w { left: 58%; top: 80%; }
-.scatter--i { left: 81%; top: 46%; }
-.scatter--t { left: 30%; top: 100%; }
+.scatter--k { left: 2%;  top: 54%; }
+.scatter--d { left: 2%;  top: 82%; }
+.scatter--r { left: 79%; top: 2%; }
+.scatter--i { left: 79%; top: 36%; }
+.scatter--t { left: 79%; top: 70%; }
+.scatter--w { left: 55%; top: 78%; }
 .reel__cta { position: relative; z-index: 3; display: grid; gap: 12px; justify-items: start; }
 
 /* ---------- STATEMENT ---------- */
@@ -564,3 +564,29 @@ button.contact__mail:hover, button.contact__mail[aria-expanded="true"] { text-de
 .player__msgtitle { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(20px, 2.6vw, 36px); line-height: 1.1; letter-spacing: -.02em; color: #fff; }
 .player__msgtext { margin: 0; font-size: clamp(12px, 1.1vw, 14px); line-height: 1.5; color: var(--bone); opacity: .85; }
 .player__nav[hidden] { display: none; }
+
+/* ---------- "Was ich mache": Titel über der Making-of-Collage, kurze Erklärung unter jedem Wort ---------- */
+.reel__head { position: relative; z-index: 3; margin-bottom: clamp(56px, 10vh, 120px); }
+.reel__head .label { margin: 0 0 10px; }
+.reel__title { margin: 0; font-family: var(--font-display); font-weight: 400; letter-spacing: -.02em; line-height: 1.05; font-size: clamp(30px, 4.5vw, 74px); color: var(--bone); }
+.scatter { display: grid; gap: 8px; white-space: normal; }
+.scatter__w { font-weight: inherit; white-space: nowrap; }
+.scatter__d {
+  display: block; max-width: 22ch; font: 400 clamp(11.5px, .95vw, 14px)/1.45 var(--font-sans); letter-spacing: 0;
+  color: var(--bone); opacity: .72;
+}
+/* Desktop: Liste nur für Screenreader und Google; Handy: Liste sichtbar, verstreute Wörter weg */
+.services { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); margin: 0; padding: 0; list-style: none; }
+@media (max-width: 700px) {
+  .scatter { display: none; }
+  .reel__head { margin-bottom: 4vh; }
+  .reel__collage { height: 62vh; }
+  .services {
+    position: relative; width: auto; height: auto; overflow: visible; clip: auto; z-index: 3;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 22px 18px; margin-top: 4vh;
+    padding-left: calc(var(--gutter-l) + 26px); padding-right: var(--gutter-r);
+  }
+  .services li { display: grid; gap: 4px; }
+  .services b { font: 400 22px/1.1 var(--font-display); letter-spacing: -.02em; color: var(--bone); }
+  .services span { font-size: 12.5px; line-height: 1.45; color: var(--bone); opacity: .72; }
+}
