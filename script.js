@@ -572,21 +572,3 @@ const videoUrl = (path) => VIDEO_BASE + path.replace(/^video\//, "");
   };
   addEventListener("scroll", check, { passive: true }); addEventListener("resize", check); check();
 })();
-
-/* Video in den grossen Sätzen (eigener kurzer Loop): läuft nur, wenn sichtbar */
-(() => {
-  const vids = [...document.querySelectorAll(".knock__video")], main = document.getElementById("reelVideo");
-  if (!vids.length) return;
-  vids.forEach((v) => {
-    v.muted = true; v.defaultMuted = true; v.volume = 0;
-    v.addEventListener("volumechange", () => { if (!v.muted) v.muted = true; });
-    v.addEventListener("error", () => { v.parentElement.classList.add("no-video"); v.removeAttribute("src"); });   // ohne Video bleibt die Schrift einfach hell
-  });
-  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
-    const v = e.target;
-    if (e.isIntersecting) {
-      const p = v.play(); if (p && p.catch) p.catch(() => {});
-    } else v.pause();
-  }), { rootMargin: "100px" });
-  vids.forEach((v) => io.observe(v));
-})();

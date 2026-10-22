@@ -214,9 +214,13 @@ a { color: inherit; }
 .about__row .big-serif { min-width: 0; }
 /* Grosse Sätze: Schrift zeigt das Showreel, invertiert (Knockout per Blend-Modes).
    Video etwas kleiner als die schwarze Fläche, damit keine Haarlinien am Rand durchblitzen. */
-.knock { position: relative; width: fit-content; max-width: 100%; min-width: 0; isolation: isolate; mix-blend-mode: screen; }
-.knock__video { position: absolute; inset: 4px; width: 100%; height: 100%; object-fit: cover; filter: invert(1) saturate(1.15); pointer-events: none; }
-.knock .big-serif { position: relative; background: #000; box-shadow: 0 0 0 40px #000; color: #fff; mix-blend-mode: multiply; }
+/* Grosse Sätze: Schrift zeigt das invertierte Showreel. Animiertes WebP als Hintergrund, nur in die
+   Buchstaben geschnitten (background-clip: text) - funktioniert überall, auch auf dem iPhone. */
+.knock { position: relative; width: fit-content; max-width: 100%; min-width: 0; }
+.knock .big-serif, .marquee--knock .marquee__track span {
+  background: #d9dde6 url("img/schrift-loop.webp") center / cover no-repeat;
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+}
 
 /* ---------- LAUFSCHRIFT + COLLAGE ---------- */
 .reel { min-height: 100vh; overflow: hidden; padding-block: 10vh 12vh; display: grid; align-content: center; }
@@ -500,27 +504,7 @@ a { color: inherit; }
    Sitzt unten im "Über mich"-Band selbst, damit Safari sie nicht überdeckt. */
 .tear--shards { top: auto; bottom: -1px; fill: var(--blood); z-index: 5; pointer-events: none; }
 
-/* "Was willst du erzählen?": gleicher Showreel-Effekt wie bei den grossen Sätzen */
-.marquee--knock .marquee__track { position: relative; isolation: isolate; mix-blend-mode: screen; }
-.marquee--knock .knock__video { z-index: 0; }
-.marquee--knock .marquee__track span { position: relative; z-index: 1; background: #000; color: #fff; mix-blend-mode: multiply; box-shadow: 0 0 0 40px #000; }
 /* Footer: Name links und "Bern, Schweiz" rechts mit genau gleichem Abstand zum Rand */
 .footer__bar { padding-right: calc(var(--gutter-r) + 26px); }
-/* Schwarzer Rand (40px) ragt weit über das Video hinaus: so kann an keiner Kante ein Streifen Video durchblitzen.
-   Schwarz verschwindet durch "screen" auf dem Dunkelblau komplett. */
-/* Lesbarkeit: das invertierte Video wird nie dunkler als ein Mindest-Grau.
-   Dunkle Stellen werden per "lighten" auf diesen Wert angehoben, helle bleiben wie sie sind. */
-:root { --knock-floor: #9a9a9a; }
-.knock::before, .marquee--knock .marquee__track::before {
-  content: ""; position: absolute; inset: -30px; z-index: -1; background: var(--knock-floor);
-}
-/* Falls das Video nicht lädt: kein Grau, die Schrift bleibt einfach hell */
-.knock.no-video::before, .marquee--knock .marquee__track.no-video::before { display: none; }
-.knock__video { z-index: 0; mix-blend-mode: lighten; }
-.knock .big-serif { z-index: 1; }
-
-/* Schrift-Video ist schon fertig invertiert und aufgehellt (video/schrift-loop.mp4) */
-.knock__video { filter: none; }
-
 /* Pfeile und Kreuz als kleine Zeichnungen statt Schriftzeichen: so bleibt es bei genau 2 Schriften */
 .ico { display: inline-block; vertical-align: -1px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
