@@ -565,29 +565,10 @@ button.contact__mail:hover, button.contact__mail[aria-expanded="true"] { text-de
 .player__msgtext { margin: 0; font-size: clamp(12px, 1.1vw, 14px); line-height: 1.5; color: var(--bone); opacity: .85; }
 .player__nav[hidden] { display: none; }
 
-/* ---------- "Was ich mache": Titel über der Making-of-Collage, kurze Erklärung unter jedem Wort ---------- */
+/* ---------- "Was ich mache": kleiner Titel über der Making-of-Collage ---------- */
 .reel__head { position: relative; z-index: 3; margin-bottom: clamp(48px, 9vh, 110px); }
 .reel__head .label { margin: 0; }
 .reel__label { font-weight: 800; color: var(--bone); opacity: .7; max-width: none; line-height: 1; }
-.reel__title { margin: 0; font-family: var(--font-display); font-weight: 400; letter-spacing: -.02em; line-height: 1.05; font-size: clamp(30px, 4.5vw, 74px); color: var(--bone); }
 .scatter { display: grid; gap: 8px; white-space: normal; }
 .scatter__w { font-weight: inherit; white-space: nowrap; }
-.scatter__d {
-  display: block; max-width: 22ch; font: 400 clamp(11.5px, .95vw, 14px)/1.45 var(--font-sans); letter-spacing: 0;
-  color: var(--bone); opacity: .72;
-}
-/* Desktop: Liste nur für Screenreader und Google; Handy: Liste sichtbar, verstreute Wörter weg */
-.services { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); margin: 0; padding: 0; list-style: none; }
-@media (max-width: 700px) {
-  .scatter { display: none; }
-  .reel__head { margin-bottom: 4vh; }
-  .reel__collage { height: 62vh; }
-  .services {
-    position: relative; width: auto; height: auto; overflow: visible; clip: auto; z-index: 3;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 22px 18px; margin-top: 4vh;
-    padding-left: calc(var(--gutter-l) + 26px); padding-right: var(--gutter-r);
-  }
-  .services li { display: grid; gap: 4px; }
-  .services b { font: 400 22px/1.1 var(--font-display); letter-spacing: -.02em; color: var(--bone); }
-  .services span { font-size: 12.5px; line-height: 1.45; color: var(--bone); opacity: .72; }
-}
+@media (max-width: 700px) { .reel__head { margin-bottom: 14vh; } }
