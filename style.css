@@ -548,3 +548,19 @@ button.contact__mail:hover, button.contact__mail[aria-expanded="true"] { text-de
 @media (prefers-reduced-motion: reduce) { .reel { margin-top: 0; } }
 /* Nur für Suchmaschinen und Screenreader sichtbar */
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Fehlt ein Video: Standbild gedimmt im Hintergrund, ruhiger Hinweis in der Mitte, keine Video-Bedienelemente */
+.player__msg {
+  display: grid; place-items: center; padding: 24px; opacity: 1;
+  font: inherit; letter-spacing: 0; text-transform: none; color: var(--bone);
+  background: #000 var(--msg-img, none) center / cover no-repeat;
+}
+.player__msg::before { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 17, .72); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.player__msgbox { position: relative; display: grid; gap: 10px; justify-items: center; max-width: 34ch; text-align: center; }
+.player__msglabel {
+  margin: 0; padding: 6px 10px; border: 1px solid rgba(128, 216, 212, .55); border-radius: 999px;
+  font: 800 9.5px/1 var(--font-sans); font-stretch: 125%; letter-spacing: .12em; text-transform: uppercase; color: var(--bone);
+}
+.player__msgtitle { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(20px, 2.6vw, 36px); line-height: 1.1; letter-spacing: -.02em; color: #fff; }
+.player__msgtext { margin: 0; font-size: clamp(12px, 1.1vw, 14px); line-height: 1.5; color: var(--bone); opacity: .85; }
+.player__nav[hidden] { display: none; }

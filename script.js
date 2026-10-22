@@ -203,13 +203,18 @@ const videoUrl = (path) => VIDEO_BASE + path.replace(/^video\//, "");
   plVideo.addEventListener("playing", () => { plLoading.hidden = true; });
   plVideo.addEventListener("canplay", () => { plLoading.hidden = true; });
   // fehlt ein Video (noch nicht hochgeladen), kein ewiges Laden: kurzer Hinweis statt Spinner
-  plVideo.addEventListener("error", () => { if (!plVideo.getAttribute("src")) return; plLoading.hidden = true; $("#plMsg").hidden = false; });
+  plVideo.addEventListener("error", () => {
+    if (!plVideo.getAttribute("src")) return;
+    plLoading.hidden = true; plVideo.controls = false; $("#plFull").hidden = true;   // keine Play-/Ton-/Vollbild-Knöpfe beim Hinweis
+    $("#plMsg").style.setProperty("--msg-img", `url("${PROJECTS[current].img}")`);
+    $("#plMsg").hidden = false;
+  });
 
   function openProject(i) {
     current = (i + PROJECTS.length) % PROJECTS.length;
     const p = PROJECTS[current];
     plVideo.poster = p.img;
-    plLoading.hidden = false; $("#plMsg").hidden = true;
+    plLoading.hidden = false; $("#plMsg").hidden = true; plVideo.controls = true; $("#plFull").hidden = false;
     plVideo.src = videoUrl(p.video);
     $("#plMeta").textContent = [p.type, p.role, p.real ? "" : "Platzhalter"].filter(Boolean).join(" · ");
     $("#plTitle").textContent = p.title;
