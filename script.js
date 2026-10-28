@@ -244,11 +244,15 @@ const videoUrl = (path) => VIDEO_BASE + path.replace(/^video\//, "");
   };
   const tryPlay = () => {
     const pr = reelVideo.play();
-    if (pr && pr.catch) pr.catch((err) => { if (err && err.name === "NotAllowedError") useFallback(); });
+    if (pr && pr.catch) pr.catch(() => useFallback());
   };
+  // Sicherheitsnetz: läuft das Video nach 2.5 s noch nicht wirklich, Bild zeigen (Video übernimmt, sobald es läuft)
+  setTimeout(() => { if (reelVideo.paused || reelVideo.currentTime < 0.2) useFallback(); }, 2500);
   reelVideo.addEventListener("loadeddata", () => { reel.classList.add("is-ready"); tryPlay(); });
   reelVideo.addEventListener("canplay", tryPlay, { once: true });
-  reelVideo.addEventListener("playing", () => { reel.classList.add("is-ready"); reel.classList.remove("is-fallback"); });
+  reelVideo.addEventListener("timeupdate", () => {   // erst wenn das Video wirklich weiterläuft, Bild ausblenden
+    if (reelVideo.currentTime > 0.3 && !reelVideo.paused) { reel.classList.add("is-ready"); reel.classList.remove("is-fallback"); }
+  });
   // Nochmals versuchen, sobald jemand tippt/klickt/scrollt – so lange, bis das Video wirklich läuft
   const retry = () => { if (reelVideo.paused) tryPlay(); else ["touchend", "click", "scroll", "keydown"].forEach((ev) => removeEventListener(ev, retry)); };
   ["touchend", "click", "scroll", "keydown"].forEach((ev) => addEventListener(ev, retry, { passive: true }));
