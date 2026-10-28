@@ -232,11 +232,26 @@ const videoUrl = (path) => VIDEO_BASE + path.replace(/^video\//, "");
   reelVideo.setAttribute("muted", ""); reelVideo.setAttribute("playsinline", "");
   reelVideo.addEventListener("volumechange", () => { if (!reelVideo.muted || reelVideo.volume) { reelVideo.muted = true; reelVideo.volume = 0; } });   // nie Ton
   reelVideo.volume = 0;
-  const tryPlay = () => { const pr = reelVideo.play(); if (pr && pr.catch) pr.catch(() => {}); };
+  // Blockiert das Gerät Autoplay (z. B. iPhone-Stromsparmodus), läuft stattdessen ein animiertes Bild
+  let reelImg = null;
+  const useFallback = () => {
+    if (reelImg) return;
+    reelImg = new Image();
+    reelImg.className = "showreel__img"; reelImg.alt = ""; reelImg.decoding = "async";
+    reelImg.src = "img/showreel-loop.webp";
+    reelImg.onload = () => reel.classList.add("is-fallback");
+    reelVideo.after(reelImg);
+  };
+  const tryPlay = () => {
+    const pr = reelVideo.play();
+    if (pr && pr.catch) pr.catch((err) => { if (err && err.name === "NotAllowedError") useFallback(); });
+  };
   reelVideo.addEventListener("loadeddata", () => { reel.classList.add("is-ready"); tryPlay(); });
   reelVideo.addEventListener("canplay", tryPlay, { once: true });
-  ["pointerdown", "touchstart", "scroll", "keydown"].forEach((ev) =>
-    addEventListener(ev, () => { if (reelVideo.paused) tryPlay(); }, { passive: true, once: true }));
+  reelVideo.addEventListener("playing", () => { reel.classList.add("is-ready"); reel.classList.remove("is-fallback"); });
+  // Nochmals versuchen, sobald jemand tippt/klickt/scrollt – so lange, bis das Video wirklich läuft
+  const retry = () => { if (reelVideo.paused) tryPlay(); else ["touchend", "click", "scroll", "keydown"].forEach((ev) => removeEventListener(ev, retry)); };
+  ["touchend", "click", "scroll", "keydown"].forEach((ev) => addEventListener(ev, retry, { passive: true }));
   document.addEventListener("visibilitychange", () => { if (!document.hidden && reelVideo.paused) tryPlay(); });
   tryPlay();
   reelVideo.addEventListener("error", () => { reelVideo.removeAttribute("src"); });
